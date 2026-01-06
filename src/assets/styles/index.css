@@ -1,0 +1,592 @@
+/* @tailwind base;
+
+@tailwind components;
+
+@tailwind utilities; */
+
+TreeView and AssociatedMaterials
+.box-container {
+  background: #ffffff;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+  padding: 12px;
+  height: 100%;
+  overflow-y: auto;
+  margin-bottom: 12px;
+}
+
+.box-inner {
+  flex: 1;
+  overflow-y: auto;
+}
+
+.box-wrapper {
+  margin-top: 12px;
+}
+
+/* App layout - UPDATED */
+.app-root {
+  display: flex;
+  height: 100vh;
+  width: 100%;
+  background: #f8fafc;
+}
+
+.sidebar {
+  /* 40% of the available width on normal layout */
+  flex: 0 0 40%;
+  width: 40%;
+  max-width: none;
+  min-width: 0;
+  /* Remove all outer padding to eliminate left/right green space */
+  padding: 0;
+  box-sizing: border-box;
+  overflow-y: auto;
+  height: 100vh;
+  /* border-right: 1px solid rgba(0,0,0,0.06); */
+  background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  /* Remove vertical gap between sections */
+  gap: 0;
+}
+
+.map-area {
+  /* 60% of the available width on normal layout */
+  flex: 1 1 60%;
+  width: 60%;
+  display: flex;
+  flex-direction: column;
+  position: relative;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+  /* Prevent horizontal overflow from the map pushing outside the page */
+  min-width: 0;
+  overflow-x: hidden;
+}
+
+/* UPDATED Header and Controls */
+.header {
+  background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+  /* border-bottom: 1px solid #e6e9ef; */
+  padding: 4px 0 0 0; /* small top padding, no side/bottom padding */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: nowrap; /* keep in one row by default */
+  gap: 8px;
+}
+
+.controls {
+  display: flex;
+  align-items: center;
+  gap: 0; /* no gap between buttons */
+  flex-wrap: nowrap; 
+  overflow-x: auto; /* allow horizontal scroll if overflow on large screens */
+  padding-right: 8px; /* prevent last button from being clipped */
+  background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%);
+
+}
+
+.map-container-wrapper {
+  flex: 1 1 auto;
+  position: relative;
+  height: calc(100vh - 80px);
+  /* Clip Leaflet tiles to the card and keep rounded corners */
+  overflow: hidden;
+  border-radius: 8px;
+}
+
+.map-overlay {
+  position: absolute;
+  top: 12px;
+  right: 12px;
+  z-index: 1000;
+  width: 340px;
+  pointer-events: auto;
+}
+.map-overlay .panel {
+  background: rgba(255,255,255,0.95);
+  padding: 12px;
+  border-radius: 8px;
+  box-shadow: 0 6px 18px rgba(2,6,23,0.08);
+}
+.map-overlay .controls { 
+  display: flex; 
+  gap: 8px; 
+  align-items: center; 
+  flex-wrap: wrap;
+}
+.map-overlay .controls .app-btn { 
+  padding: 6px 10px;
+}
+.map-overlay .search-wrap { 
+  margin-top: 8px;
+}
+
+/* Buttons */
+.controls button {
+  margin: 3px 0; /* reduced vertical margin */
+  padding: 3px 7px; /* slightly smaller again */
+  border-radius: 5px; /* slightly smaller corners */
+  border: none;
+  cursor: pointer;
+  font-weight: 600;
+  font-size: 11px; /* slightly smaller text */
+}
+.controls button:hover { 
+  opacity: 0.95;
+}
+.controls button:active { 
+  transform: translateY(1px);
+}
+
+.controls button:nth-child(1),
+.controls button:nth-child(2) { 
+  background: #7c0000; 
+  color: #fff;
+}
+
+/* Equal-width control buttons regardless of text */
+.controls button,
+.controls .app-btn {
+  flex: 0 0 74px;   /* a touch narrower */
+  width: 74px;
+  text-align: center;
+}
+
+/* Sidebar Sections */
+.sidebar-section {
+  background: #ffffff;
+  border: 1px solid #e2e8f0;
+  border-radius: 8px;
+  /* Remove side padding so content is flush with borders */
+  padding-left: 0;
+  padding-right: 0;
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+/* Make Components Tree content flush with the outer border (no inner padding) */
+.sidebar-section.components-tree {
+  padding: 0;
+}
+
+/* Make the inner content flush with the outer border (remove gap) */
+.sidebar-section.components-tree .p-2 {
+  padding: 0;
+  border: none;
+  overflow-y: auto; /* keep inner scrolling */
+}
+
+/* Remove extra spacing between the header and the scroll area */
+.sidebar-section.components-tree .px-3 {
+  padding-left: 0;
+  padding-right: 0;
+  margin-bottom: 0;
+}
+
+/* Center the heading for the Components Tree section */
+.sidebar-section.components-tree h2 {
+  text-align: center;
+  margin-top: 2px;
+  margin-bottom: 12px;
+}
+
+.sidebar-section h2, 
+.sidebar-section h3 {
+  margin-top: 0;
+  margin-bottom: 12px;
+  color: #1e293b;
+  font-size: 16px;
+  font-weight: 600;
+}
+
+/* Components Tree Section */
+.components-tree {
+  flex: 0 0 auto;
+  max-height: 300px;
+  overflow-y: hidden;
+}
+
+/* Tree node label styling (type, size) */
+.components-tree .tree-label {
+  font-family: Inter, system-ui, -apple-system, 'Segoe UI', Roboto, 'Helvetica Neue', Arial;
+  font-size: 12px;
+  font-weight: 400;
+  color: #0f172a;
+  line-height: 1.2;
+}
+
+/* Materials Table Section */
+.materials-section {
+  flex: 1 1 auto;
+  min-height: 200px;
+  max-height: 300px;
+  /* Hide outer scroll so the scrollbar appears inside the panel like Components Tree */
+  overflow-y: hidden;
+  font-size: 13px;
+}
+
+/* Also remove inner padding from the Associated Materials outer box */
+.sidebar-section.materials-section {
+  padding: 0;
+}
+
+/* Make inner panel (the white bordered container) handle scrolling, matching Components Tree */
+.materials-section .p-2 {
+  overflow-y: auto;
+  padding: 0;         /* remove inner padding gap */
+  border: none;       /* avoid double border look */
+}
+
+/* Ensure tables inside Associated Materials have no external margin */
+.materials-section table { margin: 0; }
+
+/* Also remove any padding on headings so content is flush */
+.materials-section .px-3 {
+  padding-left: 0;
+  padding-right: 0;
+  margin-bottom: 0;
+}
+
+/* Optional: consistent scrollbar look */
+.materials-section .p-2::-webkit-scrollbar {
+  width: 8px;
+}
+.materials-section .p-2::-webkit-scrollbar-thumb {
+  background: rgba(15,23,42,0.15);
+  border-radius: 6px;
+}
+.materials-section .p-2::-webkit-scrollbar-track {
+  background: rgba(15,23,42,0.06);
+  border-radius: 6px;
+}
+
+/* Estimation Table Section */
+.estimation-section {
+  flex: 0 0 auto;
+  max-height: 400px;
+  overflow-y: auto;
+}
+
+/* Estimation table responsive */
+.estimation-panel { 
+  background: #fff; 
+  padding: 16px; 
+  border-radius: 8px; 
+  box-shadow: 0 1px 4px rgba(10,20,40,0.04); 
+}
+.estimation-panel table { 
+  width: 100%; 
+  border-collapse: collapse; 
+  font-size: 14px;
+}
+.estimation-panel th, .estimation-panel td { 
+  padding: 8px; 
+  border: 1px solid #eef2f7;
+}
+.estimation-panel thead th { 
+  background: #f8fafc; 
+  font-weight: 700;
+}
+
+/* Responsive tweaks: keep sidebar visible on tablets, stack only on phones */
+@media (max-width: 1024px) {
+  .app-root { 
+    flex-direction: column; 
+  }
+  /* Let the header and controls wrap to show all buttons */
+  .header { 
+    flex-wrap: wrap; 
+    row-gap: 8px;
+  }
+  .controls {
+    flex-wrap: wrap;
+    gap: 6px;
+    overflow-x: visible; /* avoid hidden buttons on tablet */
+    width: 100%;
+    justify-content: flex-start;
+  }
+  .controls button,
+  .controls .app-btn {
+    width: auto;
+    flex: 0 0 auto;
+    min-width: 58px; /* more compact */
+    padding: 4px 6px;
+    font-size: 10px;
+  }
+  /* Give the map overlay more room so controls can wrap nicely */
+  .map-overlay { 
+    width: min(94vw, 560px);
+    right: 8px;
+  }
+}
+
+/* Phone layout: hide sidebar and stack tables */
+@media (max-width: 640px) {
+  .sidebar { display: none !important; }
+  .map-area {
+    width: 100% !important;
+    flex: 1 1 auto;
+    padding-left: 0 !important;
+    padding-right: 0 !important;
+  }
+  .map-container-wrapper {
+    border-radius: 0;
+    height: calc(100vh - 120px);
+    margin-top: 4px;
+  }
+  .estimation-panel table,
+  .estimation-panel thead,
+  .estimation-panel tbody,
+  .estimation-panel th,
+  .estimation-panel td,
+  .estimation-panel tr {
+    display: block;
+    width: 100%;
+  }
+  .estimation-panel thead { display: none; }
+  .estimation-panel tr {
+    margin-bottom: 12px;
+    background: #fff;
+    border-radius: 8px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.03);
+    margin-top: 12px;
+    padding: 10px;
+  }
+  .estimation-panel td {
+    display: flex;
+    justify-content: space-between;
+    padding: 8px 12px;
+    border: none;
+    border-bottom: 1px solid #f1f5f9;
+  }
+  .estimation-panel td:last-child { border-bottom: none; }
+}
+
+/* Mobile-first tweaks */
+@media (max-width: 768px) {
+  .header {
+    padding: 0; /* remove top padding */
+    flex-wrap: wrap; /* ensure multi-row layout when needed */
+  }
+  .controls { 
+    gap: 6px; 
+    padding-right: 6px; 
+    flex-wrap: wrap; /* show all buttons on tablet/mobile */
+    overflow-x: visible;
+  }
+  /* Allow buttons to size naturally and avoid overflow */
+  .controls button,
+  .controls .app-btn {
+    flex: 0 0 auto; 
+    min-width: 64px; 
+    width: auto;
+  }
+  /* Move search to its own line when space is tight */
+  .search-container { 
+    order: 2; 
+    width: 100%; 
+    margin-left: 0; 
+    justify-content: flex-start;
+  }
+}
+
+/* Map responsive sizing */
+.leaflet-container { 
+  width: 100%; 
+  height: 100%; 
+  min-height: 420px;
+}
+
+/* Pulsing marker for user location */
+.pulse-marker {
+  width: 12px;
+  height: 12px;
+  background: #2563eb;
+  border: 2px solid #ffffff;
+  border-radius: 50%;
+  box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.5);
+  animation: pulse-ring 1.8s infinite;
+}
+
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0.45); }
+  70% { box-shadow: 0 0 0 14px rgba(37, 99, 235, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(37, 99, 235, 0); }
+}
+
+/* small polish */
+.estimate-id { 
+  margin: 12px 0; 
+  background: #f0f9ff; 
+  padding: 8px; 
+  border-radius: 6px; 
+  font-weight: 600;
+}
+
+/* Shared app buttons */
+.app-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 8px 14px;
+  border-radius: 8px;
+  border: none;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform .08s ease, box-shadow .12s ease, opacity .12s ease;
+}
+.app-btn:active { 
+  transform: translateY(1px);
+}
+.app-btn:disabled {
+  /* Keep disabled state functional but avoid faded look so Save matches other buttons visually */
+  opacity: 1;
+  cursor: not-allowed;
+}
+.app-btn--primary, .app-btn--accent { 
+  background: #7c0000; /* dark red */
+  color: white; 
+  box-shadow: 0 6px 18px rgba(124,0,0,0.12);
+}
+.app-btn--primary:hover, .app-btn--accent:hover {
+  background: #5c0000; /* slightly darker on hover */
+}
+.app-btn--ghost { 
+  background: transparent; 
+  color: #0f172a; 
+  border: 1px solid rgba(15,23,42,0.06);
+}
+
+/* ensure search & control buttons fit the controls layout - make them more compact */
+.controls .app-btn { 
+  margin: 3px 0; /* reduced vertical margin */
+  padding: 3px 7px; /* slightly smaller again */
+  font-size: 11px; /* slightly smaller text */
+  gap: 5px;
+  border-radius: 5px; /* slightly smaller corners */
+}
+
+/* Make search button match control buttons */
+.search-container .app-btn {
+  padding: 6px 9px; /* tighter padding */
+  font-size: 11px;
+  gap: 6px;
+  border-radius: 4px; /* smaller corners */
+}
+
+/* Search component */
+.search-container {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  margin-left: auto; /* keep search on the same row, pushed right */
+}
+
+.search-container input {
+  padding: 5px 9px; /* slightly reduced height */
+  border: 1px solid #d1d5db;
+  border-radius: 4px; /* smaller corners */
+  font-size: 11px; /* slightly smaller text for reduced height */
+  min-width: 200px;
+}
+
+.search-container input:focus {
+  outline: none;
+  border-color: #3b82f6;
+  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+}
+
+/* Inline search suggestions */
+.inline-search-input .suggest-list {
+  margin-top: 6px;
+  background: #ffffff;
+  box-shadow: 0 6px 16px rgba(2,6,23,0.12);
+}
+.inline-search-input .suggest-item {
+  font-size: 13px;
+  color: #111827;
+}
+.inline-search-input .suggest-item:hover {
+  background: #f9fafb;
+}
+
+/* Keep estimation action buttons in one line; allow horizontal scroll on small viewports */
+.estimation-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+  white-space: nowrap;
+  overflow-x: auto;
+}
+.estimation-actions::-webkit-scrollbar { height: 8px }
+.estimation-actions::-webkit-scrollbar-thumb { background: rgba(15,23,42,0.06); border-radius: 6px }
+
+/* Estimation dropdown (tablet/mobile) */
+.estimation-menu {
+  position: absolute;
+  top: 36px;
+  left: 0;
+  z-index: 1100;
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 8px;
+  box-shadow: 0 8px 20px rgba(2,6,23,0.12);
+  padding: 6px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  min-width: 160px;
+}
+.estimation-menu .app-btn { width: 100%; justify-content: flex-start; }
+
+/* Masters modal */
+.modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(2,6,23,0.45);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 2000;
+}
+.modal-panel {
+  width: min(1000px, 95%);
+  max-height: 80vh;
+  background: #fff; 
+  border-radius: 8px;
+  box-shadow: 0 20px 60px rgba(2,6,23,0.3);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+}
+.modal-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 12px 16px;
+  border-bottom: 1px solid #eef2f7;
+}
+.modal-body { padding: 12px 16px; overflow: auto; }
+.table-wrapper { overflow: auto; }
+.masters-table { width: 100%; border-collapse: collapse; font-size: 14px; }
+.masters-table th, .masters-table td { padding: 10px 12px; border: 1px solid #e6eef6; text-align: left }
+.masters-table thead th { background: #f8fafc; font-weight: 700 }
+.masters-table tbody tr:nth-child(even) { background: #fbfdff }
+
+/* Tree node id badge */
+.node-id-badge {
+  margin-left: 8px;
+  padding: 2px 6px;
+  background: #eef2ff;
+  border: 1px solid #dbeafe;
+  color: #0f172a;
+  border-radius: 6px;
+  font-size: 12px;
+  cursor: pointer;
+}
+.node-id-badge:hover { background: #e0f2ff }
