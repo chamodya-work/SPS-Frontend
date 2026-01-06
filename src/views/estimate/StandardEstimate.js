@@ -8,6 +8,9 @@ import StandardRates from "../../components/EstimationForms/StandardRates";
 import Uploads from "../../components/EstimationForms/Uploads";
 
 const Tabs = () => {
+
+  const baseUrl = process.env.REACT_APP_API_BASE_URL;
+
   const [activeTab, setActiveTab] = useState(0);
   const [completedTabs, setCompletedTabs] = useState(Array(6).fill(false));
   const [editMode, setEditMode] = useState(false);
@@ -101,7 +104,7 @@ const Tabs = () => {
     setLoadingSearch(true);
     try {
       const response = await fetch(
-        `http://127.0.0.1:8088/SPSProjectBackend-0.0.1-SNAPSHOT/api/spstdesthmt/applicant/${generalInfo.appNo}`,
+        `${baseUrl}/api/spstdesthmt/applicant/${generalInfo.appNo}`,
         {
           method: "GET",
           headers: {
@@ -178,7 +181,7 @@ const Tabs = () => {
 
   try {
     const response = await fetch(
-      "http://127.0.0.1:8088/SPSProjectBackend-0.0.1-SNAPSHOT/api/spstdesthmt",
+      '${baseUrl}/api/spstdesthmt',
       {
         method: "PUT",
         headers: {

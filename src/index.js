@@ -56,14 +56,20 @@ ReactDOM.render(
           <Switch>
             {/* add routes with layouts */}
 
-            {/* this is for testing orderpopu.js */}
-            <Route path="/OrderCardPopupNew"  component={OrderCardPopupNew} />
-            
-            {/* Commission Routes - Order matters! More specific first */}
-          
             <Route path="/admin/commission/edit" component={CommissionEditLayout} />
             <Route path="/admin/commission" component={CommissionLayout} />
 
+
+            <Route path="/admin/commission/verify" component={CommissionVerifyLayout} />
+
+            <Route path="/admin/commission/validate" component={CommissionValidateLayout} />
+
+            <Route path="/admin/commission/forward" component={CommissionForwardLayout} />
+
+          
+            <Route path="/admin/commission/edit" component={CommissionEditLayout} />
+            <Route path="/admin/commission" component={CommissionLayout} />
+          
 
             <Route path="/admin" component={Admin} />
             <Route path="/auth" component={Auth} />

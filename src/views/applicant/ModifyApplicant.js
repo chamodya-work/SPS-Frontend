@@ -17,6 +17,9 @@ import Applicant from "components/Applicant/Applicant";
 import React, { useState } from "react";
 
 const ModifyApplicant = () => {
+
+  const baseUrl = process.env.REACT_APP_API_BASE_URL;
+
   const [isModify, setIsModify] = useState(true);
   const [appData, setAppData] = useState({
     idNo:"",
@@ -103,7 +106,7 @@ const ModifyApplicant = () => {
   try {
     console.log(appData);
     const response = await fetch(
-      `http://127.0.0.1:8088/SPS/api/applicants/search?idNo=${appData.idNo}`,
+      `${baseUrl}/api/applicants/search?idNo=${appData.idNo}`,
       {
         method: "GET",
         headers: {
@@ -194,7 +197,7 @@ const ModifyApplicant = () => {
 
     // Send the data to the backend via REST API
     try {
-      const response = await fetch("http://127.0.0.1:8088/SPS/api/applicants/save", {
+      const response = await fetch('${baseUrl}/api/applicants/save', {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

@@ -23,7 +23,7 @@ const EstimateDetails = ({ estimateNo }) => {
       try {
         setLoading(true);
         const response = await fetch(
-          `http://127.0.0.1:8081/SPS/api/estimate-details/${estimateNo}`,
+          `http://127.0.0.1:8081/SPSNEW/api/estimate-details/${estimateNo}`,
           {
             method: "GET",
             headers: {
@@ -68,7 +68,7 @@ const EstimateDetails = ({ estimateNo }) => {
       try {
         setLoading(true);
         const response = await fetch(
-          `http://127.0.0.1:8081/SPS/api/estimate-details/${estimateNo}/items`,
+          `http://127.0.0.1:8081/SPSNEW/api/estimate-details/${estimateNo}/items`,
           {
             method: "GET",
             headers: {

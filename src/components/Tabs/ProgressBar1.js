@@ -137,6 +137,9 @@ import React, { useEffect } from "react";
 import axios from "axios";
 
 const ProgressBar1 = () => {
+
+  const baseUrl = process.env.REACT_APP_API_BASE_URL;
+
   const [progress, setProgress] = useState(0); // Start with 0 progress
   const [estimateNo, setEstimateNo] = useState(""); // State for the estimate number
    const [error, setError] = useState(""); // State for error messages
@@ -158,7 +161,7 @@ const ProgressBar1 = () => {
 
 
       // API call with Basic Authentication to check if the estimate exists
-      const response = await axios.get(`http://127.0.0.1:8088/SPS/api/pcesthmt/${estimateNo}`, {
+      const response = await axios.get(`${baseUrl}/api/pcesthmt/${estimateNo}`, {
         headers: {
           "Content-Type": "application/json",
           "Authorization": "Basic " + btoa("user:admin123")

@@ -2,6 +2,9 @@ import React, { useState, useEffect } from "react";
 import { useLocation } from "react-router-dom";
 
 function Schedule2({ }) {
+
+  const baseUrl = process.env.REACT_APP_API_BASE_URL;
+
   const location = useLocation();
   const [applicationData, setApplicationData] = useState({});
   const [loading, setLoading] = useState(false);
@@ -34,7 +37,7 @@ function Schedule2({ }) {
       console.log("Fetching details for application:", applicationNo);
 
       const response = await fetch(
-        `http://127.0.0.1:8088/SPS/api/application/api/v1/application-details?applicationNo=${encodeURIComponent(applicationNo)}`,
+        `${baseUrl}/api/application/api/v1/application-details?applicationNo=${encodeURIComponent(applicationNo)}`,
         {
           method: "GET",
           headers: {
@@ -103,12 +106,12 @@ function Schedule2({ }) {
   return (
     <>
       <div className="flex flex-col justify-center bg-gray-100">
-        <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
-          <h2 className="mt-4 text-sm text-center text-blueGray-700" >
+        <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-md">
+          <h2 className="text-blueGray-700 text-sm  text-center mt-4" >
              Schedule {applicationNo ? `- Application: ${applicationNo}` : ''}
           </h2>
           {/* Debug information */}
-          {/* <div className="p-2 mb-4 text-xs rounded bg-gray-50">
+          {/* <div className="mb-4 p-2 bg-gray-50 rounded text-xs">
             <p><strong>Debug Info:</strong></p>
             <p>Application No from URL: {applicationNo}</p>
             <p>Application Data: {JSON.stringify(applicationData)}</p>
@@ -117,22 +120,22 @@ function Schedule2({ }) {
           </div> */}
 
             {loading && (
-            <div className="py-4 text-center">
+            <div className="text-center py-4">
               <div className="text-sm text-gray-500">Loading application details...</div>
             </div>
           )}
 
           {error && (
-            <div className="py-4 text-center">
+            <div className="text-center py-4">
               <div className="text-sm text-red-500">{error}</div>
             </div>
           )}
           <form >
             <div className="flex flex-wrap mt-4">
-              <div className="w-full px-4 lg:w-6/12">
+              <div className="w-full lg:w-6/12 px-4">
                 <div className="relative w-full mb-3">
                   <label
-                    className="block mb-2 text-sm text-blueGray-600"
+                    className="block text-blueGray-600 text-sm mb-2"
                     htmlFor="grid-password"
                   >
                     Estimate Number
@@ -148,10 +151,10 @@ function Schedule2({ }) {
                   />
                 </div>
               </div>
-              <div className="w-full px-4 lg:w-6/12">
+              <div className="w-full lg:w-6/12 px-4">
                 <div className="relative w-full mb-3">
                   <label
-                    className="block mb-2 text-sm text-blueGray-600"
+                    className="block text-blueGray-600 text-sm mb-2"
                     htmlFor="grid-password"
                   >
                     Cost Center
@@ -167,10 +170,10 @@ function Schedule2({ }) {
               </div>
             </div>
             <div className="flex flex-wrap">
-              <div className="w-full px-4 lg:w-6/12">
+              <div className="w-full lg:w-6/12 px-4">
                 <div className="relative w-full mb-3">
                   <label
-                    className="block mb-2 text-sm text-blueGray-600"
+                    className="block text-blueGray-600 text-sm mb-2"
                     htmlFor="grid-password"
                   >
                     Application Type
@@ -183,10 +186,10 @@ function Schedule2({ }) {
                   />
                 </div>
               </div>
-              <div className="w-full px-4 lg:w-6/12">
+              <div className="w-full lg:w-6/12 px-4">
                 <div className="relative w-full mb-3">
                   <label
-                    className="block mb-2 text-sm text-blueGray-600"
+                    className="block text-blueGray-600 text-sm mb-2"
                     htmlFor="grid-password"
                   >
                     Schema Name
@@ -202,10 +205,10 @@ function Schedule2({ }) {
               </div>
             </div>
             <div className="flex flex-wrap">
-              {/* <div className="w-full px-4 lg:w-6/12">
+              {/* <div className="w-full lg:w-6/12 px-4">
                 <div className="relative w-full mb-3">
                   <label
-                    className="block mb-2 text-sm text-blueGray-600"
+                    className="block text-blueGray-600 text-sm mb-2"
                     htmlFor="grid-password"
                   >
                     Date
@@ -214,14 +217,14 @@ function Schedule2({ }) {
                     type="date"
                     name="selecteddate"
                     placeholder="DD/MM/YYYY"
-                    className="w-full px-3 py-2 text-sm transition-all duration-150 ease-linear bg-white border-0 rounded shadow placeholder-blueGray-300 text-blueGray-600 focus:outline-none focus:ring"
+                    className="border-0 px-3 py-2 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
                   />
                 </div>
               </div> */}
-              <div className="w-full px-4">
+              <div className="w-full  px-4">
                 <div className="relative w-full mb-3">
                   <label
-                    className="block mb-2 text-sm text-blueGray-600"
+                    className="block text-blueGray-600 text-sm mb-2"
                     htmlFor="grid-password"
                   >
                     Proposer
@@ -237,17 +240,17 @@ function Schedule2({ }) {
                 </div>
               </div>
             </div>
-            <div className="flex items-center justify-center px-12 mt-6 mb-4">
+            <div className="px-12 flex justify-center items-center mt-6 mb-4">
               <div>
                 <button 
                   type="button"
-                  className="px-6 py-2 mr-3 text-sm text-white transition-all duration-150 ease-linear rounded shadow outline-none bg-emerald-400 active:bg-emerald-600 hover:shadow-md focus:outline-none"
+                  className="bg-emerald-400 text-white active:bg-emerald-600 text-sm px-6 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-3 ease-linear transition-all duration-150"
                 >
                   Process Application
                 </button>
                 <button
                   type="button"
-                  className="px-6 py-2 text-sm text-white transition-all duration-150 ease-linear bg-gray-400 rounded shadow outline-none active:bg-gray-600 hover:shadow-md focus:outline-none"
+                  className="bg-gray-400 text-white active:bg-gray-600 text-sm px-6 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150"
                 >
                   Cancel
                 </button>

@@ -2,6 +2,9 @@
 import React, { useState, useEffect } from "react";
 
 const ApplicationDetails = ({ estimateNo }) => {
+
+  const baseUrl = process.env.REACT_APP_API_BASE_URL;
+
   const [applicationData, setApplicationData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -20,7 +23,7 @@ const ApplicationDetails = ({ estimateNo }) => {
         // console.log("Encoded estimateNo:", encodedEstimateNo);
 
         // Build the complete URL
-        const url = `http://127.0.0.1:8088/SPS/api/application/details?estimateNo=${estimateNo}`;
+        const url = `${baseUrl}/api/application/details?estimateNo=${estimateNo}`;
         console.log("Request URL:", url);
 
         const response = await fetch(url, {

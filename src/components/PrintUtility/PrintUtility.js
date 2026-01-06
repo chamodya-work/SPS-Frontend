@@ -1,3 +1,322 @@
+// // components/PrintUtility/PrintUtility.js
+// import React, { useState, useRef } from "react";
+// import { toast } from "react-toastify";
+
+// // Custom hook for print functionality
+// export const usePrint = () => {
+//   const [printData, setPrintData] = useState(null);
+//   const [isPrintLoading, setIsPrintLoading] = useState(false);
+//   const printContentRef = useRef();
+
+//   const handleSimplePrint = () => {
+//     if (!printData) return;
+    
+//     const printWindow = window.open('', '_blank');
+//     const printContent = document.getElementById('print-content');
+    
+//     if (!printContent) {
+//       toast.error("Print content not found!");
+//       return;
+//     }
+
+//     const printHTML = `
+//       <!DOCTYPE html>
+//       <html>
+//         <head> 
+//           <title>Order Card - ${printData.formData.orderCardNo || printData.formData.projectNo}</title>
+//           <!-- this is how save the pdf file  eg: Order Card - 480.20_ORD_25_01.pdf -->
+            
+//           <style>
+//             body { font-family: Arial, sans-serif; margin: 20px; }
+//             .header { text-align: center; border-bottom: 2px solid #000; padding-bottom: 10px; }
+//             .section { margin: 20px 0; }
+//             table { width: 100%; border-collapse: collapse; margin: 10px 0; }
+//             th, td { border: 1px solid #000; padding: 8px; text-align: left; }
+//             th { background-color: #f2f2f2; }
+//             .signature { display: flex; justify-content: space-between; margin-top: 50px; }
+//             .signature-box { text-align: center; width: 30%; }
+//             @media print {
+//               body { margin: 0; }
+//               @page { margin: 20mm; }
+//             }
+//           </style>
+//         </head>
+//         <body>
+//           ${printContent.innerHTML}
+//         </body>
+//       </html>
+//     `;
+
+//     printWindow.document.write(printHTML);
+//     printWindow.document.close();
+    
+//     printWindow.onload = () => {
+//       printWindow.focus();
+//       printWindow.print();
+//       printWindow.onafterprint = () => {
+//         printWindow.close();
+//         toast.success("Print completed!");
+//         setPrintData(null);
+//       };
+//     };
+//   };
+
+//   const resetPrintData = () => {
+//     setPrintData(null);
+//   };
+
+//   return {
+//     printData,
+//     setPrintData,
+//     isPrintLoading,
+//     setIsPrintLoading,
+//     printContentRef,
+//     handleSimplePrint,
+//     resetPrintData
+//   };
+// };
+
+// // Function to fetch order card data for printing
+// export const fetchOrderCardPrintData = async (baseUrl, projectNumber, deptId) => {
+//   try {
+//     const response = await fetch(
+//       `${baseUrl}/api/order-cards/by-project-dept?projectNo=${encodeURIComponent(projectNumber.trim())}&deptId=${encodeURIComponent(deptId.trim())}`,
+//       {
+//         method: "GET",
+//         headers: {
+//           "Content-Type": "application/json",
+//           Authorization: "Basic " + btoa("user:admin123"),
+//         },
+//       }
+//     );
+
+//     if (!response.ok) {
+//       throw new Error("Order card not found");
+//     }
+
+//     const orderCardData = await response.json();
+
+//     // Prepare formData
+//     const formData = {
+//       projectNo: orderCardData.projectNo || "",
+//       orderCardNo: orderCardData.orderCardNo || "",
+//       dateIssued: orderCardData.connectedDate || "",
+//       nameOfConsumer: orderCardData.customerName || "",
+//       addressOfSupply: orderCardData.addressOfSupply || "",
+//       contactDemand: orderCardData.contractDemand || "",
+//       customerCategory: orderCardData.customerCategory || "",
+//       natureOfSupplyCategory: orderCardData.natureOfSupplyCategory || "",
+//       isicNumber: orderCardData.isicNumber || "",
+//       customerOwnershipType: orderCardData.customerOwnershipType || "",
+//       tariffType: orderCardData.tariffType || "",
+//       transformerNo: orderCardData.transformerNumber || "",
+//       sin: orderCardData.sinNumber || "",
+//       areaCode: orderCardData.areaCode || "",
+//       depoCode: orderCardData.depotCode || "",
+//       estPivNumber: orderCardData.estPivNumber || "",
+//       estAmount: orderCardData.estAmount || "",
+//       estPayDate: orderCardData.estPayDate || "",
+//       depPivNumber: orderCardData.depPivNumber || "",
+//       depositAmount: orderCardData.depositAmount || "",
+//       depositDate: orderCardData.depositDate || "",
+//       isLoanApp: orderCardData.isLoanApp || "",
+//       loanAmount: orderCardData.loanAmount || "",
+//       loanType: orderCardData.loanType || "",
+//       deptId: orderCardData.deptId || deptId,
+//     };
+
+//     return { formData, tableData: [], mtrTypes: [] };
+//   } catch (error) {
+//     console.error("Error fetching print data:", error);
+//     throw error;
+//   }
+// };
+
+// // Print Modal Component
+// export const PrintModal = ({ 
+//   printData, 
+//   onClose, 
+//   onPrint, 
+//   isPrintLoading = false,
+//   title = "Print Document",
+//   customContent = null 
+// }) => {
+//   if (!printData) return null;
+
+//   const styles = {
+//     overlay: {
+//       position: 'fixed',
+//       top: 0,
+//       left: 0,
+//       right: 0,
+//       bottom: 0,
+//       backgroundColor: 'rgba(0,0,0,0.5)',
+//       display: 'flex',
+//       justifyContent: 'center',
+//       alignItems: 'center',
+//       zIndex: 1000,
+//     },
+//     content: {
+//       backgroundColor: 'white',
+//       padding: '30px',
+//       borderRadius: '8px',
+//       minWidth: '400px',
+//       textAlign: 'center',
+//       boxShadow: '0 4px 20px rgba(0,0,0,0.3)',
+//     },
+//     buttons: {
+//       marginTop: '20px',
+//       display: 'flex',
+//       gap: '10px',
+//       justifyContent: 'center',
+//     },
+//     printButton: {
+//       padding: '10px 20px',
+//       backgroundColor: '#3498db',
+//       color: 'white',
+//       border: 'none',
+//       borderRadius: '4px',
+//       cursor: 'pointer',
+//       fontSize: '16px',
+//     },
+//     cancelButton: {
+//       padding: '10px 20px',
+//       backgroundColor: '#e74c3c',
+//       color: 'white',
+//       border: 'none',
+//       borderRadius: '4px',
+//       cursor: 'pointer',
+//       fontSize: '16px',
+//     }
+//   };
+
+//   return (
+//     <div style={styles.overlay}>
+//       <div style={styles.content}>
+//         <h3>{title}</h3>
+        
+//         {customContent || (
+//           <>
+//             <p>Order Card No: <strong>{printData.formData.orderCardNo || printData.formData.projectNo}</strong></p>
+//             <p>Customer: {printData.formData.nameOfConsumer}</p>
+//             {/* this define popup message details when clicking print order card */}
+//           </>
+//         )}
+
+//         {/* Hidden print content */}
+//         <div id="print-content" style={{ display: 'none' }}>
+//           <div className="header">
+//             <h2>CEYLON ELECTRICITY BOARD</h2>
+//             <h3>ORDER CARD FOR CONNECTION OF BULK SUPPLY CONSUMER</h3>
+//             <p><strong>Order Card No:</strong> {printData.formData.orderCardNo || printData.formData.projectNo}</p>
+//             <p><strong>Date Issued:</strong> {printData.formData.dateIssued}</p>
+//           </div>
+          
+//           <div className="section">
+//             <h3>Customer Details</h3>
+//             <p><strong>Project No:</strong> {printData.formData.projectNo}</p>
+//             <p><strong>Customer Name:</strong> {printData.formData.nameOfConsumer}</p>
+//             <p><strong>Address:</strong> {printData.formData.addressOfSupply}</p>
+//             <p><strong>Dept ID:</strong> {printData.formData.deptId}</p>
+//             <p><strong>Contract Demand:</strong> {printData.formData.contactDemand} kVA</p>
+//             <p><strong>Tariff Type:</strong> {printData.formData.tariffType}</p>
+//           </div>
+          
+//           <div className="section">
+//             <h3>Financial Details</h3>
+//             <p><strong>Estimate Amount:</strong> Rs. {printData.formData.estAmount}</p>
+//             <p><strong>Deposit Amount:</strong> Rs. {printData.formData.depositAmount}</p>
+//             <p><strong>Loan Amount:</strong> Rs. {printData.formData.loanAmount}</p>
+//             <p><strong>Loan Type:</strong> {printData.formData.loanType}</p>
+//           </div>
+          
+//           <div className="signature">
+//             <div className="signature-box">
+//               <div style={{ borderBottom: '1px solid #000', height: '20px', marginBottom: '5px' }}></div>
+//               <div>Prepared By</div>
+//             </div>
+//             <div className="signature-box">
+//               <div style={{ borderBottom: '1px solid #000', height: '20px', marginBottom: '5px' }}></div>
+//               <div>Checked By</div>
+//             </div>
+//             <div className="signature-box">
+//               <div style={{ borderBottom: '1px solid #000', height: '20px', marginBottom: '5px' }}></div>
+//               <div>Approved By</div>
+//             </div>
+//           </div>
+//         </div>
+
+//         <div style={styles.buttons}>
+//           <button 
+//             style={styles.printButton}
+//             onClick={onPrint}
+//             disabled={isPrintLoading}
+//           >
+//             {isPrintLoading ? "Loading..." : "🖨️ Print Now"}
+//           </button>
+//           <button 
+//             style={styles.cancelButton}
+//             onClick={onClose}
+//           >
+//             Cancel
+//           </button>
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// // Optional: Function to generate print content for different templates
+// export const generatePrintContent = {
+//   orderCard: (data) => {
+//     return `
+//       <div class="header">
+//         <h2>CEYLON ELECTRICITY BOARD</h2>
+//         <h3>ORDER CARD FOR CONNECTION OF BULK SUPPLY CONSUMER</h3>
+//         <p><strong>Order Card No:</strong> ${data.orderCardNo || data.projectNo}</p>
+//         <p><strong>Date Issued:</strong> ${data.dateIssued}</p>
+//       </div>
+//       <div class="section">
+//         <h3>Customer Details</h3>
+//         <p><strong>Project No:</strong> ${data.projectNo}</p>
+//         <p><strong>Customer Name:</strong> ${data.nameOfConsumer}</p>
+//         <p><strong>Address:</strong> ${data.addressOfSupply}</p>
+//         <p><strong>Dept ID:</strong> ${data.deptId}</p>
+//         <p><strong>Contract Demand:</strong> ${data.contactDemand} kVA</p>
+//         <p><strong>Tariff Type:</strong> ${data.tariffType}</p>
+//       </div>
+//       <div class="section">
+//         <h3>Financial Details</h3>
+//         <p><strong>Estimate Amount:</strong> Rs. ${data.estAmount}</p>
+//         <p><strong>Deposit Amount:</strong> Rs. ${data.depositAmount}</p>
+//         <p><strong>Loan Amount:</strong> Rs. ${data.loanAmount}</p>
+//         <p><strong>Loan Type:</strong> ${data.loanType}</p>
+//       </div>
+//       <div class="signature">
+//         <div class="signature-box">
+//           <div style="border-bottom: 1px solid #000; height: 20px; margin-bottom: 5px;"></div>
+//           <div>Prepared By</div>
+//         </div>
+//         <div class="signature-box">
+//           <div style="border-bottom: 1px solid #000; height: 20px; margin-bottom: 5px;"></div>
+//           <div>Checked By</div>
+//         </div>
+//         <div class="signature-box">
+//           <div style="border-bottom: 1px solid #000; height: 20px; margin-bottom: 5px;"></div>
+//           <div>Approved By</div>
+//         </div>
+//       </div>
+//     `;
+//   },
+//   // Add more templates as needed
+//   invoice: (data) => {
+//     return `<h1>Invoice Template - ${data.invoiceNo}</h1>`;
+//   }
+// };
+
+
+
+
 //this 2 code for testing wich support print with table mapping
 // components/PrintUtility/PrintUtility.js
 import { color } from "@mui/system";

@@ -21,14 +21,14 @@ export default function HeaderStats() {
   //state for Commission data
   const [commissionData, setCommissionData] = useState([]);
 
-  // NEW: Get menu data and UI state from UserContext
-  const { mainMenus, menuTasks, rightPanelOpen } = useUser();
+  // NEW: Get menu data from UserContext
+  const { mainMenus, menuTasks } = useUser();
 
   // NEW: Get commission menu tasks dynamically
   const getCommissionTasks = () => {
     // Find the commission menu (you might need to adjust the condition based on your actual menu structure)
     const commissionMenu = mainMenus.find(menu => 
-      menu.menuCode === 'CCM' || 
+      menu.menuCode === 'CCM' || "CCA" ||
       menu.displayName?.toLowerCase().includes('commission')
     );
     
@@ -62,10 +62,10 @@ export default function HeaderStats() {
     const fetchEstimatesData = async () => {
       try {
         setEstimatesLoading(true);
-       // console.log("Starting API call to fetch estimates data...");
+        console.log("Starting API call to fetch estimates data...");
 
         const response = await fetch(
-          "http://127.0.0.1:8081/SPS/api/application/all",
+          "http://127.0.0.1:8081/SPSNEW/api/application/all",
           {
             method: "GET",
             headers: {
@@ -120,10 +120,10 @@ export default function HeaderStats() {
     const fetchApplicationData = async () => {
       try {
         setLoading(true);
-       // console.log("Starting API call to fetch application data...");
+        console.log("Starting API call to fetch application data...");
 
         const response = await fetch(
-          "http://127.0.0.1:8081/SPS/api/application/all",
+          "http://127.0.0.1:8081/SPSNEW/api/application/all",
           {
             method: "GET",
             headers: {
@@ -221,21 +221,18 @@ export default function HeaderStats() {
   // Extract estimate numbers for validation
   const estimateNumbers = pendingAllocationData.map((item) => item.value);
 
-  // If a right-side panel (e.g., Pagging Schedule) is open, hide the header cards
-  if (rightPanelOpen) return null;
-
   return (
     <>
       {/* Header */}
       <div
         style={{ backgroundColor: "#b23200" }}
-        className="relative pt-12 pb-16 md:pt-24"
+        className="relative md:pt-24 pb-16 pt-12"
       >
-        <div className="w-full px-4 mx-auto md:px-10">
+        <div className="px-4 md:px-10 mx-auto w-full">
           <div>
             {/* Card stats */}
             <div className="flex flex-wrap">
-              {/* <div className="w-full px-4 pt-4 lg:w-6/12 xl:w-3/12">
+              {/* <div className="w-full lg:w-6/12 xl:w-3/12 px-4 pt-4">
                 <CardStats
                   statSubtitle={`Pending Allocation (${pendingAllocationData.length})`}
                   statIconName="far fa-chart-bar"
@@ -251,7 +248,7 @@ export default function HeaderStats() {
                   showItemList={true} // Add this prop to show the list
                 />
               </div> */}
-              {/* <div className="w-full px-4 lg:w-6/12 xl:w-3/12">
+              {/* <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
                 <CardStats
                   statSubtitle="Standard Estimates Pending Data Entry (77)"
                   statIconName="fas fa-chart-pie"
@@ -260,7 +257,7 @@ export default function HeaderStats() {
                   navigatePath="/estimation/estimate"
                 />
               </div> */}
-              {/* <div className="w-full px-4 lg:w-6/12 xl:w-3/12">
+              {/* <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
                 <CardStats
                   statSubtitle={`Application Number (${applicationNumberData.length})`}
                   statIconName="fas fa-users"
@@ -272,7 +269,7 @@ export default function HeaderStats() {
                   validNumbers={applicationNumbers}
                 />
               </div> */}
-              {/* <div className="w-full px-4 lg:w-6/12 xl:w-3/12">
+              {/* <div className="w-full lg:w-6/12 xl:w-3/12 px-4">
                 <CardStats
                   statSubtitle="Confirmed PIVII (New Format) (14)"
                   statIconName="fas fa-percent"
@@ -287,7 +284,7 @@ export default function HeaderStats() {
 
 
               {/* this is the previous commisson card */}
-              {/* <div className="w-full px-4 mt-4 lg:w-6/12 xl:w-3/12">
+              {/* <div className="w-full lg:w-6/12 xl:w-3/12 px-4 mt-4">
                 <CardStats
                   statSubtitle={`Commission (${commissionData.reduce(
                     (sum, item) => sum + item.value,
@@ -308,7 +305,7 @@ export default function HeaderStats() {
               
               {/* this for edit Commission  card */}
               {/* this is the previous edit commisson card */}
-              {/* <div className="w-full px-4 mt-4 lg:w-6/12 xl:w-3/12">
+              {/* <div className="w-full lg:w-6/12 xl:w-3/12 px-4 mt-4">
                 <CardStats
                   statSubtitle={`Edit Commission (${commissionData.reduce(
                     (sum, item) => sum + item.value,
@@ -333,7 +330,7 @@ export default function HeaderStats() {
               {/* NEW: Render commission cards dynamically based on backend tasks */}
               {/* previous working code without pathmatching */}
               {/* {commissionTasks.map((task, index) => (
-                <div key={task.activityCode} className="w-full px-4 mt-4 lg:w-6/12 xl:w-3/12">
+                <div key={task.activityCode} className="w-full lg:w-6/12 xl:w-3/12 px-4 mt-4">
                   <CardStats
                   //IN HERE YOU CAN MODIFY BACKEND DYNAMIC OUTPUT 
                   //RELATED TO FRONTEND EXPECTED UI
@@ -374,6 +371,7 @@ export default function HeaderStats() {
                   update: "/admin/commission/edit",
                   forward: "/admin/commission/forward",
                   validate:"/admin/commission/validate",
+                  verify:"/admin/commission/verify",
                   default: "/admin/commission/default"
                 };
 
@@ -393,7 +391,7 @@ export default function HeaderStats() {
                 const navigatePath = getNavigatePath(task.activityName);
 
                 return (
-                  <div key={task.activityCode} className="w-full px-4 mt-4 lg:w-6/12 xl:w-3/12">
+                  <div key={task.activityCode} className="w-full lg:w-6/12 xl:w-3/12 px-4 mt-4">
                     <CardStats
                     //IN HERE YOU CAN MODIFY BACKEND DYNAMIC OUTPUT 
                     //RELATED TO FRONTEND EXPECTED UI
