@@ -249,6 +249,9 @@
 import React, { useState, useEffect } from "react";
 
 const PivDetails = ({ estimateNo }) => {
+
+  const baseUrl = process.env.REACT_APP_API_BASE_URL;
+
   const [pivData, setPivData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
@@ -260,7 +263,7 @@ const PivDetails = ({ estimateNo }) => {
         setError(null);
 
         const response = await fetch(
-          `http://localhost:8088/SPS/api/piv-details/by-estimate?estimateNo=${estimateNo}`,
+          `${baseUrl}/api/piv-details/by-estimate?estimateNo=${estimateNo}`,
           {
             method: "GET",
             headers: {

@@ -17,13 +17,9 @@ export default function CardPieChart() {
     console.log("Starting fetch...");
 
     fetch("http://127.0.0.1:8088/SPS/api/spstdesthmt/status-counts", {
-      method: "GET",
       headers: {
-        "Content-Type": "application/json",
-        Authorization: "Basic " + btoa("user:admin123"),
-      },
       credentials: "include",
-    })
+    }
       .then(async (response) => {
         console.log("Fetch response status:", response.status);
 

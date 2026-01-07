@@ -300,19 +300,7 @@ function EstimateForm() {
       normDefault: formData.normDefault || false,
       status: formData.status ? parseInt(formData.status) : 0,
       logId: formData.logId ? parseInt(formData.logId) : null,
-      // Prefer the logged-in user id from sessionStorage/localStorage when available
-      entBy:
-        formData.entBy ||
-        sessionStorage.getItem("userId") ||
-        (() => {
-          try {
-            const u = JSON.parse(sessionStorage.getItem("user") || localStorage.getItem("user") || "null");
-            return u && u.userId ? u.userId : null;
-          } catch (e) {
-            return null;
-          }
-        })() ||
-        null,
+      entBy: formData.entBy || null,
       entDt: formData.entDt || null,
       confBy: formData.confBy || null,
       confDt: formData.confDt || null,

@@ -68,7 +68,7 @@
   align-items: center;
   padding-left: 1.5rem;
   padding-right: 1.5rem;
-  margin-bottom: 0.5rem;
+  margin-bottom: 1rem;
 }
 
 .filters-left {
@@ -215,6 +215,14 @@
   background-color: #991b1b;
 }
 
+/* this is for accept button  */
+.view-button.accept {
+  background-color: #15803d; /* green */
+}
+
+.view-button.accept:hover {
+  background-color: #166534; /* darker green */
+}
 .no-data {
   text-align: center;
   padding-top: 1.5rem;

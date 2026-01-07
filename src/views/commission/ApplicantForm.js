@@ -2,6 +2,9 @@
 import React, { useState, useEffect } from "react";
 
 const ApplicantForm = ({ estimateNo }) => {
+
+  const baseUrl = process.env.REACT_APP_API_BASE_URL;
+
   const [formData, setFormData] = useState({
     nicPassportBusiness: "",
     fullNameRequestedBy: "",
@@ -42,7 +45,7 @@ const ApplicantForm = ({ estimateNo }) => {
 
         // Build the URL with query parameter
         // Use the estimateNo directly without encoding for the API call
-        const url = `http://127.0.0.1:8088/SPS/api/applicants/by-estimate?estimateNo=${estimateNo}`;
+        const url = `${baseUrl}/api/applicants/by-estimate?estimateNo=${estimateNo}`;
 
         console.log("Fetching applicant data for estimate:", estimateNo);
         console.log("Request URL:", url);

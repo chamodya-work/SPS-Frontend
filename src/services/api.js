@@ -47,34 +47,3 @@ export const fetchEstimateById = async (estimateNo) => {
         throw error;
     }
 };
-
-// Client-side Basic Auth helpers
-const getClientBasicHeader = () => {
-    // Prefer explicit CRA env vars, then localStorage (developer convenience)
-    const user = process.env.REACT_APP_BASIC_AUTH_USER || localStorage.getItem('BASIC_AUTH_USER');
-    const pass = process.env.REACT_APP_BASIC_AUTH_PASSWORD || localStorage.getItem('BASIC_AUTH_PASSWORD');
-    if (user && pass) return 'Basic ' + btoa(`${user}:${pass}`);
-    return null;
-};
-
-export function authFetch(url, options = {}) {
-    const headers = Object.assign({}, options.headers || {});
-    const basic = getClientBasicHeader();
-    if (basic) headers['Authorization'] = basic;
-    // default to json content-type unless a FormData body
-    if (!headers['Content-Type'] && !(options.body instanceof FormData)) {
-        headers['Content-Type'] = 'application/json';
-    }
-    const opts = Object.assign({}, options, { headers, credentials: 'include' });
-    return fetch(url, opts);
-}
-
-export function setBasicAuthCredentials(user, pass) {
-    try {
-        localStorage.setItem('BASIC_AUTH_USER', user);
-        localStorage.setItem('BASIC_AUTH_PASSWORD', pass);
-        return true;
-    } catch (e) {
-        return false;
-    }
-}
