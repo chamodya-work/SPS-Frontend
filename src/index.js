@@ -38,11 +38,20 @@ import CommissionLayout from "layouts/Commission";
 import CommissionEditLayout from "layouts/CommissionEdit";
 import CommissionDetails from "views/commission/CommissionDetails";
 import CommissionDetailsEdit from "views/commission/CommissionDetailsEdit";
-import PaggingSchedule from "views/PaggingSchedule";
+
+import CommissionDetailsValidate from "views/commission/CommissionDetailsValidate";
+import CommissionDetailsVerify from "views/commission/CommissionDetailsVerify"
 
 // import OrderCardPopup from "components/Tabs/OrderCardPopup";
 import OrderPopupNew from "components/Tabs/OrderCardPopupNew";
 import OrderCardPopupNew from "components/Tabs/OrderCardPopupNew";
+import CommissionForwardLayout from "layouts/CommissionForward";
+import CommissionValidateLayout from "layouts/CommissionValidate";
+import CommissionVerifyLayout from "layouts/CommissionVerify"
+import CommissionDetailsForward from "views/commission/CommissionDetailsForward";
+
+//this is snow animation
+import Snowfall from "components/SnowAnimation/Snowfall";
 
 
 
@@ -52,13 +61,17 @@ ReactDOM.render(
     <UserProvider>
 
       <>
+      {/* 🌨️ Global Snow Effect */}
+      {/* <Snowfall /> */}
+
           <SessionCheck />
           <Switch>
             {/* add routes with layouts */}
 
-            <Route path="/admin/commission/edit" component={CommissionEditLayout} />
-            <Route path="/admin/commission" component={CommissionLayout} />
-
+            {/* this is for testing orderpopu.js */}
+            <Route path="/OrderCardPopupNew"  component={OrderCardPopupNew} />
+            
+            {/* Commission Routes - Order matters! More specific first */}
 
             <Route path="/admin/commission/verify" component={CommissionVerifyLayout} />
 
@@ -69,7 +82,7 @@ ReactDOM.render(
           
             <Route path="/admin/commission/edit" component={CommissionEditLayout} />
             <Route path="/admin/commission" component={CommissionLayout} />
-          
+            
 
             <Route path="/admin" component={Admin} />
             <Route path="/auth" component={Auth} />
@@ -81,9 +94,17 @@ ReactDOM.render(
             <Route path="/estimate" component={Estimate} />
             <Route path="/jobrevision" component={ReviceJob} />
             <Route path="/schedule2" component={Schedule2Layout} />
-            <Route path="/paging-schedule" component={PaggingSchedule} />
             <Route path="/admin/commission/:id" component={CommissionDetails} /> // this is for commission details routes
             <Route path="/admin/commission/edit/:id" component={CommissionDetailsEdit} /> // this is for edit commission details routes
+
+            <Route path="/admin/commission/verify/:id" component={CommissionDetailsVerify} /> // this is for verify commission details routes
+
+            <Route path="/admin/commission/validate/:id" component={CommissionDetailsValidate} /> // this is for edit commission details routes
+
+
+            <Route path="/admin/commission/forward/:id" component={CommissionDetailsForward}/> //this is for forward Commission details routes
+
+
 
             {/* add routes without layouts */}
             <Route path="/piv" component={PIV} />
