@@ -84,7 +84,7 @@ export default function CardPieChart() {
         console.error("Fetch error:", error);
         setChartData(null);
         setLoading(false);
-      });
+      })
   }, []);
 
   if (loading) return <div className="p-4">Loading chart...</div>;
@@ -98,6 +98,4 @@ export default function CardPieChart() {
     </div>
   );
 }
-
-
-
+  )}
