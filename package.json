@@ -41,7 +41,7 @@
   "scripts": {
     "start": "craco start",
     "build": "craco build",
-    "deploy": "npm run build && xcopy \"F:\\Electronics and computer science(Bsc hons elnc comp sc)\\semester 08\\CEB internship\\internship 2 updated project from isuranga\\project\\frontend\\CEB_SPS_FRONTEND\\notus-react-main\\build\\*\" \"C:\\nginx-1.28.0\\html\\\" /E /H /C /I /Y && (cd /d \"C:\\nginx-1.28.0\" & nginx.exe -s quit >nul 2>&1 & start \"\" nginx.exe)",
+    "deploy": "npm run build && xcopy \"F:\\charuka frontend and me frontend\\notus-react-main-chamo\\build\\*\" \"C:\\nginx-1.28.0\\html\\\" /E /H /C /I /Y && (cd /d \"C:\\nginx-1.28.0\" & nginx.exe -s quit >nul 2>&1 & start \"\" nginx.exe)",
     "test": "craco test",
     "eject": "react-scripts eject",
     "install:clean": "rm -rf node_modules/ && rm -rf package-lock.json && npm install && npm run build:tailwind && npm start",
