@@ -968,6 +968,11 @@ export default function Sidebar() {
       if (menuName.includes('new estimate service') && taskName === 'add') {
         return '/admin/service-estimation/details';
       }
+
+      // for pegging schedule
+      if (menuName.includes('pegging schedule') ) {
+        return '/admin/peggingShedule';
+      }
     
       // NEW: Updated Commission Management Routes with structured mapping
       if (menuName.includes('new connection management')) {
@@ -1223,7 +1228,7 @@ export default function Sidebar() {
                                       ? { color: "#b23200" }
                                       : {}
                                   }
-                                  to={getTaskPath(menu, task)}
+                                  to={getTaskPath(menu, task)} //this is used to link sub menus when clicking
                                   onClick={() => setCollapseShow("hidden")}
                                 >
                                   <i
