@@ -42,8 +42,10 @@ import CommissionDetailsEdit from "views/commission/CommissionDetailsEdit";
 import CommissionDetailsValidate from "views/commission/CommissionDetailsValidate";
 import CommissionDetailsVerify from "views/commission/CommissionDetailsVerify"
 
+import PeggingSheduleLayout from "layouts/PeggingShedule";
+
 // import OrderCardPopup from "components/Tabs/OrderCardPopup";
-import OrderPopupNew from "components/Tabs/OrderCardPopupNew";
+// import OrderPopupNew from "components/Tabs/OrderCardPopupNew";
 import OrderCardPopupNew from "components/Tabs/OrderCardPopupNew";
 import CommissionForwardLayout from "layouts/CommissionForward";
 import CommissionValidateLayout from "layouts/CommissionValidate";
@@ -83,6 +85,8 @@ ReactDOM.render(
             <Route path="/admin/commission/edit" component={CommissionEditLayout} />
             <Route path="/admin/commission" component={CommissionLayout} />
             
+            {/* this is for pagging path */}
+            <Route path="/admin/peggingShedule" component={PeggingSheduleLayout} />
 
             <Route path="/admin" component={Admin} />
             <Route path="/auth" component={Auth} />

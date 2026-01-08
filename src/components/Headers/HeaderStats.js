@@ -28,7 +28,7 @@ export default function HeaderStats() {
   const getCommissionTasks = () => {
     // Find the commission menu (you might need to adjust the condition based on your actual menu structure)
     const commissionMenu = mainMenus.find(menu => 
-      menu.menuCode === 'CCM' || "CCA" ||
+      menu.menuCode === 'CCM' || "CCA" || "CCC" || 
       menu.displayName?.toLowerCase().includes('commission')
     );
     
@@ -39,6 +39,8 @@ export default function HeaderStats() {
   };
 
   const commissionTasks = getCommissionTasks();
+
+  console.log("this is commissionTasks:", commissionTasks );
 
 
 
@@ -372,6 +374,7 @@ export default function HeaderStats() {
                   forward: "/admin/commission/forward",
                   validate:"/admin/commission/validate",
                   verify:"/admin/commission/verify",
+                  pegging:"/admin/peggingShedule",
                   default: "/admin/commission/default"
                 };
 
