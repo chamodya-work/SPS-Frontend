@@ -1,8 +1,19 @@
 import React from "react";
+
+import { Link, useLocation, useHistory } from "react-router-dom";
 import { createPopper } from "@popperjs/core";
 import profileimg from "../../assets/img/profile.jpeg";
 
+import { useUser } from "context/UserContext";
+
+
 const UserDropdown = () => {
+
+  const history=useHistory();
+
+  //this is for implement Logout fn using userContext
+  const { logout } = useUser();
+
   // dropdown props
   const [dropdownPopoverShow, setDropdownPopoverShow] = React.useState(false);
   const btnDropdownRef = React.createRef();
@@ -17,29 +28,40 @@ const UserDropdown = () => {
     setDropdownPopoverShow(false);
   };
 
-  const handleLogout = async () => {
+  const handleLogout = async (e) => {
     setDropdownPopoverShow(false); // Close the dropdown
-    try {
-      const response = await fetch("http://localhost:8081/api/v1/logout", {
-        method: "POST",
-        credentials: "include", // Include cookies in the request
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: "Basic " + btoa("user:admin123"),
-        },
-      });
-  
-      if (response.ok) {
-        // Redirect to the login page
-        window.location.href = "/auth/login";
-      } else {
-        console.error("Logout failed:", response.statusText);
-        alert("Logout failed. Please try again.");
-      }
-    } catch (error) {
-      console.error("Error during logout:", error);
-      alert("An error occurred during logout. Please try again.");
+    e.preventDefault(); // Prevent default link behavior
+    // Show confirmation dialog
+    if (window.confirm("Are you sure you want to logout?")) {
+      logout();
+      history.push("/auth"); // Redirect to login page
     }
+
+
+
+
+
+    // try {
+    //   const response = await fetch("http://localhost:8081/api/v1/logout", {
+    //     method: "POST",
+    //     credentials: "include", // Include cookies in the request
+    //     headers: {
+    //       "Content-Type": "application/json",
+    //       Authorization: "Basic " + btoa("user:admin123"),
+    //     },
+    //   });
+  
+    //   if (response.ok) {
+    //     // Redirect to the login page
+    //     window.location.href = "/auth/login";
+    //   } else {
+    //     console.error("Logout failed:", response.statusText);
+    //     alert("Logout failed. Please try again.");
+    //   }
+    // } catch (error) {
+    //   console.error("Error during logout:", error);
+    //   alert("An error occurred during logout. Please try again.");
+    // }
   };
 
   return (
@@ -95,13 +117,13 @@ const UserDropdown = () => {
           }
           onClick={(e) => e.preventDefault()}
         >
-          Something else here
+          Something else here 
         </a>
         <div className="h-0 my-2 border border-solid border-blueGray-100" />
         <a
-          href="#pablo"
+          // href="#pablo"
           className={
-            "text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
+            "cursor-pointer text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
           }
           onClick={handleLogout}
         >
