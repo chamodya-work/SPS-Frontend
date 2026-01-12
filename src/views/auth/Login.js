@@ -301,9 +301,10 @@ export default function Login() {
         console.log("Login successful", data);
       } else {
         // Handle login error
-        toast.error(
-          "If you have not account, register first. If you registered verify your email address. Otherwise check your email address and password"
-        );
+        // toast.error(
+        //   "If you have not account, register first. If you registered verify your email address. Otherwise check your email address and password"
+        // );
+        toast.error("Incorrect User ID or Password. Please try again.");
         console.error("Login failed", data);
       }
     } catch (error) {
