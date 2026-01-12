@@ -251,6 +251,11 @@ export default function Login() {
           userName: data.userName
         };
 
+        // ADD THESE 3 LINES:
+        const currentTime = Date.now().toString();
+        sessionStorage.setItem("sessionStart", currentTime);
+        sessionStorage.setItem("lastActivity", currentTime);
+
         // Store in both sessionStorage and localStorage for UserContext compatibility
         sessionStorage.setItem("user", JSON.stringify(userData));
         localStorage.setItem("user", JSON.stringify(userData));
