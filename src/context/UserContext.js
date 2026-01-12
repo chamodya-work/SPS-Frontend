@@ -166,10 +166,31 @@ export const UserProvider = ({ children }) => {
     }
   };
 
+      // ADD THIS FUNCTION:
+    const isSessionValid = () => {
+      const userData = localStorage.getItem('user') || sessionStorage.getItem('user');
+      const sessionStart = sessionStorage.getItem('sessionStart');
+      
+      if (!userData || !sessionStart) return false;
+      
+      const sessionAge = Date.now() - parseInt(sessionStart);
+      return sessionAge < (10 * 60 * 1000); // 10 minutes
+    };
+
+    // ADD THIS FUNCTION:
+    const getRemainingSessionTime = () => {
+      const sessionStart = sessionStorage.getItem('sessionStart');
+      if (!sessionStart) return 0;
+      
+      const sessionAge = Date.now() - parseInt(sessionStart);
+      const remaining = (10 * 60 * 1000) - sessionAge;
+      return Math.max(0, remaining);
+    };
+
   return (
       <UserContext.Provider value={{
         userRole, setUserRole, mainMenus, setMainMenus, menusLoading, logout,
-        menuTasks, fetchTasksForMenu,refreshMenus
+        menuTasks, fetchTasksForMenu,refreshMenus,isSessionValid,getRemainingSessionTime
       }}>
         {children}
       </UserContext.Provider>
