@@ -138,17 +138,29 @@ export const UserProvider = ({ children }) => {
     refreshMenus();
   },[]);
 
-  const logout = () => {
+  const logout = (manual = true) => {
     setUserRole(null);
     setMainMenus([]);
+    setMenuTasks({});
+    
+    if (window.toast && window.toast.dismiss) {
+      window.toast.dismiss();
+    }
+    
     localStorage.removeItem('user');
-    sessionStorage.removeItem('user');
-    // Also clear individual session items for backward compatibility
-    sessionStorage.removeItem("userId");
-    sessionStorage.removeItem("userLevel");
-    sessionStorage.removeItem("deptId");
-    sessionStorage.removeItem("userName");
-    sessionStorage.removeItem("sessionStart");
+    sessionStorage.clear();
+    
+    ['userId', 'userLevel', 'deptId', 'userName', 'sessionStart', 'lastActivity'].forEach(
+      key => localStorage.removeItem(key)
+    );
+    
+    if (manual) {
+      if (window.toast && window.toast.info) {
+        window.toast.info("You have been logged out");
+      }
+    }
+    
+    window.location.href = "/auth/login";
   };
 
   // Fetch tasks for a menu
