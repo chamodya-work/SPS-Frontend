@@ -116,8 +116,8 @@ const SessionCheck = () => {
     const lastActivity = sessionStorage.getItem("lastActivity") || Date.now().toString();
 
     const currentTime = Date.now();
-    const tenMinutes = 10 * 60 * 1000;
-    const fifteenMinutes = 15 * 60 * 1000;
+    const tenMinutes = 10 * 60 * 1000;      // 10 minutes regular session timeOut (600,000 ms)
+    const fifteenMinutes = 15 * 60 * 1000;  // 15 minutes inactivity (900,000 ms)
 
     if (!user || !user.userId || !sessionStart) {
       handleSessionExpiration("Session data missing");
@@ -182,7 +182,7 @@ const SessionCheck = () => {
     
     updateLastActivity();
     
-    const interval = setInterval(checkSession, 30 * 1000);
+    const interval = setInterval(checkSession, 60 * 1000); //Then keep checking every 1 minute
     
     return () => {
       clearInterval(interval);
