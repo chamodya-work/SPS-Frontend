@@ -380,7 +380,7 @@ export default function Commission({ color }) {
                               estimateNo={c.estimateNo} //parsing estimate number as prop to ordercard
                               projectNumber={c.projectNo} //parsing project number as prop to ordercard 
                               deptId={c.deptId} // parsing deptId as a prop to orderCard
-                              
+                              status={c.statusCode} //parsing status to ordercard
                             />
                           </td>
                         </tr>

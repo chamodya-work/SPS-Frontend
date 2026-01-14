@@ -3,7 +3,7 @@ import { toast } from "react-toastify";
 
 const MANAGER_FIELD_STYLE = "bg-red-100";
 
-const OrderCardPopupNew = ({ isOpen, onClose, estimateNo,projectNumber,deptId }) => {
+const OrderCardPopupNew = ({ isOpen, onClose, estimateNo,projectNumber,deptId,status }) => {
 
  
   const [formData, setFormData] = useState({
@@ -721,12 +721,76 @@ const OrderCardPopupNew = ({ isOpen, onClose, estimateNo,projectNumber,deptId })
         throw new Error("Failed to update estimate status");
       }
       console.log("Status updated successfully for estimate:", estimateNo);
+
+      console.log("this is new state",status)
+
+      // In the updateEstimateStatus function, replace the approval log call with:
+      await createApprovalLog(estimateNo, deptId, status, 10); // From status 4 to status 10
+      
       return true;
     } catch (error) {
       console.error("Error updating estimate status:", error);
       throw error; // Re-throw to handle in the main function
     }
   };
+
+      // Alternative version if you have access to both statuses
+    const createApprovalLog = async (referenceNo, deptId, fromStatus, toStatus) => {
+      try {
+        // Get user details from session storage
+        const userId = sessionStorage.getItem("userId") || "SYSTEM";
+        const userLevel = sessionStorage.getItem("userLevel") || "ES";
+        
+        // Format status to 2 digits (pad with leading zero)
+
+        //icomment this because i supply the value for fromStatus
+        // const formattedFromStatus = fromStatus.toString().padStart(2, '0');
+        const formattedToStatus = toStatus.toString().padStart(2, '0');
+        
+        console.log(`Creating approval log: ${referenceNo} status ${fromStatus} -> ${formattedToStatus}`);
+        
+        // Prepare approval log data
+        const approvalLogData = {
+          referenceNo: estimateNo.trim(),
+          deptId: deptId.trim(),
+          approvalType: "EST_APRV", // Order card approval
+          approvedLevel: userLevel,
+          fromStatus: fromStatus,
+          toStatus: formattedToStatus,
+          approvedBy: userId,
+          reason: "Order card created and status updated to 10",
+          standardCost: 0, // You can pass actual values if available
+          detailedCost: formData.estAmount || 0, // Using estimate amount as detailed cost
+          systemBy: "SPS"
+        };
+
+        // Call the approval log API
+        const response = await fetch(
+          `${baseUrl}/api/approval-log/create`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Basic " + btoa("user:admin123"),
+            },
+            body: JSON.stringify(approvalLogData),
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to create approval log");
+        }
+
+        const approvalResponse = await response.json();
+        console.log("Approval log created:", approvalResponse);
+        return approvalResponse;
+        
+      } catch (error) {
+        console.error("Error creating approval log:", error);
+        toast.warning("Approval log creation failed");
+        return null;
+      }
+    };
 
 
 
