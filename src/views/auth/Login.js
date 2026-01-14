@@ -392,7 +392,7 @@ export default function Login() {
             {/* this is for adding SPS version number           */}
             <div className="text-center mt-0 mb-0">
               <span className="text-blueGray-400 text-[10px]">
-                CEB SPS_NEW v1.0.1
+                CEB SPS_NEW v1.0.2
               </span>
             </div>
 
