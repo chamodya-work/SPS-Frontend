@@ -173,7 +173,7 @@ export default function CardStats({
         <div className="flex-auto p-4">
           <div className="flex flex-wrap">
             <div className="relative w-full pr-4 max-w-full flex-grow flex-1">
-              <h5 className="text-blueGray-400 uppercase font-bold text-xs">
+            <h5 className="text-blueGray-400  font-bold text-xs">
                 {statSubtitle}
               </h5>
             </div>
