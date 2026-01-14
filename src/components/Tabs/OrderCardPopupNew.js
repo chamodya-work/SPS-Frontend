@@ -738,29 +738,29 @@ const OrderCardPopupNew = ({ isOpen, onClose, estimateNo,projectNumber,deptId,st
     const createApprovalLog = async (referenceNo, deptId, fromStatus, toStatus) => {
       try {
         // Get user details from session storage
-        const userId = sessionStorage.getItem("userId") || "SYSTEM";
-        const userLevel = sessionStorage.getItem("userLevel") || "ES";
+        const userId = sessionStorage.getItem("userId") || "";
+        const userLevel = sessionStorage.getItem("userLevel") || "";
         
         // Format status to 2 digits (pad with leading zero)
 
         //icomment this because i supply the value for fromStatus
         // const formattedFromStatus = fromStatus.toString().padStart(2, '0');
-        const formattedToStatus = toStatus.toString().padStart(2, '0');
+        // const formattedToStatus = toStatus.toString().padStart(2, '0');
         
-        console.log(`Creating approval log: ${referenceNo} status ${fromStatus} -> ${formattedToStatus}`);
+        console.log(`Creating approval log: ${referenceNo} status ${fromStatus} -> ${toStatus}`);
         
         // Prepare approval log data
         const approvalLogData = {
           referenceNo: estimateNo.trim(),
           deptId: deptId.trim(),
-          approvalType: "EST_APRV", // Order card approval
+          approvalType: "ORD_CRT", // Order card approval "ORD_CRT" Mean ordercard created
           approvedLevel: userLevel,
           fromStatus: fromStatus,
-          toStatus: formattedToStatus,
+          toStatus: toStatus,
           approvedBy: userId,
-          reason: "Order card created and status updated to 10",
-          standardCost: 0, // You can pass actual values if available
-          detailedCost: formData.estAmount || 0, // Using estimate amount as detailed cost
+          reason: "Order card created",
+          // standardCost: 0, // You can pass actual values if available
+          // detailedCost: formData.estAmount || 0, // Using estimate amount as detailed cost
           systemBy: "SPS"
         };
 
