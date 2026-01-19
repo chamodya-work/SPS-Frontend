@@ -3,7 +3,12 @@ import { toast } from "react-toastify";
 
 const MANAGER_FIELD_STYLE = "bg-red-100";
 
+
+
 const OrderCardPopupNew = ({ isOpen, onClose, estimateNo,projectNumber,deptId,status }) => {
+
+
+const [userLevel, setUserLevel] = useState(null); // Add this line to store user level
 
  
   const [formData, setFormData] = useState({
@@ -224,6 +229,11 @@ const OrderCardPopupNew = ({ isOpen, onClose, estimateNo,projectNumber,deptId,st
   const fetchAllData = async () => {
     try {
       setLoading(true);
+
+      const userLevel = sessionStorage.getItem("userLevel"); //for get the user Level
+      // Store user level in state
+      setUserLevel(userLevel);
+
 
     // Set current date automatically in CUSTOMER & JOB DETAILS
     const currentDate = new Date().toISOString().split('T')[0];
@@ -703,11 +713,61 @@ const OrderCardPopupNew = ({ isOpen, onClose, estimateNo,projectNumber,deptId,st
       }
     }
   };
+
+  // //this for update status as 10 pcesthmt table when submitting form
+  // const updateEstimateStatus = async (estimateNo, deptId) => {
+
+  //   try {
+  //     const response = await fetch(
+  //       `${baseUrl}/api/pcesthmt/update-status-to-10?estimateNo=${encodeURIComponent(estimateNo)}&deptId=${encodeURIComponent(deptId)}`,
+  //       {
+  //         method: "PUT",
+  //         headers: {
+  //           "Content-Type": "application/json",
+  //           Authorization: "Basic " + btoa("user:admin123"),
+  //         },
+  //       }
+  //     );
+  
+  //     if (!response.ok) {
+  //       throw new Error("Failed to update estimate status");
+  //     }
+  //     console.log("Status updated successfully for estimate:", estimateNo);
+
+  //     console.log("this is new state",status)
+
+  //     // In the updateEstimateStatus function, replace the approval log call with:
+  //     await createApprovalLog(estimateNo, deptId, status, 10); // From status 4 to status 10
+      
+  //     return true;
+  //   } catch (error) {
+  //     console.error("Error updating estimate status:", error);
+  //     throw error; // Re-throw to handle in the main function
+  //   }
+  // };
+
+
+  //new code for updateEstimateStatus with checking userLevels
   //this for update status as 10 pcesthmt table when submitting form
   const updateEstimateStatus = async (estimateNo, deptId) => {
     try {
+      let endpoint = "";
+      let newStatus = 0;
+
+      // Check user level and set appropriate endpoint and status
+      if (userLevel?.toLowerCase() === 'deo') {
+        endpoint = `${baseUrl}/api/pcesthmt/update-status-to-10`;
+        newStatus = 10;
+      } else if (userLevel?.toLowerCase() === 'ee') {
+        endpoint = `${baseUrl}/api/pcesthmt/update-status-to-11`;
+        newStatus = 11;
+      } else {
+        throw new Error("Invalid user level for status update");
+      }
+
+      // Make the API call with the determined endpoint
       const response = await fetch(
-        `${baseUrl}/api/pcesthmt/update-status-to-10?estimateNo=${encodeURIComponent(estimateNo)}&deptId=${encodeURIComponent(deptId)}`,
+        `${endpoint}?estimateNo=${encodeURIComponent(estimateNo)}&deptId=${encodeURIComponent(deptId)}`,
         {
           method: "PUT",
           headers: {
@@ -716,16 +776,14 @@ const OrderCardPopupNew = ({ isOpen, onClose, estimateNo,projectNumber,deptId,st
           },
         }
       );
-  
+
       if (!response.ok) {
         throw new Error("Failed to update estimate status");
       }
       console.log("Status updated successfully for estimate:", estimateNo);
 
-      console.log("this is new state",status)
-
-      // In the updateEstimateStatus function, replace the approval log call with:
-      await createApprovalLog(estimateNo, deptId, status, 10); // From status 4 to status 10
+      // Create approval log with the appropriate status
+      await createApprovalLog(estimateNo, deptId, status, newStatus); // From status 4 to new status (10 or 11)
       
       return true;
     } catch (error) {
