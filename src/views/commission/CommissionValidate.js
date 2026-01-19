@@ -661,8 +661,15 @@ export default function CommissionValidate({ color }) {
       if (userLevel?.toLowerCase() === 'ee') {
         if (userDeptType === 'AREA') {
           await updateEstimateStatus14(estimateNo, deptId);
+
+          // Create approval log with the appropriate status
+          await createApprovalLog(estimateNo, deptId, 13, 14); // From status 13 to new status (14)
+
         } else if (userDeptType === 'PROVINCIAL') {
           await updateEstimateStatus12(estimateNo, deptId);
+
+          // Create approval log with the appropriate status
+          await createApprovalLog(estimateNo, deptId, 11, 12); // From status 11 to new status (12)
         } else {
           // Fallback or error handling
           console.error("Unknown department type:", userDeptType);
@@ -686,8 +693,16 @@ export default function CommissionValidate({ color }) {
       if (userLevel?.toLowerCase() === 'ee') {
         if (userDeptType === 'AREA') {
           await updateEstimateStatus12(estimateNo, deptId);
+
+           // Create approval log with the appropriate status
+           await createApprovalLog(estimateNo, deptId, 13, 12); // From status 13 to new status (12)
+
         } else if (userDeptType === 'PROVINCIAL') {
           await updateEstimateStatus10(estimateNo, deptId);
+
+           // Create approval log with the appropriate status
+          await createApprovalLog(estimateNo, deptId, 11, 10); // From status 11 to new status (10)
+
         } else {
           // Fallback or error handling
           console.error("Unknown department type:", userDeptType);
@@ -983,6 +998,67 @@ export default function CommissionValidate({ color }) {
       throw error; // Re-throw to handle in the main function
     }
   };
+
+    // this fn for update logs when forward order card
+    const createApprovalLog = async (referenceNo, deptId, fromStatus, toStatus) => {
+      try {
+        // Get user details from session storage
+        const userId = sessionStorage.getItem("userId") || "";
+        const userLevel = sessionStorage.getItem("userLevel") || "";
+        
+        // Format status to 2 digits (pad with leading zero)
+
+        //icomment this because i supply the value for fromStatus
+        // const formattedFromStatus = fromStatus.toString().padStart(2, '0');
+        // const formattedToStatus = toStatus.toString().padStart(2, '0');
+        
+        console.log(`Creating approval log: ${referenceNo} status ${fromStatus} -> ${toStatus}`);
+        
+        // Prepare approval log data
+        const approvalLogData = {
+          referenceNo: referenceNo.trim(),
+          deptId: deptId.trim(),
+          // approvalType: "ORD_VLDT", // Order card approval "ORD_VLDT" Mean ordercard Validated
+          approvalType: (fromStatus<toStatus) ? "ORD_VLDT" : "ORD_RJCT",
+          approvedLevel: userLevel,
+          fromStatus: fromStatus,
+          toStatus: toStatus,
+          approvedBy: userId,
+          reason:  (fromStatus<toStatus) ? "Order card Validated" : "Order card Rejected",
+          // standardCost: 0, // You can pass actual values if available
+          // detailedCost: formData.estAmount || 0, // Using estimate amount as detailed cost
+          systemBy: "SPS"
+        };
+
+        // Call the approval log API
+        const response = await fetch(
+          `${baseUrl}/api/approval-log/create`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Basic " + btoa("user:admin123"),
+            },
+            body: JSON.stringify(approvalLogData),
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to create approval log");
+        }
+
+        const approvalResponse = await response.json();
+        console.log("Approval log created:", approvalResponse);
+        return approvalResponse;
+        
+      } catch (error) {
+        console.error("Error creating approval log:", error);
+        toast.warning("Approval log creation failed");
+        return null;
+      }
+    };
+
+  
 
   
 
