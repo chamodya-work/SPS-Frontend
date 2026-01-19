@@ -809,7 +809,7 @@ const [userLevel, setUserLevel] = useState(null); // Add this line to store user
         
         // Prepare approval log data
         const approvalLogData = {
-          referenceNo: estimateNo.trim(),
+          referenceNo: referenceNo.trim(),
           deptId: deptId.trim(),
           approvalType: "ORD_CRT", // Order card approval "ORD_CRT" Mean ordercard created
           approvedLevel: userLevel,
