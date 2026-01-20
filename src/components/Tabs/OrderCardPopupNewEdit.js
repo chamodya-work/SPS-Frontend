@@ -1904,7 +1904,7 @@ const OrderCardPopupNew = ({ isOpen, onClose, estimateNo, projectNumber, deptId,
       if (formData.customerCategory && formData.mtrsetType) {
         try {
           const response = await fetch(
-            `http://localhost:8088/SPSNEW/api/mtrset/mtr-types?cusCat=${formData.customerCategory}&mtrsetType=${parseInt(formData.mtrsetType)}`
+            `${baseUrl}/api/mtrset/mtr-types?cusCat=${formData.customerCategory}&mtrsetType=${parseInt(formData.mtrsetType)}`
           );
           if (response.ok) {
             const data = await response.json();
