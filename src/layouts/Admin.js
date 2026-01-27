@@ -114,8 +114,8 @@ export default function Admin() {
         
         <BarChartCard />
         
-        {/* <CardBar />
-        <CardBarChart /> */}
+        {/* <CardBar /> */}
+        {/* <CardBarChart /> */}
         {/* <CardEstimatePage1 /> */}
         {/* <CardEstimatePage2 /> */}
         {/* <CardEstimatePage3 />
