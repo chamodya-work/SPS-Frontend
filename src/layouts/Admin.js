@@ -112,7 +112,7 @@ export default function Admin() {
         <HeaderStats />
 
         
-        <BarChartCard />
+        {/* <BarChartCard /> */}
         
         {/* <CardBar /> */}
         {/* <CardBarChart /> */}

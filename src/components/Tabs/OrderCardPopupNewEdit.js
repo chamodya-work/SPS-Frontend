@@ -2094,42 +2094,120 @@ const OrderCardPopupNew = ({ isOpen, onClose, estimateNo, projectNumber, deptId,
         throw new Error("Failed to update order card");
       }
 
-      // Prepare updated meter details by merging form/table changes into fullMeterDetails
-      const updatedMeterDetails = fullMeterDetails.map((detail, index) => ({
-        ...detail,
-        mtrNbr: formData.meterNo,
-        brCode: formData.brCode,
-        setType: formData.mtrsetType ? parseFloat(formData.mtrsetType) : detail.setType,
-        prsntRdn: tableData[index]?.test1 ? parseFloat(tableData[index].test1) : detail.prsntRdn,
-        mtrFactor: tableData[index]?.test2 || detail.mtrFactor,
-        ctRatio: tableData[index]?.test3 || detail.ctRatio,
-        mtrRatio: tableData[index]?.test4 || detail.mtrRatio,
-        mtrOrder: tableData[index]?.test5 ? parseFloat(tableData[index].test5) : detail.mtrOrder,
-        noOfPhases: formData.numberOfPhase,
-        effctDate: formData.effctDate ? new Date(formData.effctDate).toISOString() : detail.effctDate,
-        areaCd: formData.areaCode,
-        dpCode: formData.depoCode,
-        noMtrSets: mtrTypes.length,
-        editedUserId: "SYSTEM",
-        // Set accNbr if not present
-        accNbr: detail.accNbr || String(index + 1),
-      }));
+      // below previous code commented because we have to modify updatade meter detail logic 
+      //because  endpoint only support for PUT
 
-      // Update meter details batch via PUT
-      if (updatedMeterDetails.length > 0) {
-        const meterDetailsResponse = await fetch(`${baseUrl}/api/meter-details/batch`, {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Basic " + btoa("user:admin123"),
-          },
-          body: JSON.stringify(updatedMeterDetails),
-        });
+      // // Prepare updated meter details by merging form/table changes into fullMeterDetails
+      // const updatedMeterDetails = fullMeterDetails.map((detail, index) => ({
+      //   ...detail,
+      //   mtrNbr: formData.meterNo,
+      //   brCode: formData.brCode,
+      //   setType: formData.mtrsetType ? parseFloat(formData.mtrsetType) : detail.setType,
+      //   prsntRdn: tableData[index]?.test1 ? parseFloat(tableData[index].test1) : detail.prsntRdn,
+      //   mtrFactor: tableData[index]?.test2 || detail.mtrFactor,
+      //   ctRatio: tableData[index]?.test3 || detail.ctRatio,
+      //   mtrRatio: tableData[index]?.test4 || detail.mtrRatio,
+      //   mtrOrder: tableData[index]?.test5 ? parseFloat(tableData[index].test5) : detail.mtrOrder,
+      //   noOfPhases: formData.numberOfPhase,
+      //   effctDate: formData.effctDate ? new Date(formData.effctDate).toISOString() : detail.effctDate,
+      //   areaCd: formData.areaCode,
+      //   dpCode: formData.depoCode,
+      //   noMtrSets: mtrTypes.length,
+      //   editedUserId: "SYSTEM",
+      //   // Set accNbr if not present
+      //   accNbr: detail.accNbr || String(index + 1),
+      // }));
 
-        if (!meterDetailsResponse.ok) {
-          throw new Error("Failed to update meter details");
+      // // Update meter details batch via PUT
+      // if (updatedMeterDetails.length > 0) {
+      //   const meterDetailsResponse = await fetch(`${baseUrl}/api/meter-details/batch`, {
+      //     method: "PUT",
+      //     headers: {
+      //       "Content-Type": "application/json",
+      //       Authorization: "Basic " + btoa("user:admin123"),
+      //     },
+      //     body: JSON.stringify(updatedMeterDetails),
+      //   });
+
+      //   if (!meterDetailsResponse.ok) {
+      //     throw new Error("Failed to update meter details");
+      //   }
+      // }
+
+
+      //new code with update meter details "POST" and "PUT" according to logic
+      // Prepare meter details - handle both cases: existing details and new entries
+        let meterDetailsToSend = [];
+
+        // If we have table data (user entered data in the form)
+        if (tableData.length > 0) {
+          // If fullMeterDetails is empty (no existing records), create new ones
+          // if (fullMeterDetails.length === 0) {
+
+            // Create new meter detail objects from tableData
+            meterDetailsToSend = tableData.map((row, index) => ({
+              orderCardNo: formData.orderCardNo,
+              mtrNbr: formData.meterNo,
+              brCode: formData.brCode,
+              mtrType: row.mtr,
+              setType: formData.mtrsetType ? parseFloat(formData.mtrsetType) : null,
+              prsntRdn: row.test1 ? parseFloat(row.test1) : null,
+              mtrFactor: row.test2 || null,
+              ctRatio: row.test3 || null,
+              mtrRatio: row.test4 || null,
+              mtrOrder: row.test5 ? parseFloat(row.test5) : index + 1,
+              noOfPhases: formData.numberOfPhase,
+              effctDate: formData.effctDate ? new Date(formData.effctDate).toISOString() : null,
+              areaCd: formData.areaCode,
+              dpCode: formData.depoCode,
+              noMtrSets: mtrTypes.length,
+              editedUserId: "SYSTEM",
+              accNbr: String(index + 1),
+            }));
+          // } else {
+          //   // Update existing meter details (your original code)
+          //   meterDetailsToSend = fullMeterDetails.map((detail, index) => ({
+          //     ...detail,
+          //     mtrNbr: formData.meterNo,
+          //     brCode: formData.brCode,
+          //     setType: formData.mtrsetType ? parseFloat(formData.mtrsetType) : detail.setType,
+          //     prsntRdn: tableData[index]?.test1 ? parseFloat(tableData[index].test1) : detail.prsntRdn,
+          //     mtrFactor: tableData[index]?.test2 || detail.mtrFactor,
+          //     ctRatio: tableData[index]?.test3 || detail.ctRatio,
+          //     mtrRatio: tableData[index]?.test4 || detail.mtrRatio,
+          //     mtrOrder: tableData[index]?.test5 ? parseFloat(tableData[index].test5) : detail.mtrOrder,
+          //     noOfPhases: formData.numberOfPhase,
+          //     effctDate: formData.effctDate ? new Date(formData.effctDate).toISOString() : detail.effctDate,
+          //     areaCd: formData.areaCode,
+          //     dpCode: formData.depoCode,
+          //     noMtrSets: mtrTypes.length,
+          //     editedUserId: "SYSTEM",
+          //     accNbr: detail.accNbr || String(index + 1),
+          //   }));
+          // }
         }
-      }
+
+        // Update meter details batch via PUT (use appropriate method - POST for new, PUT for existing)
+        if (meterDetailsToSend.length > 0) {
+          // const method = fullMeterDetails.length === 0 ? "POST" : "PUT";
+          const method="POST"
+         
+          // const endpoint = fullMeterDetails.length === 0 ? "/api/meter-details/batch" : "/api/meter-details/batch"; //we have same end point in backend
+          const endpoint="/api/meter-details/batch-replace" //this endpoint deleted existent data and add new fresh data 
+          
+          const meterDetailsResponse = await fetch(`${baseUrl}${endpoint}`, {
+            method: method,
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Basic " + btoa("user:admin123"),
+            },
+            body: JSON.stringify(meterDetailsToSend),
+          });
+
+          if (!meterDetailsResponse.ok) {
+            throw new Error(`Failed to ${method === "POST" ? "create" : "update"} meter details`);
+          }
+        }
 
       console.log("Form submitted:", formData);
       console.log("Table data:", tableData);
@@ -2651,7 +2729,9 @@ const OrderCardPopupNew = ({ isOpen, onClose, estimateNo, projectNumber, deptId,
                               <td className="py-2 px-4 border-b border-gray-300">
                                 <input
                                   type="text"
-                                  value={row.test5}
+                                  // value={row.test5}
+                                  value={row.test5=index+1}
+
                                   onChange={(e) => handleTableChange(index, "test5", e.target.value)}
                                   className="p-2 w-full bg-white border rounded text-sm focus:outline-none focus:border-[#7c0000]"
                                 />
