@@ -906,6 +906,26 @@ export default function Sidebar() {
   
   const [expandedMenu, setExpandedMenu] = useState(null);
 
+  //new useEffect to solove the fetch menu problem
+    useEffect(() => {
+      // Refresh all menu tasks when component mounts
+      const refreshAllTasks = async () => {
+        const user = JSON.parse(localStorage.getItem("user") || sessionStorage.getItem("user") || "{}");
+        if (user.userId && mainMenus.length > 0) {
+          // Force refetch for any menu that has tasks
+          mainMenus.forEach(menu => {
+            if (menuTasks[menu.menuCode]) {
+              fetchTasksForMenu(user.userId, menu.menuCode);
+            }
+          });
+        }
+      };
+      
+      // Run after a short delay to ensure component is mounted
+      const timer = setTimeout(refreshAllTasks, 100);
+      return () => clearTimeout(timer);
+    }, [mainMenus.length]); // Only run when mainMenus changes
+
   // NEW: Auto-expand menu based on current route
   useEffect(() => {
     if (mainMenus && mainMenus.length > 0) {
@@ -1219,6 +1239,7 @@ export default function Sidebar() {
                            menuTasks[menu.menuCode].length > 0 ? (
                             menuTasks[menu.menuCode].map((task) => (
                               <li key={task.activityCode} className="items-center">
+                             
                                 <Link
                                   className={
                                     "text-sm py-2 block pl-3 " +

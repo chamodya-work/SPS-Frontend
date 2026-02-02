@@ -251,6 +251,11 @@ export default function Login() {
           userName: data.userName
         };
 
+        // ADD THESE 3 LINES:
+        const currentTime = Date.now().toString();
+        sessionStorage.setItem("sessionStart", currentTime);
+        sessionStorage.setItem("lastActivity", currentTime);
+
         // Store in both sessionStorage and localStorage for UserContext compatibility
         sessionStorage.setItem("user", JSON.stringify(userData));
         localStorage.setItem("user", JSON.stringify(userData));
@@ -296,9 +301,10 @@ export default function Login() {
         console.log("Login successful", data);
       } else {
         // Handle login error
-        toast.error(
-          "If you have not account, register first. If you registered verify your email address. Otherwise check your email address and password"
-        );
+        // toast.error(
+        //   "If you have not account, register first. If you registered verify your email address. Otherwise check your email address and password"
+        // );
+        toast.error("Incorrect User ID or Password. Please try again.");
         console.error("Login failed", data);
       }
     } catch (error) {
@@ -386,7 +392,7 @@ export default function Login() {
             {/* this is for adding SPS version number           */}
             <div className="text-center mt-0 mb-0">
               <span className="text-blueGray-400 text-[10px]">
-                CEB SPS_NEW v1.0.1
+                CEB SPS_NEW v1.0.2
               </span>
             </div>
 

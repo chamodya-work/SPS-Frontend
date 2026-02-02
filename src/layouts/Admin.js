@@ -66,7 +66,41 @@ import Maps from "views/admin/Maps.js";
 import Settings from "views/admin/Settings.js";
 import Tables from "views/admin/Tables.js";
 import JobStatusPie from "views/admin/JobStatusPie";
+
+import BarChartCard from "components/Cards/BarChartCard";
+import CardBar from "components/Cards/CardBar";
+import CardBarChart from "components/Cards/CardBarChart";
+import CardEstimatePage1 from "components/Cards/CardEstimatePage1";
+import CardEstimatePage2 from "components/Cards/CardEstimatePage2";
+import CardEstimatePage3 from "components/Cards/CardEstimatePage3";
+import CardLineChart from "components/Cards/CardLineChart";
+import CardPageVisits from "components/Cards/CardPageVisits";
+import CardPieChart from "components/Cards/CardPieChart";
+import CardProfile from "components/Cards/CardProfile";
+import CardSETable from "components/Cards/CardSETable";
+import CardSettings from "components/Cards/CardSettings";
 import CardSocialTraffic from "components/Cards/CardSocialTraffic";
+import CardStats from "components/Cards/CardStats";
+import CardTable from "components/Cards/CardTable";
+import Customer from "components/Cards/Customer";
+import PcestdttTable from "components/Cards/PcestdttTable";
+import PieChartCard from "components/Cards/PieChartCard";
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 import PaggingSchedule from "views/PaggingSchedule";
 
@@ -76,6 +110,28 @@ export default function Admin() {
       <Sidebar />
       <div className="relative md:ml-64 bg-blueGray-100 min-h-screen flex flex-col">
         <HeaderStats />
+
+        
+        {/* <BarChartCard /> */}
+        
+        {/* <CardBar /> */}
+        {/* <CardBarChart /> */}
+        {/* <CardEstimatePage1 /> */}
+        {/* <CardEstimatePage2 /> */}
+        {/* <CardEstimatePage3 />
+        <CardLineChart />
+        <CardPageVisits /> */}
+        {/* <CardPieChart /> */}
+        {/* <CardProfile /> */}
+        {/* <CardSETable />
+        <CardSettings />
+        <CardSocialTraffic /> */}
+        {/* <CardStats /> */}
+        {/* <CardTable /> */}
+        {/* <Customer />
+        <PcestdttTable />
+        <PieChartCard /> */}
+        
 
 
         <div className="px-4 md:px-10 mx-auto w-full -m-24 flex-grow">

@@ -33,6 +33,8 @@ export default function HeaderStats() {
     );
     
     if (commissionMenu && menuTasks[commissionMenu.menuCode]) {
+      console.log("this is  name1: ",commissionMenu.menuCode);
+      console.log("this is  name2: ",menuTasks[commissionMenu.menuCode]);
       return menuTasks[commissionMenu.menuCode];
     }
     return [];

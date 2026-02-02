@@ -36,54 +36,121 @@
 // export default SessionCheck;
 
 
-import { useEffect, useState } from "react";
+
+
+
+
+import { useEffect, useRef } from "react";
 import { useHistory } from "react-router-dom";
-import { toast } from "react-toastify"; 
+import { toast } from "react-toastify";
 
 const SessionCheck = () => {
   const history = useHistory();
-  const [sessionExpired, setSessionExpired] = useState(false);
+  const logoutInProgressRef = useRef(false);
+  const lastActivityRef = useRef(Date.now());
+
+  const updateLastActivity = () => {
+    lastActivityRef.current = Date.now();
+    sessionStorage.setItem("lastActivity", Date.now().toString());
+  };
+
+  const checkSession = () => {
+    if (logoutInProgressRef.current) return;
+
+    const userData =
+      localStorage.getItem("user") || sessionStorage.getItem("user");
+    const user = userData ? JSON.parse(userData) : null;
+
+    const lastActivity =
+      sessionStorage.getItem("lastActivity") || Date.now().toString();
+
+    const currentTime = Date.now();
+    const fifteenMinutes =  15 * 60 * 1000; // inactivity timeout only
+
+    //  REMOVED sessionStart logic
+    if (!user || !user.userId) {
+      handleSessionExpiration("Session data missing");
+      return;
+    }
+
+    //  ONLY inactivity-based logout
+    if (currentTime - Number(lastActivity) > fifteenMinutes) {
+      handleSessionExpiration("User inactive for too long");
+      return;
+    }
+
+    //  Warning before inactivity timeout (2 minutes left)
+    const timeLeft =
+      fifteenMinutes - (currentTime - Number(lastActivity));
+
+    if (timeLeft > 0 && timeLeft <= 2 * 60 * 1000) {
+      const minutesLeft = Math.ceil(timeLeft / (60 * 1000));
+      toast.warning(
+        `Session expires in ${minutesLeft} minute${
+          minutesLeft > 1 ? "s" : ""
+        } due to inactivity`,
+        {
+          toastId: "session-warning",
+          autoClose: false,
+        }
+      );
+    }
+  };
+
+  const handleSessionExpiration = (reason) => {
+    if (logoutInProgressRef.current) return;
+
+    logoutInProgressRef.current = true;
+
+    toast.dismiss();
+    toast.error("Session expired! Please log in again.");
+
+    localStorage.removeItem("user");
+    sessionStorage.clear();
+
+    ["userId", "userLevel", "deptId", "userName", "lastActivity"].forEach(
+      (key) => {
+        localStorage.removeItem(key);
+        sessionStorage.removeItem(key);
+      }
+    );
+
+    setTimeout(() => {
+      history.push("/auth/login");
+      logoutInProgressRef.current = false;
+    }, 100);
+  };
 
   useEffect(() => {
-    const checkSession = () => {
-      const userId = sessionStorage.getItem("userId");
-      const userLevel = sessionStorage.getItem("userLevel");
-      const deptId = sessionStorage.getItem("deptId");
-      const sessionStart = sessionStorage.getItem("sessionStart");
+    const activityEvents = [
+      "mousedown",
+      "keypress",
+      "click",
+      "scroll",
+      "touchstart",
+      "mousemove"
+    ];
 
-      console.log("Session Check:", { userId, userLevel, deptId });
-
-      const currentTime = Date.now();
-      const tenMinutes = 10 * 60 * 1000; // 600,000 ms
-
-      // If any session data is missing or the session has expired
-      if (
-        !userId ||
-        !userLevel ||
-        !deptId ||
-        !sessionStart ||
-        currentTime - Number(sessionStart) > tenMinutes
-      ) {
-        // Avoid setting session expired multiple times
-        if (!sessionExpired) {
-          setSessionExpired(true);
-          toast.error("Session expired or invalid! Please log in again.");
-          sessionStorage.clear();
-          history.push("/auth/login");
-        }
-      } else {
-        // Log the session details if the session is still valid
-        console.log("Session is still valid.");
-      }
+    const handleActivity = () => {
+      updateLastActivity();
+      toast.dismiss("session-warning");
     };
 
-    // Set interval to check session every 30 seconds
-    const interval = setInterval(checkSession, 8000000);
-    
-    // Clean up the interval when the component unmounts
-    return () => clearInterval(interval); 
+    activityEvents.forEach((event) => {
+      window.addEventListener(event, handleActivity);
+    });
 
-  }, [history, sessionExpired]);
+    updateLastActivity();
+
+    const interval = setInterval(checkSession, 60 * 1000);
+
+    return () => {
+      clearInterval(interval);
+      activityEvents.forEach((event) => {
+        window.removeEventListener(event, handleActivity);
+      });
+    };
+  }, [history]);
 
   return null;
 };

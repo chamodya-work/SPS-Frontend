@@ -138,17 +138,29 @@ export const UserProvider = ({ children }) => {
     refreshMenus();
   },[]);
 
-  const logout = () => {
+  const logout = (manual = true) => {
     setUserRole(null);
     setMainMenus([]);
+    setMenuTasks({});
+    
+    if (window.toast && window.toast.dismiss) {
+      window.toast.dismiss();
+    }
+    
     localStorage.removeItem('user');
-    sessionStorage.removeItem('user');
-    // Also clear individual session items for backward compatibility
-    sessionStorage.removeItem("userId");
-    sessionStorage.removeItem("userLevel");
-    sessionStorage.removeItem("deptId");
-    sessionStorage.removeItem("userName");
-    sessionStorage.removeItem("sessionStart");
+    sessionStorage.clear();
+    
+    ['userId', 'userLevel', 'deptId', 'userName', 'sessionStart', 'lastActivity'].forEach(
+      key => localStorage.removeItem(key)
+    );
+    
+    if (manual) {
+      if (window.toast && window.toast.info) {
+        window.toast.info("You have been logged out");
+      }
+    }
+    
+    window.location.href = "/auth/login";
   };
 
   // Fetch tasks for a menu
@@ -166,10 +178,31 @@ export const UserProvider = ({ children }) => {
     }
   };
 
+      // ADD THIS FUNCTION:
+    const isSessionValid = () => {
+      const userData = localStorage.getItem('user') || sessionStorage.getItem('user');
+      const sessionStart = sessionStorage.getItem('sessionStart');
+      
+      if (!userData || !sessionStart) return false;
+      
+      const sessionAge = Date.now() - parseInt(sessionStart);
+      return sessionAge < (10 * 60 * 1000); // 10 minutes
+    };
+
+    // ADD THIS FUNCTION:
+    const getRemainingSessionTime = () => {
+      const sessionStart = sessionStorage.getItem('sessionStart');
+      if (!sessionStart) return 0;
+      
+      const sessionAge = Date.now() - parseInt(sessionStart);
+      const remaining = (10 * 60 * 1000) - sessionAge;
+      return Math.max(0, remaining);
+    };
+
   return (
       <UserContext.Provider value={{
         userRole, setUserRole, mainMenus, setMainMenus, menusLoading, logout,
-        menuTasks, fetchTasksForMenu,refreshMenus
+        menuTasks, fetchTasksForMenu,refreshMenus,isSessionValid,getRemainingSessionTime
       }}>
         {children}
       </UserContext.Provider>

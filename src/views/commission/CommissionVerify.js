@@ -294,6 +294,10 @@ export default function CommissionVerify({ color }) {
         throw new Error("Failed to update estimate status");
       }
       console.log("Status updated successfully for estimate:", estimateNo);
+
+      // Create approval log with the appropriate status
+      await createApprovalLog(estimateNo, deptId, 12, 11); // From status 12 to new status (13)
+
       toast.success("Rejected order card successfully!");
 
       // Refresh the data from API to get updated status
@@ -326,6 +330,10 @@ export default function CommissionVerify({ color }) {
         throw new Error("Failed to update estimate status");
       }
       console.log("Status updated successfully for estimate:", estimateNo);
+
+      // Create approval log with the appropriate status
+      await createApprovalLog(estimateNo, deptId, 12, 13); // From status 12 to new status (13)
+
       toast.success("Forwarded order card successfully!");
 
       // Refresh the data from API to get updated status
@@ -337,6 +345,66 @@ export default function CommissionVerify({ color }) {
       throw error; // Re-throw to handle in the main function
     }
   };
+
+
+    // this fn for update logs when forward order card
+    const createApprovalLog = async (referenceNo, deptId, fromStatus, toStatus) => {
+      try {
+        // Get user details from session storage
+        const userId = sessionStorage.getItem("userId") || "";
+        const userLevel = sessionStorage.getItem("userLevel") || "";
+        
+        // Format status to 2 digits (pad with leading zero)
+
+        //icomment this because i supply the value for fromStatus
+        // const formattedFromStatus = fromStatus.toString().padStart(2, '0');
+        // const formattedToStatus = toStatus.toString().padStart(2, '0');
+        
+        console.log(`Creating approval log: ${referenceNo} status ${fromStatus} -> ${toStatus}`);
+        
+        // Prepare approval log data
+        const approvalLogData = {
+          referenceNo: referenceNo.trim(),
+          deptId: deptId.trim(),
+          // approvalType: "ORD_VLDT", // Order card approval "ORD_VLDT" Mean ordercard Validated
+          approvalType: (fromStatus<toStatus) ? "ORD_VRFD" : "ORD_RJCT",
+          approvedLevel: userLevel,
+          fromStatus: fromStatus,
+          toStatus: toStatus,
+          approvedBy: userId,
+          reason:  (fromStatus<toStatus) ? "Order card Verified" : "Order card Rejected",
+          // standardCost: 0, // You can pass actual values if available
+          // detailedCost: formData.estAmount || 0, // Using estimate amount as detailed cost
+          systemBy: "SPS"
+        };
+
+        // Call the approval log API
+        const response = await fetch(
+          `${baseUrl}/api/approval-log/create`,
+          {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Basic " + btoa("user:admin123"),
+            },
+            body: JSON.stringify(approvalLogData),
+          }
+        );
+
+        if (!response.ok) {
+          throw new Error("Failed to create approval log");
+        }
+
+        const approvalResponse = await response.json();
+        console.log("Approval log created:", approvalResponse);
+        return approvalResponse;
+        
+      } catch (error) {
+        console.error("Error creating approval log:", error);
+        toast.warning("Approval log creation failed");
+        return null;
+      }
+    };
 
   
 
