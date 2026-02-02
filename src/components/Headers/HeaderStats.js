@@ -374,7 +374,7 @@ export default function HeaderStats() {
                   forward: "/admin/commission/forward",
                   validate:"/admin/commission/validate",
                   verify:"/admin/commission/verify",
-                  pegging:"/admin/peggingShedule",
+                  active:"/admin/activeappointments",
                   default: "/admin/commission/default"
                 };
 
