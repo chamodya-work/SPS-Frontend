@@ -990,8 +990,11 @@ export default function Sidebar() {
       }
 
       // for pegging schedule
-      if (menuName.includes('pegging schedule') ) {
-        return '/admin/peggingShedule';
+      // if (menuName.includes('active appointments') ) {
+      //   return '/admin/peggingShedule';
+      // }
+      if (menuName.includes('active appointments') ) {
+        return '/admin/activeappointments';
       }
     
       // NEW: Updated Commission Management Routes with structured mapping

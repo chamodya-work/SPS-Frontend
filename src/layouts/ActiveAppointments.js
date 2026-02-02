@@ -6,10 +6,10 @@ import FooterAdmin from "components/Footers/FooterAdmin.js";
 // Import your Commission component
 
 import HeaderStatsWithoutCards from "components/Headers/HeaderStatsWithoutCards";
-import PaggingSchedule from "views/PaggingSchedule"
+import ActiveAppointments from "views/ActiveAppointments";
 
 // src/layouts/Commission.js
-export default function PeggingSheduleLayout() {
+export default function ActiveAppointmentsLayout() {
   return (
     <>
       <Sidebar />
@@ -17,7 +17,7 @@ export default function PeggingSheduleLayout() {
         <HeaderStatsWithoutCards />
         <div className="px-4 md:px-10 mx-auto w-full -m-24">
           <Switch>
-             <Route path="/admin/peggingSchedule" exact component={PaggingSchedule} />
+             <Route path="/admin/activeappointments" exact component={ActiveAppointments} />
             
           </Switch>
           <FooterAdmin />

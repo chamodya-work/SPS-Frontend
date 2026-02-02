@@ -54,6 +54,7 @@ import CommissionDetailsForward from "views/commission/CommissionDetailsForward"
 
 //this is snow animation
 import Snowfall from "components/SnowAnimation/Snowfall";
+import ActiveAppointmentsLayout from "layouts/ActiveAppointments";
 
 
 
@@ -86,7 +87,8 @@ ReactDOM.render(
             <Route path="/admin/commission" component={CommissionLayout} />
             
             {/* this is for pagging path */}
-            <Route path="/admin/peggingShedule" component={PeggingSheduleLayout} />
+            <Route path="/admin/activeappointments" component={ActiveAppointmentsLayout} />
+            <Route path="/admin/peggingSchedule" component={PeggingSheduleLayout} />
 
             <Route path="/admin" component={Admin} />
             <Route path="/auth" component={Auth} />
