@@ -369,7 +369,8 @@ export default function HeaderStats() {
               {commissionTasks.map((task, index) => {
                 // NEW: Define path mappings for different activity types
                 const pathMappings = {
-                  add: "/admin/commission",
+                  // add: "/admin/commission", //remove the add mapping because it it already belong to 
+                  // new application ordinary
                   create: "/admin/commission",
                   edit: "/admin/commission/edit",
                   update: "/admin/commission/edit",
