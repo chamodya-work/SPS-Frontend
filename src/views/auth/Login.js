@@ -195,6 +195,8 @@ export default function Login() {
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const history = useHistory();
+  const [showGuide, setShowGuide] = useState(false);
+
   const baseUrl = process.env.REACT_APP_API_BASE_URL;
   
   // console.log("this is base url:",baseUrl);
@@ -235,20 +237,20 @@ export default function Login() {
       }
       if (response.ok) {
         // Store in sessionStorage
-        sessionStorage.setItem("userId", data.userId);
-        sessionStorage.setItem("userLevel", data.userLevel);
+        sessionStorage.setItem("userId", data.userId.trim());
+        sessionStorage.setItem("userLevel", data.userLevel.trim());
         // sessionStorage.setItem("eAccountNo", data.eAccountNo);
-        sessionStorage.setItem("deptId", data.costcenter);
-        sessionStorage.setItem("userName", data.userName);	
+        sessionStorage.setItem("deptId", data.costcenter.trim());
+        sessionStorage.setItem("userName", data.userName.trim());	
         sessionStorage.setItem("sessionStart", Date.now().toString());
 
         // NEW: Store user data as a single object in the format UserContext expects
         const userData = {
-          userId: data.userId,
-          userLevel: data.userLevel,
+          userId: data.userId.trim(),
+          userLevel: data.userLevel.trim(),
           // Add other properties that your UserContext might need
-          deptId: data.costcenter,
-          userName: data.userName
+          deptId: data.costcenter.trim(),
+          userName: data.userName.trim()
         };
 
         // ADD THESE 3 LINES:
@@ -385,6 +387,18 @@ export default function Login() {
                     </button>
                   </div>
                 </form>
+
+            {/* Need Help - User Manual */}
+              {/* <div className="text-center mt-4">
+                <a
+                  href="https://app.guidemaker.com/guide/73ead221-d03e-4551-be47-a8e4973c8344"
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="text-sm text-blueGray-500 underline hover:text-blueGray-700"
+                >
+                  Need Help?
+                </a>
+              </div> */}
                 
               </div>
             </div>
