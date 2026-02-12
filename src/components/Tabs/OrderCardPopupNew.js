@@ -798,6 +798,8 @@ const [userLevel, setUserLevel] = useState(null); // Add this line to store user
         // Get user details from session storage
         const userId = sessionStorage.getItem("userId") || "";
         const userLevel = sessionStorage.getItem("userLevel") || "";
+
+        console.log("check the userId length: ",userId)
         
         // Format status to 2 digits (pad with leading zero)
 
