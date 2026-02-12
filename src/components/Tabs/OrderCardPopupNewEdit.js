@@ -1774,6 +1774,7 @@ const OrderCardPopupNew = ({ isOpen, onClose, estimateNo, projectNumber, deptId,
       // Fetch order card data
       const orderCardResponse = await fetch(
         `${baseUrl}/api/order-cards/by-project-dept?projectNo=${encodeURIComponent(projectNumber.trim())}&deptId=${encodeURIComponent(deptId.trim())}`,
+        // `${baseUrl}/api/order-cards/by-project-dept?projectNo=${encodeURIComponent(projectNumber)}&deptId=${encodeURIComponent(deptId)}`,
         {
           method: "GET",
           headers: {
@@ -1783,8 +1784,13 @@ const OrderCardPopupNew = ({ isOpen, onClose, estimateNo, projectNumber, deptId,
         }
       );
 
+      if(!orderCardResponse.ok){
+        console.log("your ordercard response have issue", orderCardResponse);
+      }
+
       if (orderCardResponse.ok) {
         const orderCardData = await orderCardResponse.json();
+        console.log("check the ordercard data : ",orderCardData)
 
         // Update formData with fetched order card data
         setFormData((prev) => ({
