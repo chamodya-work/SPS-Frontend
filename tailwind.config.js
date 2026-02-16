@@ -15,10 +15,18 @@ module.exports = withMT({
     "./node_modules/@material-tailwind/react/components/**/*.{js,ts,jsx,tsx}",
     "./node_modules/@material-tailwind/react/theme/components/**/*.{js,ts,jsx,tsx}",
   ],
+  safelist: [
+    'bg-green-400',
+    'bg-yellow-400',
+    'bg-red-400',
+    'bg-gray-200',
+    // Add any other dynamic color classes you use
+  ],
 
   theme: {
     extend: {
       colors: {
+        ...colors, // <-- THIS INCLUDES ALL DEFAULT COLORS (yellow, green, etc.)
         'red4': '#7c0000',
         // Ensure red color palette is properly extended
         red: {
@@ -120,3 +128,58 @@ module.exports = withMT({
     }),
   ],
 });
+
+
+
+//this is not my work related thing above is good
+// import plugin from "tailwindcss/plugin";
+// import colors from "tailwindcss/colors"; // Import default colors
+// import withMT from "@material-tailwind/react/utils/withMT";
+
+// export default withMT({
+//   content: [
+//     "./public/**/*.html",
+//     "./public/*.html",
+//     "./src/**/*.js",
+//     "./src/*.js",
+//     "./src/**/*.html",
+//     "./src/*.html",
+//     "./public/**/*.js",
+//     "./public/*.js",
+//     "./node_modules/@material-tailwind/react/components/**/*.{js,ts,jsx,tsx}",
+//     "./node_modules/@material-tailwind/react/theme/components/**/*.{js,ts,jsx,tsx}",
+//   ],
+
+//   theme: {
+//     extend: {
+//       colors: {
+//         ...colors, // Spread all default Tailwind colors (green, yellow, blue, etc.)
+//         'red4': '#7c0000',
+//         red: {
+//           50: '#fef2f2',
+//           100: '#fee2e2',
+//           200: '#fecaca',
+//           300: '#fca5a5',
+//           400: '#f87171',
+//           500: '#ef4444',
+//           600: '#dc2626',
+//           700: '#b91c1c',
+//           800: '#991b1b',
+//           900: '#7f1d1d',
+//         },
+//       },
+//       // ... rest of your existing extends
+//     },
+//   },
+
+//   variants: {
+//     extend: {
+//       opacity: ['disabled'],
+//     },
+//   },
+
+//   plugins: [
+//     require("@tailwindcss/forms"),
+//     // ... your other plugins
+//   ],
+// });
