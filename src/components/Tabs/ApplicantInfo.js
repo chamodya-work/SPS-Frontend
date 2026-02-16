@@ -332,25 +332,42 @@ import FileUpload from "./FileUpload";
 const nicRegex = /^(\d{9}[Vv]|\d{12})$/; // Validates both old and new NIC formats
 
 const ApplicantInfo = ({
-  applicant = {},
   onInputChange,
-  onSearch,
   handleSearch,
   isModify,
   data = {},
-  appData = {},
-  setAppData = () => {},
 }) => {
   const [nicError, setNicError] = useState("");
   const [loading, setLoading] = useState(false);
 
-  const idNo = applicant?.idNo || "";
+  // const idNo = applicant?.idNo || "";
 
+  // const handleChange = (e) => {
+  //   console.log("Handling change for:", e.target.name);
+  //   const { name, value } = e.target;
+  //   onInputChange({ [name]: value });
+
+  //   if (name === "idNo") {
+  //     if (!nicRegex.test(value)) {
+  //       setNicError("Invalid NIC number. Use 9 digits with v or 12 digits.");
+  //     } else {
+  //       setNicError("");
+  //     }
+  //   }
+
+  //   const newData = { ...(appData || {}), [name]: value };
+  //   if (typeof setAppData === "function") {
+  //     setAppData(newData);
+  //   }
+  //   if (typeof onInputChange === "function") {
+  //     onInputChange({ [name]: value });
+  //   }
+  // };
   const handleChange = (e) => {
-    console.log("Handling change for:", e.target.name);
     const { name, value } = e.target;
+  
     onInputChange({ [name]: value });
-
+  
     if (name === "idNo") {
       if (!nicRegex.test(value)) {
         setNicError("Invalid NIC number. Use 9 digits with v or 12 digits.");
@@ -358,15 +375,8 @@ const ApplicantInfo = ({
         setNicError("");
       }
     }
-
-    const newData = { ...(appData || {}), [name]: value };
-    if (typeof setAppData === "function") {
-      setAppData(newData);
-    }
-    if (typeof onInputChange === "function") {
-      onInputChange({ [name]: value });
-    }
   };
+  
 
   return (
     <div className="flex-auto px-4 lg:px-10 py-10 pt-2">
@@ -414,7 +424,7 @@ const ApplicantInfo = ({
                 <input
                   type="text"
                   name="idNo"
-                  value={appData?.idNo || ""}
+                  value={data?.idNo || ""}
                   onChange={handleChange}
                   className={`p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150 ${
                     nicError ? "border-red-500" : ""
@@ -445,7 +455,7 @@ const ApplicantInfo = ({
               <input
                 type="text"
                 name="firstName"
-                value={appData?.firstName || ""}
+                value={data?.firstName || ""}
                 onChange={handleChange}
                 className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
                 placeholder="Enter First Name"
@@ -462,7 +472,7 @@ const ApplicantInfo = ({
               <input
                 type="text"
                 name="lastName"
-                value={appData?.lastName || ""}
+                value={data?.lastName || ""}
                 onChange={handleChange}
                 className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
                 placeholder="Enter Last Name"
@@ -479,7 +489,7 @@ const ApplicantInfo = ({
               <input
                 type="text"
                 name="fullName"
-                value={appData?.fullName || ""}
+                value={data?.fullName || ""}
                 onChange={handleChange}
                 className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
                 placeholder="Enter Full Name"

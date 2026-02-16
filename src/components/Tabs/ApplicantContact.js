@@ -4,43 +4,69 @@ const phoneRegex =
   /^\+?([1-9]{1,3})?[-.\s]?\(?([0-9]{3})\)?[-.\s]?([0-9]{3})[-.\s]?([0-9]{4})(?:\s*x(\d+))?$/;
 const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-const ApplicantContact = ({ applicant = {}, onInputChange, contactData }) => {
-  const [appData, setAppData] = useState({
-    mobileNo: "",
-    email: "",
-    telephoneNo: "",
-    streetAddress: "",
-    suburb: "",
-    city: "",
-    postalCode: "",
-  });
+const ApplicantContact = ({ onInputChange, data = {} }) => {
+  // const [appData, setAppData] = useState({
+  //   mobileNo: "",
+  //   email: "",
+  //   telephoneNo: "",
+  //   streetAddress: "",
+  //   suburb: "",
+  //   city: "",
+  //   postalCode: "",
+  // });
 
   const [errors, setErrors] = useState({});
 
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //   const newData = { ...appData, [name]: value };
+  //   setAppData(newData);
+  //   onInputChange(newData);
+
+  //   setErrors((prevErrors) => {
+  //     let updatedErrors = { ...prevErrors };
+
+  //     if (name === "mobileNo") {
+  //       updatedErrors.mobileNo = phoneRegex.test(value.trim())
+  //         ? ""
+  //         : "Invalid phone number format";
+  //     }
+
+  //     if (name === "email") {
+  //       updatedErrors.email = emailRegex.test(value.trim())
+  //         ? ""
+  //         : "Invalid email format";
+  //     }
+
+  //     return updatedErrors;
+  //   });
+  // };
+
+
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const newData = { ...appData, [name]: value };
-    setAppData(newData);
-    onInputChange(newData);
-
+  
+    onInputChange({ [name]: value });
+  
     setErrors((prevErrors) => {
       let updatedErrors = { ...prevErrors };
-
+  
       if (name === "mobileNo") {
         updatedErrors.mobileNo = phoneRegex.test(value.trim())
           ? ""
           : "Invalid phone number format";
       }
-
+  
       if (name === "email") {
         updatedErrors.email = emailRegex.test(value.trim())
           ? ""
           : "Invalid email format";
       }
-
+  
       return updatedErrors;
     });
   };
+  
 
   return (
     <div className="flex-auto px-4 lg:px-10 py-10 pt-1">
@@ -55,7 +81,7 @@ const ApplicantContact = ({ applicant = {}, onInputChange, contactData }) => {
               <input
                 type="text"
                 name="mobileNo"
-                value={appData.mobileNo}
+                value={data.mobileNo}
                 onChange={handleChange}
                 className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
                 placeholder="Enter your mobile number"
@@ -74,7 +100,7 @@ const ApplicantContact = ({ applicant = {}, onInputChange, contactData }) => {
               <input
                 type="email"
                 name="email"
-                value={appData.email}
+                value={data.email}
                 onChange={handleChange}
                 className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
                 placeholder="Enter your email"
@@ -96,7 +122,7 @@ const ApplicantContact = ({ applicant = {}, onInputChange, contactData }) => {
               <input
                 type="text"
                 name="telephoneNo"
-                value={appData.telephoneNo}
+                value={data.telephoneNo}
                 onChange={handleChange}
                 className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
                 placeholder="Enter your land number"
@@ -112,7 +138,7 @@ const ApplicantContact = ({ applicant = {}, onInputChange, contactData }) => {
               <input
                 type="text"
                 name="streetAddress"
-                value={appData.streetAddress}
+                value={data.streetAddress}
                 onChange={handleChange}
                 className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
                 placeholder="Enter street address"
@@ -131,7 +157,7 @@ const ApplicantContact = ({ applicant = {}, onInputChange, contactData }) => {
               <input
                 type="text"
                 name="suburb"
-                value={appData.suburb}
+                value={data.suburb}
                 onChange={handleChange}
                 className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
                 placeholder="Enter suburb"
@@ -146,7 +172,7 @@ const ApplicantContact = ({ applicant = {}, onInputChange, contactData }) => {
               <input
                 type="text"
                 name="city"
-                value={appData.city}
+                value={data.city}
                 onChange={handleChange}
                 className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
                 placeholder="Enter city"
@@ -161,7 +187,7 @@ const ApplicantContact = ({ applicant = {}, onInputChange, contactData }) => {
               <input
                 type="text"
                 name="postalCode"
-                value={appData.postalCode}
+                value={data.postalCode}
                 onChange={handleChange}
                 className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
                 placeholder="Enter postal code"
