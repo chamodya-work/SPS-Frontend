@@ -1,6 +1,4 @@
-import { useState,useEffect } from "react";
-
-//const phoneRegex = /^\s*(?:\+?(\d{1,3}))?[-. (]*(\d{3})[-. )]*(\d{3})[-. ]*(\d{4})(?: *x(\d+))?\s*$/;
+import { useState } from "react";
 
 const phoneRegex =
   /^\+?([1-9]{1,3})?[-.\s]?\(?([0-9]{3})\)?[-.\s]?([0-9]{3})[-.\s]?([0-9]{4})(?:\s*x(\d+))?$/;
@@ -10,10 +8,9 @@ const ApplicantContact = ({ applicant = {}, onInputChange, contactData }) => {
   const [appData, setAppData] = useState({
     mobileNo: "",
     email: "",
-    // land: "",
+    telephoneNo: "",
     streetAddress: "",
     suburb: "",
-    telephoneNo: "",
     city: "",
     postalCode: "",
   });
@@ -48,15 +45,11 @@ const ApplicantContact = ({ applicant = {}, onInputChange, contactData }) => {
   return (
     <div className="flex-auto px-4 lg:px-10 py-10 pt-1">
       <form>
-        {/* <div className="block text-blueGray-600 text-m font-bold mb-3 ml-3">Applicant Contact Details</div> */}
-        {/* <div className="flex flex-wrap"> */}
+        {/* Mobile & Email Row */}
         <div className="flex flex-wrap">
           <div className="w-full lg:w-6/12 px-4">
             <div className="relative w-full mb-3">
-              <label
-                className="block text-blueGray-600 text-sm mb-2"
-                htmlFor="grid-password"
-              >
+              <label className="block text-gray-700 text-sm mb-2">
                 Mobile Number
               </label>
               <input
@@ -64,7 +57,7 @@ const ApplicantContact = ({ applicant = {}, onInputChange, contactData }) => {
                 name="mobileNo"
                 value={appData.mobileNo}
                 onChange={handleChange}
-                className="border-0 px-3 h-0.5 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
                 placeholder="Enter your mobile number"
               />
               {errors.mobileNo && (
@@ -75,10 +68,7 @@ const ApplicantContact = ({ applicant = {}, onInputChange, contactData }) => {
 
           <div className="w-full lg:w-6/12 px-4">
             <div className="relative w-full mb-3">
-              <label
-                className="block text-blueGray-600 text-sm mb-2"
-                htmlFor="grid-password"
-              >
+              <label className="block text-gray-700 text-sm mb-2">
                 Email Address
               </label>
               <input
@@ -86,7 +76,7 @@ const ApplicantContact = ({ applicant = {}, onInputChange, contactData }) => {
                 name="email"
                 value={appData.email}
                 onChange={handleChange}
-                className="border-0 px-3 h-0.5 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
                 placeholder="Enter your email"
               />
               {errors.email && (
@@ -96,13 +86,11 @@ const ApplicantContact = ({ applicant = {}, onInputChange, contactData }) => {
           </div>
         </div>
 
+        {/* Land & Street Address Row */}
         <div className="flex flex-wrap">
           <div className="w-full lg:w-6/12 px-4">
             <div className="relative w-full mb-3">
-              <label
-                className="block text-blueGray-600 text-sm mb-2"
-                htmlFor="grid-password"
-              >
+              <label className="block text-gray-700 text-sm mb-2">
                 Land
               </label>
               <input
@@ -110,24 +98,15 @@ const ApplicantContact = ({ applicant = {}, onInputChange, contactData }) => {
                 name="telephoneNo"
                 value={appData.telephoneNo}
                 onChange={handleChange}
-                className="border-0 px-3 h-0.5 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                placeholder="Enter your Land number"
+                className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
+                placeholder="Enter your land number"
               />
-              {errors.telephoneNo && (
-                <p className="text-red-500 text-xs mt-1">
-                  {errors.telephoneNo}
-                </p>
-              )}
             </div>
           </div>
-          {/* </div> */}
 
           <div className="w-full lg:w-6/12 px-4">
             <div className="relative w-full mb-3">
-              <label
-                className="block text-blueGray-600 text-sm mb-2"
-                htmlFor="grid-password"
-              >
+              <label className="block text-gray-700 text-sm mb-2">
                 Street Address
               </label>
               <input
@@ -135,20 +114,18 @@ const ApplicantContact = ({ applicant = {}, onInputChange, contactData }) => {
                 name="streetAddress"
                 value={appData.streetAddress}
                 onChange={handleChange}
-                className="border-0 px-3 h-0.5 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                defaultValue="Bld Mihail Kogalniceanu, nr. 8 Bl 1, Sc 1, Ap 09"
+                className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
+                placeholder="Enter street address"
               />
             </div>
           </div>
         </div>
 
+        {/* Suburb, City, Postal Code Row */}
         <div className="flex flex-wrap">
           <div className="w-full lg:w-4/12 px-4">
             <div className="relative w-full mb-3">
-              <label
-                className="block text-blueGray-600 text-sm mb-2"
-                htmlFor="grid-password"
-              >
+              <label className="block text-gray-700 text-sm mb-2">
                 Suburb
               </label>
               <input
@@ -156,17 +133,14 @@ const ApplicantContact = ({ applicant = {}, onInputChange, contactData }) => {
                 name="suburb"
                 value={appData.suburb}
                 onChange={handleChange}
-                className="border-0 px-3 h-0.5 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                defaultValue="New York"
+                className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
+                placeholder="Enter suburb"
               />
             </div>
           </div>
           <div className="w-full lg:w-4/12 px-4">
             <div className="relative w-full mb-3">
-              <label
-                className="block text-blueGray-600 text-sm mb-2"
-                htmlFor="grid-password"
-              >
+              <label className="block text-gray-700 text-sm mb-2">
                 City
               </label>
               <input
@@ -174,17 +148,14 @@ const ApplicantContact = ({ applicant = {}, onInputChange, contactData }) => {
                 name="city"
                 value={appData.city}
                 onChange={handleChange}
-                className="border-0 px-3 h-0.5 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                defaultValue="United States"
+                className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
+                placeholder="Enter city"
               />
             </div>
           </div>
           <div className="w-full lg:w-4/12 px-4">
             <div className="relative w-full mb-3">
-              <label
-                className="block text-blueGray-600 text-sm mb-2"
-                htmlFor="grid-password"
-              >
+              <label className="block text-gray-700 text-sm mb-2">
                 Postal Code
               </label>
               <input
@@ -192,8 +163,8 @@ const ApplicantContact = ({ applicant = {}, onInputChange, contactData }) => {
                 name="postalCode"
                 value={appData.postalCode}
                 onChange={handleChange}
-                className="border-0 px-3 h-0.5 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
-                defaultValue="Postal Code"
+                className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
+                placeholder="Enter postal code"
               />
             </div>
           </div>
