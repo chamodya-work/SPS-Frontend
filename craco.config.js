@@ -6,6 +6,14 @@ module.exports = {
     // deployable output. Prefer fixing the underlying warnings later.
     enable: false,
   },
+  style: {
+    postcss: {
+      plugins: [
+        require('tailwindcss'),
+        require('autoprefixer'),
+      ],
+    },
+  },
   webpack: {
     configure: {
       resolve: {
