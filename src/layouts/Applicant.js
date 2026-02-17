@@ -15,12 +15,12 @@ export default function Applicant() {
     return (
         <>
           <Sidebar />
-          <div className="relative md:ml-64 bg-blueGray-100 min-h-screen flex flex-col">
+          <div className="relative flex flex-col min-h-screen md:ml-64 bg-blueGray-100">
             {/* Content Wrapper */}
             <HeaderStatsWithoutCards />
             <div className="flex-grow">
-              {/* <div className="bg-lightBlue-600 pt-32"></div> */}
-              <div className="relative px-4 md:px-10 mx-auto w-full  -m-24  ">
+              {/* <div className="pt-32 bg-lightBlue-600"></div> */}
+              <div className="relative w-full px-4 mx-auto -m-24 md:px-10 ">
                 <Switch>
                   <Route path="/applicant/newapplicant" exact component={NewApplicant} />
                   <Route path="/applicant/modifyapplicant" exact component={ModifyApplicant} />
