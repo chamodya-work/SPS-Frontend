@@ -540,67 +540,50 @@ const MapDrop = ({
   }, [handleMouseMove, handleMouseUp]);
 
   // Update all conductor markers when zoom changes
-  const updateConductorMarkersOnZoom = useCallback(() => {
-    setMarkers(prevMarkers => 
-      prevMarkers.map(marker => {
-        if (marker.src === conductorsIcon && marker.matchedLine) {
-          // Recalculate scale and rotation based on current zoom
-          const newScale = calculateConductorScale(marker);
-          const newRotation = calculateConductorRotation(marker);
+  // const updateConductorMarkersOnZoom = useCallback(() => {
+  //   setMarkers(prevMarkers => 
+  //     prevMarkers.map(marker => {
+  //       if (marker.src === conductorsIcon && marker.matchedLine) {
+  //         // Recalculate scale and rotation based on current zoom
+  //         const newScale = calculateConductorScale(marker);
+  //         const newRotation = calculateConductorRotation(marker);
           
-          // Only update if changed (to avoid unnecessary re-renders)
-          if (Math.abs(newScale - (marker.scale || 1)) > 0.001 || 
-              Math.abs(newRotation - (marker.rotation || 0)) > 0.1) {
-            return {
-              ...marker,
-              scale: newScale,
-              rotation: newRotation
-            };
-          }
-        }
-        return marker;
-      })
-    );
-  }, [map, zoomScale, markers]);
+  //         // Only update if changed (to avoid unnecessary re-renders)
+  //         if (Math.abs(newScale - (marker.scale || 1)) > 0.001 || 
+  //             Math.abs(newRotation - (marker.rotation || 0)) > 0.1) {
+  //           return {
+  //             ...marker,
+  //             scale: newScale,
+  //             rotation: newRotation
+  //           };
+  //         }
+  //       }
+  //       return marker;
+  //     })
+  //   );
+  // }, [map, zoomScale, markers]);
 
   useEffect(() => {
-    const ZOOM_NO_CHANGE = 13; 
-    const ZOOM_MIN = 4; 
-    const MIN_FACTOR = 0.12; 
-    if (!map || typeof map.getZoom !== "function") return;
-    
-    const updateScale = () => {
-      try {
-        const z = map.getZoom();
-        let factor = 1;
-        if (z >= ZOOM_NO_CHANGE) factor = 1;
-        else if (z <= ZOOM_MIN) factor = MIN_FACTOR;
-        else
-          factor =
-            MIN_FACTOR + ((z - ZOOM_MIN) * (1 - MIN_FACTOR)) / (ZOOM_NO_CHANGE - ZOOM_MIN);
-        // Accent the effect so shrink feels stronger at low zooms
-        factor = Math.pow(factor, 1.25);
-        const newZoomScale = Number(factor.toFixed(3));
-        setZoomScale(newZoomScale);
-        
-        // Update conductor markers after zoom scale is set
-        updateConductorMarkersOnZoom();
-      } catch (e) {
-        console.error("Error updating zoom scale:", e);
-      }
-    };
-    
-    updateScale();
-    map.on("zoomend", updateScale);
-    
-    return () => {
-      try {
-        map.off("zoomend", updateScale);
-      } catch (e) {
-        console.error("Error removing zoom event listener:", e);
-      }
-    };
-  }, [map, updateConductorMarkersOnZoom]);
+  if (!map) return;
+
+  const updateScale = () => {
+    const z = map.getZoom();
+    let factor = 1;
+
+    if (z >= 13) factor = 1;
+    else if (z <= 4) factor = 0.12;
+    else factor = 0.12 + ((z - 4) * (1 - 0.12)) / (13 - 4);
+
+    factor = Math.pow(factor, 1.25);
+    setZoomScale(Number(factor.toFixed(3)));
+  };
+
+  updateScale();
+  map.on("zoomend", updateScale);
+
+  return () => map.off("zoomend", updateScale);
+}, [map]);
+
 
   const handleResize = (id, delta) => {
     setMarkers((prev) =>
@@ -867,7 +850,7 @@ const MapDrop = ({
             <React.Fragment key={`line-${i}`}>
               <Polyline
                 positions={lineLatLngs}
-                color={isLineSelected ? "blue" : "red"}
+                color="transparent"
                 weight={isLineSelected ? 5 : 3}
                 eventHandlers={{
                   click: () => handleLineClick(i),

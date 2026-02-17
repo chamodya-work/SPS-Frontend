@@ -28,25 +28,124 @@ const EstimationTable = ({
   selectedNodeId,
   selectedNodeDept,
   onClosePopup,
+  onEstimatesUpdate, // Add this prop to send estimates to parent
 }) => {
   const [estimates, setEstimates] = useState([]);
   const [estimateId, setEstimateId] = useState("");
   const [saving, setSaving] = useState(false);
+  const [westimateNo, setWestimateNo] = useState("");
+  const [loadingWestimateNo, setLoadingWestimateNo] = useState(false);
+  const [allocatedTo, setAllocatedTo] = useState("");
+
+  // Get allocatedTo from sessionStorage
+  useEffect(() => {
+    const getLoggedInUsername = () => {
+      const userData = localStorage.getItem("user");
+      if (userData) {
+        try {
+          const user = JSON.parse(userData);
+          return user.username || user.userId || user.email || "";
+        } catch (e) {
+          console.error("Error parsing user data:", e);
+        }
+      }
+      
+      const sessionUser = sessionStorage.getItem("allocatedTo");
+      if (sessionUser) return sessionUser;
+      
+      return "";
+    };
+
+    const username = getLoggedInUsername();
+    if (username) {
+      setAllocatedTo(username);
+    }
+  }, []);
+
+  // Fetch westimateNo when allocatedTo is available
+  useEffect(() => {
+    const fetchWestimateNo = async () => {
+      if (!allocatedTo) return;
+
+      setLoadingWestimateNo(true);
+      try {
+        const cleanAllocatedTo = allocatedTo.trim();
+        
+        const response = await fetch(
+          `${API_BASE_URL}/api/v1/spestedycon/appointments/${encodeURIComponent(cleanAllocatedTo)}`
+        );
+
+        if (response.ok) {
+          const data = await response.json();
+          
+          if (data && data.length > 0) {
+            let fetchedWestimateNo = "";
+            
+            if (Array.isArray(data[0])) {
+              fetchedWestimateNo = data[0][0];
+            } else if (typeof data[0] === 'object') {
+              fetchedWestimateNo = data[0].westimateNo || data[0].westimateNumber;
+            }
+            
+            if (fetchedWestimateNo && fetchedWestimateNo.trim()) {
+              const trimmedWestimateNo = fetchedWestimateNo.trim();
+              setWestimateNo(trimmedWestimateNo);
+              setEstimateId(trimmedWestimateNo);
+            } else {
+              const newWestimateNo = `WEST-${Date.now()}`;
+              setWestimateNo(newWestimateNo);
+              setEstimateId(newWestimateNo);
+            }
+          } else {
+            const newWestimateNo = `WEST-${Date.now()}`;
+            setWestimateNo(newWestimateNo);
+            setEstimateId(newWestimateNo);
+          }
+        } else {
+          const newWestimateNo = `WEST-${Date.now()}`;
+          setWestimateNo(newWestimateNo);
+          setEstimateId(newWestimateNo);
+        }
+      } catch (error) {
+        const newWestimateNo = `WEST-${Date.now()}`;
+        setWestimateNo(newWestimateNo);
+        setEstimateId(newWestimateNo);
+      } finally {
+        setLoadingWestimateNo(false);
+      }
+    };
+
+    if (allocatedTo) {
+      fetchWestimateNo();
+    }
+  }, [allocatedTo, API_BASE_URL]);
 
   useEffect(() => {
     const onReset = () => {
       setEstimates([]);
-      setEstimateId("");
+      if (!westimateNo) {
+        setEstimateId("");
+      }
     };
     window.addEventListener("reset-estimates", onReset);
     return () => window.removeEventListener("reset-estimates", onReset);
-  }, []);
+  }, [westimateNo]);
+
+  // Update local estimates and notify parent
+  const updateEstimates = (newEstimates) => {
+    setEstimates(newEstimates);
+    // Notify parent component about estimates change
+    if (onEstimatesUpdate) {
+      onEstimatesUpdate(newEstimates);
+    }
+  };
 
   const computeEstimateItems = useCallback(
     (srcMaterials, srcMarkers, id = null) => {
       const mats = srcMaterials || materials;
       const marks = srcMarkers || markers;
-      const newId = id || estimateId || `EST-${Date.now()}`;
+      
+      const newId = westimateNo || id || `WEST-${Date.now()}`;
       
       const materialMap = new Map();
       
@@ -158,19 +257,9 @@ const EstimationTable = ({
         };
       });
 
-      const filtered = items.filter((it) => it.qty > 0);
-      if (filtered.length === 0) {
-        try {
-          console.log('DEBUG: computeEstimateItems produced 0 items', {
-            materialMap: Array.from(materialMap.entries()).map(([k,v]) => ({ key:k, resCd:v.resCd, deptId:v.deptId, qty:v.qty, unitPrice:v.unitPrice })),
-            matsSample: (mats || []).slice(0,5),
-            marksSample: (marks || []).slice(0,5),
-          });
-        } catch (e) {}
-      }
-      return filtered;
+      return items.filter((it) => it.qty > 0);
     },
-    [materials, markers, estimateId]
+    [materials, markers, westimateNo]
   );
 
   const handleCreateEstimate = () => {
@@ -183,14 +272,15 @@ const EstimationTable = ({
       alert("No materials available to create estimate");
       return;
     }
-    const newEstimateId = `EST-${Date.now()}`;
+    
+    const newEstimateId = westimateNo || `WEST-${Date.now()}`;
     setEstimateId(newEstimateId);
     const estimateItems = computeEstimateItems(
       materials,
       markers,
       newEstimateId
     );
-    setEstimates(estimateItems);
+    updateEstimates(estimateItems);
   };
 
   const handleSaveToDB = async () => {
@@ -201,7 +291,7 @@ const EstimationTable = ({
 
     setSaving(true);
     try {
-      const estimateNoToUse = estimateId && estimateId.length > 0 ? estimateId : `EST-${Date.now()}`;
+      const estimateNoToUse = westimateNo || (estimateId && estimateId.length > 0 ? estimateId : `WEST-${Date.now()}`);
 
       const headerBody = {
         estimateNo: estimateNoToUse,
@@ -234,6 +324,10 @@ const EstimationTable = ({
       }
 
       const finalEstimateNo = serverHeader?.estimateNo || headerBody.estimateNo || estimateNoToUse;
+
+      if (finalEstimateNo !== estimateNoToUse) {
+        setEstimateId(finalEstimateNo);
+      }
 
       try {
         const nowIso = new Date().toISOString();
@@ -395,8 +489,10 @@ const EstimationTable = ({
 
       if (pcFailures.length === 0 && spFailures.length === 0 && httFailures.length === 0) {
         alert("Successfully saved estimates to all tables!");
-        setEstimates([]);
-        setEstimateId("");
+        updateEstimates([]);
+        if (!westimateNo) {
+          setEstimateId("");
+        }
       } else {
         let errorMessage = "Some saves failed:\n";
         if (pcFailures.length > 0) errorMessage += `- pcestdtt: ${pcFailures.length} failures\n`;
@@ -427,26 +523,15 @@ const EstimationTable = ({
           u.tot === estimates[i].tot
       );
     if (!same) {
-      setEstimates(updated);
-      if (!updated.length) setEstimateId("");
+      updateEstimates(updated);
+      if (!updated.length && !westimateNo) setEstimateId("");
     }
-  }, [markers, materials, computeEstimateItems, estimateId, estimates]);
+  }, [markers, materials, computeEstimateItems, estimateId, estimates, westimateNo]);
 
   const totalCost = estimates.reduce((sum, item) => sum + item.tot, 0);
-  const updateEstimateQtyOld = (index, newVal) => {
-    const val = Number.isNaN(Number(newVal))
-      ? 0
-      : Math.max(0, parseInt(Number(newVal), 10));
-    setEstimates((prev) => {
-      const copy = Array.isArray(prev) ? [...prev] : [];
-      if (!copy[index]) return prev;
-      copy[index] = { ...copy[index], estimateQtyOld: val };
-      return copy;
-    });
-  };
 
   return (
-    <div style={{ marginTop: 8 }}>
+    <div className="estimation-table-container" style={{ marginTop: 8 }}>
       <div
         className="estimation-actions"
         style={{
@@ -459,7 +544,7 @@ const EstimationTable = ({
       >
         {estimates && estimates.length > 0 && (
           <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-            <div style={{ color: "#334155", fontSize: 13 }}>Estimate No:</div>
+            <div style={{ color: "#334155", fontSize: 13 }}>Work Estimate No:</div>
             <div
               style={{
                 background: "#eef2ff",
@@ -469,7 +554,11 @@ const EstimationTable = ({
                 color: "#1e293b",
               }}
             >
-              {estimateId || "-"}
+              {loadingWestimateNo ? (
+                <span style={{ color: "#64748b" }}>Loading...</span>
+              ) : (
+                estimateId || "-"
+              )}
             </div>
           </div>
         )}
@@ -550,7 +639,6 @@ const EstimationTable = ({
                     {estimate.resType || "-"}
                   </td>
                   <td style={{ border: "1px solid #e2e8f0", padding: "8px", textAlign: "right" }}>
-                    {/* Read-only: no modification in Estimation table */}
                     {estimate.estimateQtyOld != null ? estimate.estimateQtyOld : 0}
                   </td>
                   <td style={{ border: "1px solid #e2e8f0", padding: "8px", textAlign: "right" }}>
