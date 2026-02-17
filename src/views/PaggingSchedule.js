@@ -1,4 +1,4 @@
-// views/PaggingSchedule.js (refactored version)
+// views/PaggingSchedule.js
 import React, { useEffect, useState, useRef, useMemo } from "react";
 import {
   MapContainer,
@@ -7,6 +7,7 @@ import {
   Circle,
   Marker,
 } from "react-leaflet";
+import { useLocation } from 'react-router-dom';
 import { DndContext } from "@dnd-kit/core";
 import "leaflet/dist/leaflet.css";
 import L from "leaflet";
@@ -76,6 +77,10 @@ const PaggingSchedule = ({ onClosePopup }) => {
   // Inline search suggestions (Sri Lanka locations)
   const [suggestions, setSuggestions] = useState([]);
   const suggestTimerRef = useRef(null);
+  const location = useLocation();
+  
+  // Add estimates state here
+  const [estimates, setEstimates] = useState([]);
 
   // MapDrop's lightweight layer toggle (small map) -> update our base layer
   const handleBaseLayerChange = (key) => {
@@ -106,6 +111,33 @@ const PaggingSchedule = ({ onClosePopup }) => {
     selectedNode?.lat != null ? Number(selectedNode.lat) : undefined;
   const selLng =
     selectedNode?.lng != null ? Number(selectedNode.lng) : undefined;
+
+      
+useEffect(() => {
+  // Get from location state
+  if (location.state) {
+    // Update to use westimateNo instead of referenceNo
+    if (location.state.westimateNo) {
+      // Store in sessionStorage for EstimationTable
+      sessionStorage.setItem("westimateNo", location.state.westimateNo);
+    }
+    if (location.state.allocatedTo) {
+      sessionStorage.setItem("allocatedTo", location.state.allocatedTo);
+    }
+  }
+  
+  // Or get from sessionStorage
+  const storedWestimateNo = sessionStorage.getItem('westimateNo');
+  const storedAlloc = sessionStorage.getItem('allocatedTo');
+  
+  if (storedWestimateNo) {
+    // You can use this state if needed elsewhere
+    console.log("WestimateNo from storage:", storedWestimateNo);
+  }
+  if (storedAlloc) {
+    console.log("AllocatedTo from storage:", storedAlloc);
+  }
+}, [location]);
 
   useEffect(() => {
     fetch(`${API_BASE_URL}/api/sppeg`)
@@ -294,51 +326,108 @@ const PaggingSchedule = ({ onClosePopup }) => {
   }, []);
 
   // --- Modify estimate handlers ---
-  const handleModifySearch = async () => {
-    if (!modifyEstimateNo || !modifyEstimateNo.trim()) {
-    }
-    setModifyLoading(true);
-    setModifyError(null);
-    setModifyData(null);
+const handleModifySearch = async () => {
+  if (!modifyEstimateNo || !modifyEstimateNo.trim()) {
+    alert('Please enter an estimate number');
+    return;
+  }
+  
+  setModifyLoading(true);
+  setModifyError(null);
+  setModifyData(null);
+  
+  try {
+    console.log('Searching for estimate:', modifyEstimateNo);
+    
+    // FIRST: Try to fetch from pcestdtt (this is where your data is saved from EstimationTable)
+    let details = [];
     try {
-      // First try to fetch material/detail rows from the working endpoint
-      let details = [];
+      const dres = await fetch(`${API_BASE_URL}/api/pcestdtt/estimate?estimateNo=${encodeURIComponent(modifyEstimateNo)}`);
+      console.log('pcestdtt response status:', dres.status);
+      
+      if (dres.ok) {
+        details = await dres.json();
+        console.log('pcestdtt response data:', details);
+        
+        // Transform pcestdtt data to match the format expected by the modify popup
+        details = details.map((d) => ({
+          id: {
+            lineSectionTypeId: modifyEstimateNo,
+            resCd: d.resCd || d.id?.resCd || '',
+            deptId: d.deptId || d.id?.deptId || d.DEPT_ID || "4"
+          },
+          resCd: d.resCd || d.id?.resCd || '',
+          deptId: d.deptId || d.id?.deptId || d.DEPT_ID || "4",
+          resName: d.resName || d.res_name || '',
+          uom: d.uom || d.UOM || 'NOS',
+          estimateQty: d.estimateQty ?? 0,
+          unitPrice: d.unitPrice ?? 0,
+          tolerance: d.tolerance ?? 0,
+          estimateQtyOld: d.estimateQtyOld ?? d.estimateQty ?? 0,
+          resType: d.resType || null,
+          resCat: d.resCat || null
+        }));
+        
+        console.log('Transformed pcestdtt details:', details);
+      }
+    } catch (e) {
+      console.warn('pcestdtt fetch error:', e);
+    }
+
+    // SECOND: If no details found in pcestdtt, try spPeggingDmt as fallback
+    if (details.length === 0) {
       try {
-        const dres = await fetch(`${API_BASE_URL}/api/spPeggingDmt/lineSectionType/${encodeURIComponent(modifyEstimateNo)}`);
-        if (dres.ok) {
-          details = await dres.json();
-          // normalize numeric fields for editing
-          details = details.map((d) => ({
+        const sres = await fetch(`${API_BASE_URL}/api/spPeggingDmt/lineSectionType/${encodeURIComponent(modifyEstimateNo)}`);
+        console.log('spPeggingDmt response status:', sres.status);
+        
+        if (sres.ok) {
+          const spData = await sres.json();
+          console.log('spPeggingDmt response data:', spData);
+          
+          details = spData.map((d) => ({
             ...d,
-            estimateQty: d.estimateQty ?? d.estimate_qty ?? d.qty ?? d.quantity ?? 0,
-            unitPrice: d.unitPrice ?? d.unit_price ?? extractUnitPrice(d) ?? 0,
+            id: d.id,
+            resCd: d.id?.resCd || d.resCd,
+            deptId: d.id?.deptId || d.deptId,
+            estimateQty: d.estimateQty ?? 0,
+            unitPrice: d.unitPrice ?? 0,
           }));
-        } else {
-          // if details endpoint returns non-OK, log but don't fail completely
-          const txt = await dres.text();
-          console.warn('Details fetch returned non-ok', dres.status, txt);
         }
       } catch (e) {
-        console.warn('Details fetch error', e);
+        console.warn('spPeggingDmt fetch error:', e);
       }
-
-      // Optionally try to fetch header metadata (pcesthtt). If not present, continue with details only.
-      let header = null;
-      try {
-        const hres = await fetch(`${API_BASE_URL}/api/pcesthtt/${encodeURIComponent(modifyEstimateNo)}`);
-        if (hres.ok) header = await hres.json();
-      } catch (e) {
-        // ignore header errors
-      }
-
-      setModifyData({ header, details });
-    } catch (err) {
-      console.error(err);
-      setModifyError(err instanceof Error ? err.message : String(err));
-    } finally {
-      setModifyLoading(false);
     }
-  };
+
+    // Fetch header from pcesthtt
+    let header = null;
+    try {
+      const hres = await fetch(`${API_BASE_URL}/api/pcesthtt/${encodeURIComponent(modifyEstimateNo)}`);
+      console.log('pcesthtt response status:', hres.status);
+      
+      if (hres.ok) {
+        header = await hres.json();
+        console.log('pcesthtt response data:', header);
+      }
+    } catch (e) {
+      console.warn('pcesthtt fetch error:', e);
+    }
+
+    // Set the data
+    setModifyData({ header, details });
+    
+    if (details.length === 0 && !header) {
+      setModifyError('No estimate found with this number');
+    } else if (details.length === 0) {
+      setModifyError('Estimate header found but no details available in either table');
+    }
+    
+  } catch (err) {
+    console.error('Search error:', err);
+    setModifyError(err instanceof Error ? err.message : String(err));
+  } finally {
+    setModifyLoading(false);
+  }
+};
 
   const handleModifySave = async () => {
     if (!modifyData || !modifyData.header) return;
@@ -378,21 +467,33 @@ const PaggingSchedule = ({ onClosePopup }) => {
     });
   };
 
-  const handleAddDetail = () => {
-    const newRow = {
-      id: { resCd: '' },
-      resName: '',
-      uom: '',
-      estimateQty: 1,
-      unitPrice: 0,
-      tolerance: 0,
-      _isNew: true,
-    };
-    setModifyData((prev) => {
-      const details = Array.isArray(prev?.details) ? [newRow, ...prev.details] : [newRow];
-      return { ...(prev || {}), details };
-    });
+const handleAddDetail = () => {
+  const estimateNo = modifyData?.header?.estimateNo || modifyEstimateNo || '';
+  
+  const newRow = {
+    id: {
+      lineSectionTypeId: estimateNo,
+      resCd: '',
+      deptId: '4'
+    },
+    poleTypeId: null,
+    pointTypeId: estimateNo,
+    resType: null,
+    resCat: null,
+    resName: '',
+    uom: 'NOS',
+    estimateQtyOld: 0,
+    tolerance: 0,
+    unitPrice: 0,
+    estimateQty: 1,
+    _isNew: true,
   };
+  
+  setModifyData((prev) => {
+    const details = Array.isArray(prev?.details) ? [newRow, ...prev.details] : [newRow];
+    return { ...(prev || {}), details };
+  });
+};
 
   const handleRemoveDetail = (index) => {
     setModifyData((prev) => {
@@ -403,33 +504,130 @@ const PaggingSchedule = ({ onClosePopup }) => {
     });
   };
 
-  const handleSaveDetails = async () => {
-    if (!modifyData || !modifyData.details || modifyData.details.length === 0) {
-      alert('No detail rows to save');
-      return;
-    }
-    const estimateNo = modifyData.header?.estimateNo || modifyEstimateNo;
-    if (!estimateNo) {
-      alert('Estimate number required to save details');
-      return;
-    }
+const handleSaveDetails = async () => {
+  if (!modifyData || !modifyData.details || modifyData.details.length === 0) {
+    alert('No detail rows to save');
+    return;
+  }
+  
+  const estimateNo = modifyData.header?.estimateNo || modifyEstimateNo;
+  if (!estimateNo) {
+    alert('Estimate number required to save details');
+    return;
+  }
+  
+  setModifyLoading(true);
+  setModifyError(null);
+  
+  try {
+    console.log('Saving details for estimate:', estimateNo);
+    console.log('Details to save:', modifyData.details);
+
+    let spPeggingSuccess = false;
+    let pcestdttSuccess = false;
+
+    // 1. Save to spPeggingDmt (using the correct endpoint)
     try {
-      const url = `${API_BASE_URL}/api/spPeggingDmt/estimate?estimateNo=${encodeURIComponent(estimateNo)}`;
-      const res = await fetch(url, {
+      const spDetails = modifyData.details.map(detail => ({
+        id: {
+          lineSectionTypeId: estimateNo,
+          resCd: detail.resCd || detail.id?.resCd || detail.res_cd || detail.resCode || '',
+          deptId: detail.deptId || detail.id?.deptId || detail.DEPT_ID || "4"
+        },
+        poleTypeId: detail.poleTypeId || null,
+        pointTypeId: estimateNo,
+        resType: detail.resType || null,
+        resCat: detail.resCat || null,
+        resName: detail.resName || detail.res_name || detail.description || '',
+        uom: detail.uom || detail.UOM || detail.unit || 'NOS',
+        estimateQtyOld: detail.estimateQtyOld != null ? Number(detail.estimateQtyOld) : Number(detail.estimateQty || 0),
+        tolerance: detail.tolerance != null ? Number(detail.tolerance) : 0,
+        unitPrice: detail.unitPrice != null ? Number(detail.unitPrice) : 0,
+        estimateQty: detail.estimateQty != null ? Number(detail.estimateQty) : 0
+      }));
+
+      const spUrl = `${API_BASE_URL}/api/spPeggingDmt/estimate?estimateNo=${encodeURIComponent(estimateNo)}`;
+      const spResponse = await fetch(spUrl, {
         method: 'PUT',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(modifyData.details),
+        body: JSON.stringify(spDetails),
       });
-      if (!res.ok) {
-        const txt = await res.text();
-        throw new Error(`Save details failed: ${res.status} ${res.statusText} ${txt}`);
+
+      if (spResponse.ok) {
+        spPeggingSuccess = true;
+        console.log('spPeggingDmt save successful');
+      } else {
+        const error = await spResponse.text();
+        console.error('spPeggingDmt save failed:', error);
       }
-      alert('Details saved successfully');
     } catch (e) {
-      console.error(e);
-      alert('Failed to save details: ' + (e instanceof Error ? e.message : String(e)));
+      console.error('spPeggingDmt save error:', e);
     }
-  };
+
+    // 2. Save to pcestdtt (this is the table your EstimationTable saves to)
+    try {
+      // First, delete existing records for this estimate
+      try {
+        const deleteUrl = `${API_BASE_URL}/api/pcestdtt/estimate?estimateNo=${encodeURIComponent(estimateNo)}`;
+        await fetch(deleteUrl, { method: 'DELETE' });
+      } catch (e) {
+        console.warn('Delete existing pcestdtt records error:', e);
+      }
+
+      // Then insert new records
+      for (const detail of modifyData.details) {
+        const pcestdttData = {
+          estimateNo: estimateNo,
+          revNo: 0,
+          deptId: detail.deptId || detail.id?.deptId || detail.DEPT_ID || "4",
+          resCd: detail.resCd || detail.id?.resCd || detail.res_cd || detail.resCode || '',
+          uom: detail.uom || detail.UOM || 'NOS',
+          unitPrice: Number(detail.unitPrice || 0),
+          estimateQty: Number(detail.estimateQty || 0),
+          estimateCost: Number(detail.estimateQty || 0) * Number(detail.unitPrice || 0),
+          resType: detail.resType || null,
+          resCat: detail.resCat || null,
+          resName: detail.resName || detail.res_name || detail.description || ''
+        };
+
+        const pcResponse = await fetch(`${API_BASE_URL}/api/pcestdtt`, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify(pcestdttData),
+        });
+
+        if (pcResponse.ok) {
+          pcestdttSuccess = true;
+        }
+      }
+      console.log('pcestdtt save completed');
+    } catch (e) {
+      console.error('pcestdtt save error:', e);
+    }
+
+    // Show appropriate success message
+    if (spPeggingSuccess && pcestdttSuccess) {
+      alert('✅ Details saved successfully to both tables!');
+    } else if (spPeggingSuccess) {
+      alert('⚠️ Saved to spPeggingDmt only. pcestdtt save failed.');
+    } else if (pcestdttSuccess) {
+      alert('⚠️ Saved to pcestdtt only. spPeggingDmt save failed.');
+    } else {
+      alert('❌ Failed to save to any table. Check console for errors.');
+    }
+
+    // Refresh the data
+    setTimeout(() => {
+      handleModifySearch();
+    }, 500);
+    
+  } catch (e) {
+    console.error('Save details error:', e);
+    alert('Failed to save details: ' + (e instanceof Error ? e.message : String(e)));
+  } finally {
+    setModifyLoading(false);
+  }
+};
 
   // Helpers: format currency and compute totals for modify details
   const formatCurrency = (v) => {
@@ -544,7 +742,8 @@ const PaggingSchedule = ({ onClosePopup }) => {
                         setSearchLatLng={setSearchLatLng}
                         mapInstance={mapInstance}
                       />
-                      <SaveMap markers={markers} />
+                      {/* Update SaveMap to pass estimates */}
+                      <SaveMap markers={markers} estimates={estimates} />
                       <LoadMap setMarkers={setMarkers} mapInstance={mapInstance} />
                       <DeleteSelected
                         markers={markers}
@@ -1179,6 +1378,7 @@ const PaggingSchedule = ({ onClosePopup }) => {
                           null
                         }
                         onClosePopup={() => setShowEstimatePopup(false)}
+                        onEstimatesUpdate={setEstimates} // Add this line
                       />
                     </div>
                   </div>

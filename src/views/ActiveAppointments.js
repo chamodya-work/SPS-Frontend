@@ -10,18 +10,24 @@ const ActiveAppointments = () => {
 
   // Get logged-in user's username (adjust based on your auth system)
   const getLoggedInUsername = () => {
-    // Method 1: From localStorage (if you store user info there)
+    // Method 1: From localStorage
     const userData = localStorage.getItem("user");
     if (userData) {
       try {
         const user = JSON.parse(userData);
-        return user.username || user.userId || user.email;
+        return user.username || user.userId || user.email || "DEFAULT_USER";
       } catch (e) {
         console.error("Error parsing user data:", e);
+        return "DEFAULT_USER";
       }
     }
-
-
+    
+    // Method 2: From sessionStorage
+    const sessionUser = sessionStorage.getItem("username");
+    if (sessionUser) return sessionUser;
+    
+    
+    return "DEFAULT_USER"; // Fallback
   };
 
   // Function to fetch appointments from API
@@ -47,23 +53,23 @@ const ActiveAppointments = () => {
       
       // Transform API response to match expected format
       const transformedData = response.data.map((item, index) => {
-        // Assuming API returns array of [referenceNo, description] or objects
+        // Assuming API returns array of [westimateNo, description] or objects
         if (Array.isArray(item)) {
           return {
             id: index + 1,
-            referenceNumber: item[0] || "N/A",
+            westimateNo: item[0] || "N/A",
             description: item[1] || "No description"
           };
         } else if (typeof item === 'object') {
           return {
             id: index + 1,
-            referenceNumber: item.referenceNo || item.referenceNumber || "N/A",
+            westimateNo: item.westimateNo || item.westimateNumber || "N/A",
             description: item.description || "No description"
           };
         }
         return {
           id: index + 1,
-          referenceNumber: "N/A",
+          westimateNo: "N/A",
           description: "Invalid data format"
         };
       });
@@ -94,19 +100,7 @@ const ActiveAppointments = () => {
       
       // Fallback to dummy data for testing (remove in production)
       console.warn("Using dummy data due to API error");
-      const dummyAppointments = [
-        {
-          id: 1,
-          referenceNumber: "REF-2023-001",
-          description: "Quarterly maintenance check for electrical systems"
-        },
-        {
-          id: 2,
-          referenceNumber: "REF-2023-002",
-          description: "Site inspection for new construction project"
-        }
-      ];
-      setAppointments(dummyAppointments);
+      
     } finally {
       setLoading(false);
     }
@@ -124,12 +118,38 @@ const ActiveAppointments = () => {
     }
   }, []); // Empty dependency array means run once on mount
 
-  const handleReferenceClick = (referenceNumber) => {
-    // Navigate to PeggingSchedule page with reference number
+  const handleWestimateNoClick = (westimateNo) => {
+    const username = getLoggedInUsername();
+    
+    // Store in sessionStorage so EstimationTable can access it
+    sessionStorage.setItem("westimateNo", westimateNo);
+    sessionStorage.setItem("allocatedTo", username);
+    
+    // Or pass via state
     history.push({
       pathname: "/admin/peggingSchedule",
-      state: { referenceNumber: referenceNumber }
+      state: { 
+        westimateNo: westimateNo,
+        allocatedTo: username 
+      }
     });
+  };
+
+    // Function to download user guide PDF
+  const downloadUserGuide = () => {
+    // Replace this URL with the actual path to your user guide PDF
+    const userGuideUrl = "/User_guide.pdf"; // Relative path to your PDF in public folder
+    
+    // Alternatively, if you have an absolute URL:
+    // const userGuideUrl = "https://your-domain.com/path/to/user-guide.pdf";
+    
+    // Create a temporary anchor element to trigger download
+    const link = document.createElement("a");
+    link.href = userGuideUrl;
+    link.download = "User_Guide.pdf"; // Name of the downloaded file
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
   };
 
   // Refresh appointments
@@ -187,18 +207,25 @@ const ActiveAppointments = () => {
                 Active Appointments
               </h2>
               <button
-                onClick={handleRefresh}
+                onClick={downloadUserGuide}
                 className="px-3 py-1 text-xs bg-blue-500 text-white rounded hover:bg-blue-600 flex items-center"
-                disabled={loading}
+                title="Download User Guide PDF"
               >
-                {loading ? (
-                  <>
-                    <div className="animate-spin rounded-full h-3 w-3 border-b-2 border-white mr-1"></div>
-                    Refreshing...
-                  </>
-                ) : (
-                  "Refresh"
-                )}
+                <svg 
+                  className="w-4 h-4 mr-1" 
+                  fill="none" 
+                  stroke="currentColor" 
+                  viewBox="0 0 24 24" 
+                  xmlns="http://www.w3.org/2000/svg"
+                >
+                  <path 
+                    strokeLinecap="round" 
+                    strokeLinejoin="round" 
+                    strokeWidth="2" 
+                    d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"
+                  ></path>
+                </svg>
+                User Guide
               </button>
             </div>
           </div>
@@ -224,7 +251,7 @@ const ActiveAppointments = () => {
                   <thead className="bg-gray-50">
                     <tr>
                       <th className="px-4 py-2 text-left text-xs font-bold text-black uppercase tracking-wider">
-                        Reference Number
+                        Work Estimation Number
                       </th>
                       <th className="px-4 py-2 text-left text-xs font-bold text-black uppercase tracking-wider">
                         Description
@@ -236,11 +263,11 @@ const ActiveAppointments = () => {
                       <tr key={appointment.id} className="hover:bg-gray-50">
                         <td className="px-4 py-3 whitespace-nowrap">
                           <button
-                            onClick={() => handleReferenceClick(appointment.referenceNumber)}
+                            onClick={() => handleWestimateNoClick(appointment.westimateNo)}
                             className="text-sm font-medium text-blue-600 hover:text-blue-800 hover:underline focus:outline-none focus:ring-2 focus:ring-blue-300 rounded px-2 py-1"
                             title="Click to view pegging schedule"
                           >
-                            {appointment.referenceNumber}
+                            {appointment.westimateNo}
                           </button>
                         </td>
                         <td className="px-4 py-3">
