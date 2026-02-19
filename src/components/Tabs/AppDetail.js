@@ -301,7 +301,7 @@ const AppDetails = ({ onInputChange, isModify, data, handleSearch }) => {
     onInputChange(newData);
   };
 
-  const handleSearchClick = () => {  
+  const handleSearchClick = () => { 
     if (handleSearch && appData.applicationId) {
       handleSearch(appData.applicationId);  
     }

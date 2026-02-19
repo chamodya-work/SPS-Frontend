@@ -222,6 +222,197 @@
 
 // export default NewApplication;
 // Updated: sanjula
+// import AppDetails from "components/Tabs/AppDetail";
+// import LocationalDetails from "components/Tabs/LocationalDetail";
+// import PersonalDetails from "components/Tabs/PersonalDetail";
+// import TechDetails from "components/Tabs/TechDetails";
+// import { useState } from "react";
+// import React from "react";
+// import { useHistory } from "react-router-dom";
+
+// const tabs = [
+//   { id: "application", label: "Application Details" },
+//   { id: "personal", label: "Personal Details" },
+//   { id: "locational", label: "Service Location Details" },
+//   { id: "technical", label: "Technical Details" },
+// ];
+
+// const NewApplication = ({
+//   onFormSubmit,
+//   isModify,
+//   formData,
+//   setFormData,
+//   handleSearch,
+// }) => {
+//   const [currentIndex, setCurrentIndex] = useState(0);
+//   const [completedTabs, setCompletedTabs] = useState([false, false, false, false]);
+//   const history = useHistory();
+
+//   const handleNext = () => {
+//     if (currentIndex < tabs.length - 1) {
+//       setCompletedTabs((prev) => {
+//         const newTabs = [...prev];
+//         newTabs[currentIndex] = true;
+//         return newTabs;
+//       });
+//       setCurrentIndex((prev) => prev + 1);
+//     }
+//   };
+
+//   const handlePrevious = () => {
+//     if (currentIndex > 0) {
+//       setCompletedTabs((prev) => {
+//         const newTabs = [...prev];
+//         if (currentIndex - 1 >= 0) {
+//           newTabs[currentIndex - 1] = false;
+//         }
+//         return newTabs;
+//       });
+//       setCurrentIndex((prev) => prev - 1);
+//     }
+//   };
+
+//   const handleInputChange = (section, data) => {
+//     setFormData((prevData) => ({
+//       ...prevData,
+//       [section]: { ...prevData[section], ...data },
+//     }));
+//   };
+
+//   const handleSubmit = () => {
+//     onFormSubmit(formData);
+//   };
+
+//   const handleUpdateClick = () => {
+//     history.push("/application/modify");
+//   };
+
+//   return (
+//     <div className="w-full bg-white rounded-lg shadow-lg p-6">
+//       {/* Stepper */}
+//       <div className="flex justify-between items-center mb-8 relative">
+//         {tabs.map((tab, index) => (
+//           <div key={tab.id} className="relative flex-1 flex flex-col items-center">
+//             {index > 0 && (
+//               <div
+//                 className={`absolute top-5 left-0 transform -translate-y-1/2 h-0.5 w-full ${
+//                   completedTabs[index - 1] ? "bg-gray" : "bg-gray-300"
+//                 }`}
+//                 style={{ left: "-50%", width: "100%", zIndex: 0 }}
+//               ></div>
+//             )}
+//             <div
+//               className="w-10 h-10 flex items-center justify-center rounded-full border-2 transition-all z-10 bg-white cursor-pointer"
+//               style={{
+//                 borderColor: completedTabs[index] 
+//                   ? "#10b981" 
+//                   : (index === currentIndex ? "#dee110" : "#d1d5db"),
+//                 backgroundColor: completedTabs[index] 
+//                   ? "#10b981" 
+//                   : (index === currentIndex ? "#dee110" : "white"),
+//                 color: completedTabs[index] || index === currentIndex ? "white" : "#6b7280",
+//               }}
+//               onClick={() => {
+//                 if (index <= currentIndex || completedTabs[index - 1] || index === 0) {
+//                   setCurrentIndex(index);
+//                 }
+//               }}
+//             >
+//               {index + 1}
+//             </div>
+//             <span className={`text-sm mt-2 text-center font-medium ${
+//               index === currentIndex ? "text-gray" : "text-gray-600"
+//             }`}>
+//               {tab.label}
+//             </span>
+//           </div>
+//         ))}
+//       </div>
+
+//       {/* Section Title */}
+//       <div className="text-center mb-4">
+//         <h2 className="text-lg font-bold text-gray-800">{tabs[currentIndex].label}</h2>
+//       </div>
+
+//       {/* Content */}
+//       <div className="bg-gray-50 rounded-lg border mb-4">
+//         <div className="p-6">
+//           {tabs[currentIndex].id === "application" && (
+//             <AppDetails
+//               onInputChange={(data) => handleInputChange("appDetails", data)}
+//               isModify={isModify}
+//               data={formData.appDetails}
+//               handleSearch={handleSearch}
+//             />
+//           )}
+
+//           {tabs[currentIndex].id === "personal" && (
+//             <PersonalDetails
+//               onInputChange={(data) => handleInputChange("personalDetails", data)}
+//               data={formData.personalDetails}
+//             />
+//           )}
+
+//           {tabs[currentIndex].id === "locational" && (
+//             <LocationalDetails
+//               onInputChange={(data) => handleInputChange("locationalDetails", data)}
+//               data={formData.locationalDetails}
+//             />
+//           )}
+
+//           {tabs[currentIndex].id === "technical" && (
+//             <TechDetails
+//               onInputChange={(data) => handleInputChange("techDetails", data)}
+//               data={formData.techDetails}
+//             />
+//           )}
+//         </div>
+//       </div>
+
+//       {/* Buttons */}
+//       <div className="flex justify-between items-center bg-white rounded-b-lg px-2 py-2 border-t">
+//         <div>
+//           {!isModify && (
+//             <button
+//               onClick={handleUpdateClick}
+//               className="bg-[#7c0000] text-white text-sm px-4 py-2 rounded shadow hover:bg-[#a00000] focus:outline-none focus:ring-2 focus:ring-[#7c0000] focus:ring-opacity-50"
+//             >
+//               Edit
+//             </button>
+//           )}
+//         </div>
+//         <div className="flex space-x-3">
+//           {currentIndex > 0 && (
+//             <button
+//               onClick={handlePrevious}
+//               className="bg-[#7c0000] text-white text-sm px-4 py-2 rounded shadow hover:bg-[#a00000] focus:outline-none focus:ring-2 focus:ring-[#7c0000] focus:ring-opacity-50"
+//             >
+//               Previous
+//             </button>
+//           )}
+//           {currentIndex < tabs.length - 1 ? (
+//             <button
+//               onClick={handleNext}
+//               className="bg-[#7c0000] text-white text-sm px-4 py-2 rounded shadow hover:bg-[#a00000] focus:outline-none focus:ring-2 focus:ring-[#7c0000] focus:ring-opacity-50"
+//             >
+//               Next
+//             </button>
+//           ) : (
+//             <button
+//               onClick={handleSubmit}
+//               className="bg-[#7c0000] text-white text-sm px-4 py-2 rounded shadow hover:bg-[#a00000] focus:outline-none focus:ring-2 focus:ring-[#7c0000] focus:ring-opacity-50"
+//             >
+//               {isModify ? "Update" : "Submit"}
+//             </button>
+//           )}
+//         </div>
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default NewApplication;
+
 import AppDetails from "components/Tabs/AppDetail";
 import LocationalDetails from "components/Tabs/LocationalDetail";
 import PersonalDetails from "components/Tabs/PersonalDetail";
