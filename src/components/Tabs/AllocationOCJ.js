@@ -239,7 +239,7 @@ const AllocationOCJ = () => {
                   value={estimateNo}
                   onChange={handleInputChange}
                   placeholder="Enter Estimate Number"
-                  className={`p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150 ${
+                  className={`p-2 w-1/2 border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150 ${
                     error ? "border-red-500" : ""
                   }`}
                 />
