@@ -396,21 +396,41 @@ export default function HeaderStats() {
                   { name: 'standard cost estimate', path: '/estimation/estimate' }
                 ];
 
+                // NEW: Normalization function 
+                const normalizeString = (str) => str.replace(/[\s\u00A0]+/g, ' ').trim();
+
                 // NEW: Find the matching path based on activity name
                 const getNavigatePath = (activityName) => {
-                  const lowerName = activityName.toLowerCase();
+                  // Normalize the input activity name first
+                  const normalizedName = normalizeString(activityName.toLowerCase());
+                  // const lowerName = activityName.toLowerCase();
                   
-                  for (const [key, path] of Object.entries(pathMappings)) {
-                    if (lowerName.includes(key) && key !== 'default') {
-                      return path;
-                    }
-                  }
+                  // for (const [key, path] of Object.entries(pathMappings)) {
+                  //   if (lowerName.includes(key) && key !== 'default') {
+                  //     return path;
+                  //   }
+                  // }
 
-                   // Then check new menu mappings
-                  const matchedMenu = menuPathMappings.find(m => lowerName.includes(m.name));
-                  if (matchedMenu) {
-                    return matchedMenu.path;
-                  }
+                   // First check existing commission mappings
+                    for (const [key, path] of Object.entries(pathMappings)) {
+                      if (normalizedName.includes(key) && key !== 'default') {
+                        return path;
+                      }
+                    }
+
+                     // Then check new menu mappings (their names are already regular spaces)
+                    const matchedMenu = menuPathMappings.find(m => 
+                      normalizedName.includes(m.name) // m.name is regular, normalizedName is clean
+                    );
+                    if (matchedMenu) {
+                      return matchedMenu.path;
+                    }
+
+                  //  // Then check new menu mappings
+                  // const matchedMenu = menuPathMappings.find(m => lowerName.includes(m.name));
+                  // if (matchedMenu) {
+                  //   return matchedMenu.path;
+                  // }
                   
                   return pathMappings.default;
                 };
