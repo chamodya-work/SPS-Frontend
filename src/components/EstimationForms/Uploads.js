@@ -1,6 +1,79 @@
+// import React, { useState, useCallback } from "react";
+// import { useDropzone } from "react-dropzone";
+// import { Trash, File, } from "lucide-react";
+// import { FaCloudUploadAlt } from "react-icons/fa";
+
+// const Uploads = () => {
+//   const [files, setFiles] = useState([]);
+
+//   const onDrop = useCallback((acceptedFiles) => {
+//     const mappedFiles = acceptedFiles.map((file) =>
+//       Object.assign(file, {
+//         preview: URL.createObjectURL(file),
+//       })
+//     );
+//     setFiles((prevFiles) => [...prevFiles, ...mappedFiles]);
+//   }, []);
+
+//   const removeFile = (name) => {
+//     setFiles((prevFiles) => prevFiles.filter((file) => file.name !== name));
+//   };
+
+//   const { getRootProps, getInputProps, isDragActive } = useDropzone({
+//     onDrop,
+//     accept: { "image/*": [], "application/pdf": [] }, // allows images and pdf
+//     maxSize: 10 * 1024 * 1024, // 10mb limit
+//   });
+
+//   return (
+//     <div className="border p-4 rounded-lg bg-gray-100 text-center">
+//       <div
+//         {...getRootProps()}
+//         className="p-4 border-dashed border-2 rounded-lg cursor-pointer"
+//       >
+//         <input {...getInputProps()} />
+//         <FaCloudUploadAlt size={35} className="mx-auto text-gray-500" />
+//         {isDragActive ? (
+//           <p className="text-gray-600 text-sm">Drop the files here...</p>
+//         ) : (
+//           <p className="text-gray-600 text-sm">Drag & Drop files here or click to upload</p>
+//         )}
+//       </div>
+
+//       <div className="mt-4 space-y-2">
+//         {files.map((file) => (
+//           <div
+//             key={file.name}
+//             className="flex items-center justify-between bg-white p-2 rounded-lg shadow"
+//           >
+//             {file.type.startsWith("image/") ? (
+//               <img
+//                 src={file.preview}
+//                 alt={file.name}
+//                 className="w-12 h-12 object-cover rounded"
+//               />
+//             ) : (
+//               <File size={30} className="text-gray-500" />
+//             )}
+//             <span className="text-sm truncate w-32">{file.name}</span>
+//             <Trash
+//               size={20}
+//               className="text-red-500 cursor-pointer"
+//               onClick={() => removeFile(file.name)}
+//             />
+//           </div>
+//         ))}
+//       </div>
+//     </div>
+//   );
+// };
+
+// export default Uploads;
+
+
 import React, { useState, useCallback } from "react";
 import { useDropzone } from "react-dropzone";
-import { Trash, File, } from "lucide-react";
+import { Trash, File } from "lucide-react";
 import { FaCloudUploadAlt } from "react-icons/fa";
 
 const Uploads = () => {
@@ -21,49 +94,62 @@ const Uploads = () => {
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     onDrop,
-    accept: { "image/*": [], "application/pdf": [] }, // allows images and pdf
-    maxSize: 10 * 1024 * 1024, // 10mb limit
+    accept: { "image/*": [], "application/pdf": [] },
+    maxSize: 10 * 1024 * 1024,
   });
 
   return (
-    <div className="border p-4 rounded-lg bg-gray-100 text-center">
+    <div className="flex-auto">
       <div
         {...getRootProps()}
-        className="p-4 border-dashed border-2 rounded-lg cursor-pointer"
+        className="p-6 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 cursor-pointer hover:border-[#7c0000] transition-colors duration-150"
       >
         <input {...getInputProps()} />
-        <FaCloudUploadAlt size={35} className="mx-auto text-gray-500" />
+        <FaCloudUploadAlt size={40} className="mx-auto text-gray-400 mb-2" />
         {isDragActive ? (
-          <p className="text-gray-600 text-sm">Drop the files here...</p>
+          <p className="text-gray-600 text-sm text-center">Drop the files here...</p>
         ) : (
-          <p className="text-gray-600 text-sm">Drag & Drop files here or click to upload</p>
+          <p className="text-gray-600 text-sm text-center">
+            Drag & Drop files here or click to upload
+          </p>
         )}
+        <p className="text-xs text-gray-400 text-center mt-1">
+          Max file size: 10MB (Images & PDF)
+        </p>
       </div>
 
-      <div className="mt-4 space-y-2">
-        {files.map((file) => (
-          <div
-            key={file.name}
-            className="flex items-center justify-between bg-white p-2 rounded-lg shadow"
-          >
-            {file.type.startsWith("image/") ? (
-              <img
-                src={file.preview}
-                alt={file.name}
-                className="w-12 h-12 object-cover rounded"
-              />
-            ) : (
-              <File size={30} className="text-gray-500" />
-            )}
-            <span className="text-sm truncate w-32">{file.name}</span>
-            <Trash
-              size={20}
-              className="text-red-500 cursor-pointer"
-              onClick={() => removeFile(file.name)}
-            />
-          </div>
-        ))}
-      </div>
+      {files.length > 0 && (
+        <div className="mt-4 space-y-2">
+          <h4 className="text-sm font-medium text-gray-700 mb-2">Uploaded Files</h4>
+          {files.map((file) => (
+            <div
+              key={file.name}
+              className="flex items-center justify-between bg-white p-2 rounded-lg border border-gray-200"
+            >
+              <div className="flex items-center space-x-3">
+                {file.type.startsWith("image/") ? (
+                  <img
+                    src={file.preview}
+                    alt={file.name}
+                    className="w-10 h-10 object-cover rounded"
+                  />
+                ) : (
+                  <File size={24} className="text-gray-500" />
+                )}
+                <span className="text-sm text-gray-700 truncate max-w-[200px]">
+                  {file.name}
+                </span>
+              </div>
+              <button
+                onClick={() => removeFile(file.name)}
+                className="text-red-500 hover:text-red-700 focus:outline-none"
+              >
+                <Trash size={18} />
+              </button>
+            </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };

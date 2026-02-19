@@ -1,139 +1,334 @@
+// import React, { useState, useEffect } from "react";
+
+// const JRCostMeasure = ({ onInputChange, data }) => {
+//   const [personalData, setpersonalData] = useState({
+//     idType: "",
+//     idNo: "",
+//     fname: "",
+//     lname: "",
+//   });
+
+//   useEffect(() => {
+//       if (data) {
+//         setpersonalData(data);
+//       }
+//     }, [data]);
+
+//   const handleChange = (e) => {
+//     const { name, value } = e.target;
+//     const newData = { ...personalData, [name]: value };
+//     setpersonalData(newData);
+//     onInputChange(newData);
+//   };
+
+//   const handleSearch = async (e) => {
+//     e.preventDefault();
+//     if (!personalData.idNo) {
+//       alert("Please enter an ID number");
+//       return;
+//     }
+
+//     try {
+//       const response = await fetch(
+//         `http://localhost:8081/api/v1/search?nicno=${personalData.idNo}`,
+//         {
+//           method: "GET",
+//           headers: {
+//             "Content-Type": "application/json",
+//             Authorization: "Basic " + btoa("user:admin123"),
+//           },
+//           credentials: "include",
+//         }
+//       );
+
+//       if (!response.ok) {
+//         throw new Error(`HTTP error! Status: ${response.status}`);
+//       }
+
+//       const data = await response.json(); // Parse JSON response properly
+
+//       setpersonalData((prevData) => ({
+//         ...prevData,
+//         fname: data.fname || "",
+//         lname: data.lname || "",
+//       }));
+
+//       // Call onInputChange with updated state
+//       onInputChange({
+//         ...personalData,
+//         fname: data.fname || "",
+//         lname: data.lname || "",
+//       });
+//     } catch (error) {
+//       console.error("Error fetching data:", error);
+//       alert("Failed to retrieve details. Please check the ID number.");
+//     }
+//   };
+
+//   return (
+//     <div className="flex-auto px-4 lg:px-10 py-10 pt-2">
+//       <form>
+//         <div className="flex flex-wrap">
+//         <div className="w-full lg:w-6/12 px-4">
+//             <div className="relative w-full mb-3">
+//               <label
+//                 className="block text-blueGray-600 text-sm mb-2"
+//                 htmlFor="grid-password"
+//               >
+//                 Fund Source
+//               </label>
+//               <select
+//                 name="fundsource"
+//                 className="border-0 px-3 h-0.5 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+//               >
+//                 <option value="" disabled>
+//                   --Please Select--
+//                 </option>
+//               </select>
+//             </div>
+//           </div>
+//           <div className="w-full lg:w-6/12 px-4">
+//             <div className="relative w-full mb-3">
+//               <label
+//                 className="block text-blueGray-600 text-sm mb-2"
+//                 htmlFor="grid-password"
+//               >
+//                 Fund ID
+//               </label>
+//               <select
+//                 name="fundid"
+//                 className="border-0 px-3 h-0.5 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+//               >
+//                 <option value="" disabled>
+//                   --Please Select--
+//                 </option>
+//               </select>
+//             </div>
+//           </div>
+//           <div className="w-full lg:w-6/12 px-4">
+//             <div className="relative w-full mb-3">
+//               <label
+//                 className="block text-blueGray-600 text-sm mb-2"
+//                 htmlFor="grid-password"
+//               >
+//                 PIV Number
+//               </label>
+//               <input
+//                 type="text"
+//                 name="pivno"
+//                 value={personalData.fname}
+//                 className="border-0 px-3 h-0.5 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+//               />
+//             </div>
+//           </div>
+//           <div className="w-full lg:w-6/12 px-4">
+//             <div className="relative w-full mb-3">
+//               <label
+//                 className="block text-blueGray-600 text-sm mb-2"
+//                 htmlFor="grid-password"
+//               >
+//                 Amount
+//               </label>
+//               <input
+//                 type="text"
+//                 name="amount"
+//                 value={personalData.lname}
+//                 className="border-0 px-3 h-0.5 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+//               />
+//             </div>
+//           </div>
+//         </div>
+        
+//         <div className="flex flex-wrap">
+//           <div className="w-full lg:w-6/12 px-4">
+//             <div className="relative w-full mb-3">
+//               <label
+//                 className="block text-blueGray-600 text-sm mb-2"
+//                 htmlFor="grid-password"
+//               >
+//                 PIV Date
+//               </label>
+//               <input
+//                 type="date"
+//                 name="pivdate"
+//                 className="border-0 px-3 py-2 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+//               />
+//             </div>
+//           </div>
+//           <div className="w-full lg:w-6/12 px-4">
+//             <div className="relative w-full mb-3">
+//               <label
+//                 className="block text-blueGray-600 text-sm mb-2"
+//                 htmlFor="grid-password"
+//               >
+//                 Rebate
+//               </label>
+//               <input
+//                 type="text"
+//                 name="rebate"
+//                 className="border-0 px-3 h-0.5 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+//               />
+//             </div>
+//           </div>
+//           <div className="w-full lg:w-6/12 px-4">
+//             <div className="relative w-full mb-3">
+//               <label
+//                 className="block text-blueGray-600 text-sm mb-2"
+//                 htmlFor="grid-password"
+//               >
+//                 Total Cost
+//               </label>
+//               <input
+//                 type="text"
+//                 className="border-0 px-3 h-0.5 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+//               />
+//             </div>
+//           </div>
+//           <div className="w-full lg:w-6/12 px-4">
+//             <div className="relative w-full mb-3">
+//               <label
+//                 className="block text-blueGray-600 text-sm mb-2"
+//                 htmlFor="grid-password"
+//               >
+//                 Total Cost of Initial Detail Estimate
+//               </label>
+//               <input
+//                 type="text"
+//                 className="border-0 px-3 h-0.5 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+//               />
+//             </div>
+//           </div>
+//           <div className="w-full lg:w-6/12 px-4">
+//             <div className="relative w-full mb-3">
+//               <label
+//                 className="block text-blueGray-600 text-sm mb-2"
+//                 htmlFor="grid-password"
+//               >
+//                 Total Cost of Current Revision
+//               </label>
+//               <input
+//                 type="text"
+//                 className="border-0 px-3 h-0.5 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+//               />
+//             </div>
+//           </div>
+//           <div className="w-full lg:w-6/12 px-4">
+//             <div className="relative w-full mb-3">
+//               <label
+//                 className="block text-blueGray-600 text-sm mb-2"
+//                 htmlFor="grid-password"
+//               >
+//                 Variance
+//               </label>
+//               <input
+//                 type="text"
+//                 className="border-0 px-3 h-0.5 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+//               />
+//             </div>
+//           </div>
+//         </div>
+//       </form>
+//     </div>
+//   );
+// };
+
+// export default JRCostMeasure;
+
+
 import React, { useState, useEffect } from "react";
 
 const JRCostMeasure = ({ onInputChange, data }) => {
-  const [personalData, setpersonalData] = useState({
-    idType: "",
-    idNo: "",
-    fname: "",
-    lname: "",
+  const [costData, setCostData] = useState({
+    fundsource: "",
+    fundid: "",
+    pivno: "",
+    amount: "",
+    pivdate: "",
+    rebate: "",
+    totalcost: "",
+    totalcostinitial: "",
+    totalcostcurrent: "",
+    variance: "",
   });
 
   useEffect(() => {
-      if (data) {
-        setpersonalData(data);
-      }
-    }, [data]);
+    if (data) {
+      setCostData(data);
+    }
+  }, [data]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const newData = { ...personalData, [name]: value };
-    setpersonalData(newData);
+    const newData = { ...costData, [name]: value };
+    setCostData(newData);
     onInputChange(newData);
   };
 
-  const handleSearch = async (e) => {
-    e.preventDefault();
-    if (!personalData.idNo) {
-      alert("Please enter an ID number");
-      return;
-    }
-
-    try {
-      const response = await fetch(
-        `http://localhost:8081/api/v1/search?nicno=${personalData.idNo}`,
-        {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: "Basic " + btoa("user:admin123"),
-          },
-          credentials: "include",
-        }
-      );
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! Status: ${response.status}`);
-      }
-
-      const data = await response.json(); // Parse JSON response properly
-
-      setpersonalData((prevData) => ({
-        ...prevData,
-        fname: data.fname || "",
-        lname: data.lname || "",
-      }));
-
-      // Call onInputChange with updated state
-      onInputChange({
-        ...personalData,
-        fname: data.fname || "",
-        lname: data.lname || "",
-      });
-    } catch (error) {
-      console.error("Error fetching data:", error);
-      alert("Failed to retrieve details. Please check the ID number.");
-    }
-  };
-
   return (
-    <div className="flex-auto px-4 lg:px-10 py-10 pt-2">
+    <div className="flex-auto">
       <form>
         <div className="flex flex-wrap">
-        <div className="w-full lg:w-6/12 px-4">
+          <div className="w-full lg:w-6/12 px-4">
             <div className="relative w-full mb-3">
-              <label
-                className="block text-blueGray-600 text-sm mb-2"
-                htmlFor="grid-password"
-              >
+              <label className="block text-gray-700 text-sm mb-2">
                 Fund Source
               </label>
               <select
                 name="fundsource"
-                className="border-0 px-3 h-0.5 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                value={costData.fundsource}
+                onChange={handleChange}
+                className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
               >
-                <option value="" disabled>
-                  --Please Select--
-                </option>
+                <option value="">--Please Select--</option>
+                <option value="CP">CP</option>
+                <option value="GOV">GOV</option>
               </select>
             </div>
           </div>
           <div className="w-full lg:w-6/12 px-4">
             <div className="relative w-full mb-3">
-              <label
-                className="block text-blueGray-600 text-sm mb-2"
-                htmlFor="grid-password"
-              >
+              <label className="block text-gray-700 text-sm mb-2">
                 Fund ID
               </label>
               <select
                 name="fundid"
-                className="border-0 px-3 h-0.5 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                value={costData.fundid}
+                onChange={handleChange}
+                className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
               >
-                <option value="" disabled>
-                  --Please Select--
-                </option>
+                <option value="">--Please Select--</option>
+                <option value="CP001">CP001</option>
+                <option value="GOV001">GOV001</option>
               </select>
             </div>
           </div>
           <div className="w-full lg:w-6/12 px-4">
             <div className="relative w-full mb-3">
-              <label
-                className="block text-blueGray-600 text-sm mb-2"
-                htmlFor="grid-password"
-              >
+              <label className="block text-gray-700 text-sm mb-2">
                 PIV Number
               </label>
               <input
                 type="text"
                 name="pivno"
-                value={personalData.fname}
-                className="border-0 px-3 h-0.5 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                value={costData.pivno}
+                onChange={handleChange}
+                placeholder="Enter PIV Number"
+                className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
               />
             </div>
           </div>
           <div className="w-full lg:w-6/12 px-4">
             <div className="relative w-full mb-3">
-              <label
-                className="block text-blueGray-600 text-sm mb-2"
-                htmlFor="grid-password"
-              >
+              <label className="block text-gray-700 text-sm mb-2">
                 Amount
               </label>
               <input
                 type="text"
                 name="amount"
-                value={personalData.lname}
-                className="border-0 px-3 h-0.5 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                value={costData.amount}
+                onChange={handleChange}
+                placeholder="Enter Amount"
+                className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
               />
             </div>
           </div>
@@ -142,87 +337,90 @@ const JRCostMeasure = ({ onInputChange, data }) => {
         <div className="flex flex-wrap">
           <div className="w-full lg:w-6/12 px-4">
             <div className="relative w-full mb-3">
-              <label
-                className="block text-blueGray-600 text-sm mb-2"
-                htmlFor="grid-password"
-              >
+              <label className="block text-gray-700 text-sm mb-2">
                 PIV Date
               </label>
               <input
                 type="date"
                 name="pivdate"
-                className="border-0 px-3 py-2 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                value={costData.pivdate}
+                onChange={handleChange}
+                className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
               />
             </div>
           </div>
           <div className="w-full lg:w-6/12 px-4">
             <div className="relative w-full mb-3">
-              <label
-                className="block text-blueGray-600 text-sm mb-2"
-                htmlFor="grid-password"
-              >
+              <label className="block text-gray-700 text-sm mb-2">
                 Rebate
               </label>
               <input
                 type="text"
                 name="rebate"
-                className="border-0 px-3 h-0.5 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                value={costData.rebate}
+                onChange={handleChange}
+                placeholder="Enter Rebate"
+                className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
               />
             </div>
           </div>
           <div className="w-full lg:w-6/12 px-4">
             <div className="relative w-full mb-3">
-              <label
-                className="block text-blueGray-600 text-sm mb-2"
-                htmlFor="grid-password"
-              >
+              <label className="block text-gray-700 text-sm mb-2">
                 Total Cost
               </label>
               <input
                 type="text"
-                className="border-0 px-3 h-0.5 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                name="totalcost"
+                value={costData.totalcost}
+                onChange={handleChange}
+                placeholder="Enter Total Cost"
+                className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
               />
             </div>
           </div>
           <div className="w-full lg:w-6/12 px-4">
             <div className="relative w-full mb-3">
-              <label
-                className="block text-blueGray-600 text-sm mb-2"
-                htmlFor="grid-password"
-              >
+              <label className="block text-gray-700 text-sm mb-2">
                 Total Cost of Initial Detail Estimate
               </label>
               <input
                 type="text"
-                className="border-0 px-3 h-0.5 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                name="totalcostinitial"
+                value={costData.totalcostinitial}
+                onChange={handleChange}
+                placeholder="Enter Initial Estimate Cost"
+                className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
               />
             </div>
           </div>
           <div className="w-full lg:w-6/12 px-4">
             <div className="relative w-full mb-3">
-              <label
-                className="block text-blueGray-600 text-sm mb-2"
-                htmlFor="grid-password"
-              >
+              <label className="block text-gray-700 text-sm mb-2">
                 Total Cost of Current Revision
               </label>
               <input
                 type="text"
-                className="border-0 px-3 h-0.5 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                name="totalcostcurrent"
+                value={costData.totalcostcurrent}
+                onChange={handleChange}
+                placeholder="Enter Current Revision Cost"
+                className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
               />
             </div>
           </div>
           <div className="w-full lg:w-6/12 px-4">
             <div className="relative w-full mb-3">
-              <label
-                className="block text-blueGray-600 text-sm mb-2"
-                htmlFor="grid-password"
-              >
+              <label className="block text-gray-700 text-sm mb-2">
                 Variance
               </label>
               <input
                 type="text"
-                className="border-0 px-3 h-0.5 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+                name="variance"
+                value={costData.variance}
+                onChange={handleChange}
+                placeholder="Enter Variance"
+                className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
               />
             </div>
           </div>
