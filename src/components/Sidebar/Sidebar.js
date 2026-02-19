@@ -1019,6 +1019,27 @@ export default function Sidebar() {
         // Default commission path if no match found
         return "/admin/commission/default";
       }
+
+
+       // NEW: Simplified array-based mapping for all other paths
+        const menuMappings = [
+          { name: 'applicant profile', path: '/applicant/newapplicant' },
+          { name: 'application submission', path: '/application/new' },
+          { name: 'approved rate schedule', path: '/estimation/standard-rates' },
+          { name: 'contractor assignment', path: '/jobcontractor/new' },
+          { name: 'detailed work estimate', path: '/estimate/estimateform' },
+          { name: 'generate piv', path: '/piv/newPiv' },
+          { name: 'job revision', path: '/jobrevision/new' },
+          { name: 'official correspondence', path: '/allocation/allocationOCJ1' },
+          { name: 'progress dashboard', path: '/modifyProgress/addProMile' },
+          { name: 'revise allocation', path: '/reviseallocation' },
+          { name: 'standard cost estimate', path: '/estimation/estimate' }
+        ];
+
+        const matchedMenu = menuMappings.find(m => menuName.includes(m.name));
+        if (matchedMenu) {
+          return matchedMenu.path;
+        }
     
       
       // Default route for other menus - EXISTING
