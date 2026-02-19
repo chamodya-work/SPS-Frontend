@@ -29,7 +29,7 @@ const Applicant = ({ onFormSubmit, isModify }) => {
     },
   });
 
-  // ✅ SEARCH FUNCTION MOVED HERE
+  //  SEARCH FUNCTION MOVED HERE
   const handleSearch = async () => {
     const idNo = formData.applicantInfo.idNo;
 

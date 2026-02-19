@@ -14,8 +14,8 @@ import HeaderStatsWithoutCards from "components/Headers/HeaderStatsWithoutCards"
 export default function Applicant() {
     return (
         <>
-          <Sidebar />
-          <div className="relative flex flex-col min-h-screen md:ml-64 bg-blueGray-100">
+          {/* <Sidebar /> */}
+          <div className="relative md:ml-64 bg-blueGray-100 min-h-screen flex flex-col">
             {/* Content Wrapper */}
             <HeaderStatsWithoutCards />
             <div className="flex-grow">
