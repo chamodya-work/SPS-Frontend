@@ -978,11 +978,25 @@ export default function Sidebar() {
     //this is new getTaskPath function (with optimise routes)
 
     const getTaskPath = (menu, task) => {
-      const menuName = (menu.displayName || '').toLowerCase();
+
+      //new two lines added for testing
+      const rawMenuName = (menu.displayName || '').toLowerCase();
       const taskName = (task.activityName || '').toLowerCase();
+
+       // Normalize: replace any whitespace (including non-breaking spaces) with a single space
+        const normalizeString = (str) => str.replace(/[\s\u00A0]+/g, ' ').trim();
+        const menuName = normalizeString(rawMenuName);
+
+        console.log("this is menu display name (normalized): ", menuName);
+        console.log("this is task name: ", taskName);
+
+      //   //below lines are previous working things
+
+      // const menuName = (menu.displayName || '').toLowerCase();
+      // const taskName = (task.activityName || '').toLowerCase();
     
-      console.log("this is menu display name: ", menuName);
-      console.log("this is task name: ", taskName);
+      // console.log("this is menu display name: ", menuName);
+      // console.log("this is task name: ", taskName);
       
       // Service Estimation Route - EXISTING
       if (menuName.includes('new estimate service') && taskName === 'add') {
@@ -1040,6 +1054,8 @@ export default function Sidebar() {
         if (matchedMenu) {
           return matchedMenu.path;
         }
+
+       
     
       
       // Default route for other menus - EXISTING
