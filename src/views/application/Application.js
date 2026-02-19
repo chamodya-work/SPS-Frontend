@@ -76,7 +76,6 @@ import { toast } from "react-toastify";
 
 const NewApp = () => {
   const [isModify] = useState(false);
-
   const [formData, setFormData] = useState({
     appDetails: {},
     personalDetails: {},
@@ -125,8 +124,8 @@ const NewApp = () => {
   };
 
   return (
-    <div className="flex justify-center px-4 py-10">
-      <div className="w-full max-w-5xl">
+    <div className="container mx-auto px-4 py-6">
+      <div className="flex justify-center">
         <NewApplication
           onFormSubmit={handleFormSubmit}
           isModify={isModify}

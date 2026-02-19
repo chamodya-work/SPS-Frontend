@@ -226,7 +226,6 @@ import AppDetails from "components/Tabs/AppDetail";
 import LocationalDetails from "components/Tabs/LocationalDetail";
 import PersonalDetails from "components/Tabs/PersonalDetail";
 import TechDetails from "components/Tabs/TechDetails";
-import { CheckCircle } from "lucide-react";
 import { useState } from "react";
 import React from "react";
 import { useHistory } from "react-router-dom";
@@ -246,16 +245,31 @@ const NewApplication = ({
   handleSearch,
 }) => {
   const [currentIndex, setCurrentIndex] = useState(0);
+  const [completedTabs, setCompletedTabs] = useState([false, false, false, false]);
   const history = useHistory();
 
   const handleNext = () => {
-    if (currentIndex < tabs.length - 1)
+    if (currentIndex < tabs.length - 1) {
+      setCompletedTabs((prev) => {
+        const newTabs = [...prev];
+        newTabs[currentIndex] = true;
+        return newTabs;
+      });
       setCurrentIndex((prev) => prev + 1);
+    }
   };
 
   const handlePrevious = () => {
-    if (currentIndex > 0)
+    if (currentIndex > 0) {
+      setCompletedTabs((prev) => {
+        const newTabs = [...prev];
+        if (currentIndex - 1 >= 0) {
+          newTabs[currentIndex - 1] = false;
+        }
+        return newTabs;
+      });
       setCurrentIndex((prev) => prev - 1);
+    }
   };
 
   const handleInputChange = (section, data) => {
@@ -274,30 +288,41 @@ const NewApplication = ({
   };
 
   return (
-    <div className="w-full p-6 bg-white shadow-xl rounded-2xl md:p-10">
-
+    <div className="w-full bg-white rounded-lg shadow-lg p-6">
       {/* Stepper */}
-      <div className="flex flex-wrap items-center justify-between gap-4 mb-8">
+      <div className="flex justify-between items-center mb-8 relative">
         {tabs.map((tab, index) => (
-          <div key={tab.id} className="flex flex-col items-center flex-1 min-w-[80px]">
+          <div key={tab.id} className="relative flex-1 flex flex-col items-center">
+            {index > 0 && (
+              <div
+                className={`absolute top-5 left-0 transform -translate-y-1/2 h-0.5 w-full ${
+                  completedTabs[index - 1] ? "bg-gray" : "bg-gray-300"
+                }`}
+                style={{ left: "-50%", width: "100%", zIndex: 0 }}
+              ></div>
+            )}
             <div
-              className={`flex items-center justify-center w-10 h-10 rounded-full border-2 transition-all duration-300
-              ${
-                index < currentIndex
-                  ? "bg-green-500 border-green-500 text-white"
-                  : index === currentIndex
-                  ? "bg-yellow-400 border-yellow-400 text-white"
-                  : "border-gray-300 text-gray-400"
-              }`}
+              className="w-10 h-10 flex items-center justify-center rounded-full border-2 transition-all z-10 bg-white cursor-pointer"
+              style={{
+                borderColor: completedTabs[index] 
+                  ? "#10b981" 
+                  : (index === currentIndex ? "#dee110" : "#d1d5db"),
+                backgroundColor: completedTabs[index] 
+                  ? "#10b981" 
+                  : (index === currentIndex ? "#dee110" : "white"),
+                color: completedTabs[index] || index === currentIndex ? "white" : "#6b7280",
+              }}
+              onClick={() => {
+                if (index <= currentIndex || completedTabs[index - 1] || index === 0) {
+                  setCurrentIndex(index);
+                }
+              }}
             >
-              {index < currentIndex ? (
-                <CheckCircle size={18} />
-              ) : (
-                <span className="font-semibold">{index + 1}</span>
-              )}
+              {index + 1}
             </div>
-
-            <span className="mt-2 text-xs text-center text-gray-600 md:text-sm">
+            <span className={`text-sm mt-2 text-center font-medium ${
+              index === currentIndex ? "text-gray" : "text-gray-600"
+            }`}>
               {tab.label}
             </span>
           </div>
@@ -305,87 +330,77 @@ const NewApplication = ({
       </div>
 
       {/* Section Title */}
-      <div className="mb-6 text-center">
-        <h2 className="text-lg font-semibold text-red-800">
-          {tabs[currentIndex].label}
-        </h2>
+      <div className="text-center mb-4">
+        <h2 className="text-lg font-bold text-gray-800">{tabs[currentIndex].label}</h2>
       </div>
 
       {/* Content */}
-      <div className="p-6 shadow-inner bg-gray-50 rounded-xl">
-        {tabs[currentIndex].id === "application" && (
-          <AppDetails
-            onInputChange={(data) =>
-              handleInputChange("appDetails", data)
-            }
-            isModify={isModify}
-            data={formData.appDetails}
-            handleSearch={handleSearch}
-          />
-        )}
+      <div className="bg-gray-50 rounded-lg border mb-4">
+        <div className="p-6">
+          {tabs[currentIndex].id === "application" && (
+            <AppDetails
+              onInputChange={(data) => handleInputChange("appDetails", data)}
+              isModify={isModify}
+              data={formData.appDetails}
+              handleSearch={handleSearch}
+            />
+          )}
 
-        {tabs[currentIndex].id === "personal" && (
-          <PersonalDetails
-            onInputChange={(data) =>
-              handleInputChange("personalDetails", data)
-            }
-            data={formData.personalDetails}
-          />
-        )}
+          {tabs[currentIndex].id === "personal" && (
+            <PersonalDetails
+              onInputChange={(data) => handleInputChange("personalDetails", data)}
+              data={formData.personalDetails}
+            />
+          )}
 
-        {tabs[currentIndex].id === "locational" && (
-          <LocationalDetails
-            onInputChange={(data) =>
-              handleInputChange("locationalDetails", data)
-            }
-            data={formData.locationalDetails}
-          />
-        )}
+          {tabs[currentIndex].id === "locational" && (
+            <LocationalDetails
+              onInputChange={(data) => handleInputChange("locationalDetails", data)}
+              data={formData.locationalDetails}
+            />
+          )}
 
-        {tabs[currentIndex].id === "technical" && (
-          <TechDetails
-            onInputChange={(data) =>
-              handleInputChange("techDetails", data)
-            }
-          />
-        )}
+          {tabs[currentIndex].id === "technical" && (
+            <TechDetails
+              onInputChange={(data) => handleInputChange("techDetails", data)}
+              data={formData.techDetails}
+            />
+          )}
+        </div>
       </div>
 
       {/* Buttons */}
-      <div className="flex flex-col items-center justify-between gap-4 mt-8 md:flex-row">
-
+      <div className="flex justify-between items-center bg-white rounded-b-lg px-2 py-2 border-t">
         <div>
           {!isModify && (
             <button
               onClick={handleUpdateClick}
-              className="px-6 py-2 text-sm font-medium text-white transition duration-200 bg-red-800 rounded-lg shadow hover:bg-red-900"
+              className="bg-[#7c0000] text-white text-sm px-4 py-2 rounded shadow hover:bg-[#a00000] focus:outline-none focus:ring-2 focus:ring-[#7c0000] focus:ring-opacity-50"
             >
               Edit
             </button>
           )}
         </div>
-
-        <div className="flex gap-3">
+        <div className="flex space-x-3">
           {currentIndex > 0 && (
             <button
               onClick={handlePrevious}
-              className="px-6 py-2 text-sm font-medium text-white transition duration-200 bg-red-800 rounded-lg shadow hover:bg-red-900"
+              className="bg-[#7c0000] text-white text-sm px-4 py-2 rounded shadow hover:bg-[#a00000] focus:outline-none focus:ring-2 focus:ring-[#7c0000] focus:ring-opacity-50"
             >
               Previous
             </button>
           )}
-
           {currentIndex < tabs.length - 1 ? (
             <button
               onClick={handleNext}
-              className="px-6 py-2 text-sm font-medium text-white transition duration-200 bg-red-800 rounded-lg shadow hover:bg-red-900"
+              className="bg-[#7c0000] text-white text-sm px-4 py-2 rounded shadow hover:bg-[#a00000] focus:outline-none focus:ring-2 focus:ring-[#7c0000] focus:ring-opacity-50"
             >
               Next
             </button>
           ) : (
             <button
               onClick={handleSubmit}
-              className="px-6 py-2 text-sm font-medium text-white transition duration-200 bg-red-800 rounded-lg shadow hover:bg-red-900"
+              className="bg-[#7c0000] text-white text-sm px-4 py-2 rounded shadow hover:bg-[#a00000] focus:outline-none focus:ring-2 focus:ring-[#7c0000] focus:ring-opacity-50"
             >
               {isModify ? "Update" : "Submit"}
             </button>
