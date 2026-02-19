@@ -99,8 +99,8 @@ const Applicant = ({ onFormSubmit, isModify }) => {
   };
 
   return (
-    <div className="w-full bg-white rounded-lg shadow-lg p-6">
-      <div className="text-center my-4">
+    <div className="w-full p-6 bg-white rounded-lg shadow-lg">
+      <div className="my-4 text-center">
         <span className="text-lg font-bold text-gray-800">
           {currentIndex === 0
             ? "Applicant Information"
@@ -109,7 +109,7 @@ const Applicant = ({ onFormSubmit, isModify }) => {
       </div>
 
       <div className="mt-4">
-        <div className="relative flex flex-col w-full bg-gray-50 rounded-lg border">
+        <div className="relative flex flex-col w-full border rounded-lg bg-gray-50">
           {currentIndex === 0 ? (
             <ApplicantInfo
               handleSearch={handleSearch}
@@ -128,7 +128,7 @@ const Applicant = ({ onFormSubmit, isModify }) => {
             />
           )}
 
-          <div className="flex justify-between items-center bg-white rounded-b-lg px-6 py-4 border-t">
+          <div className="flex items-center justify-between px-6 py-4 bg-white border-t rounded-b-lg">
             <div>
               {!isModify && (
                 <button

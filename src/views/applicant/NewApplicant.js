@@ -30,7 +30,7 @@ const NewApplicant = () => {
       console.log("📡 Making API call with data:", appData);
       
       const response = await fetch(
-        `${baseUrl}/api/applicants/search?idNo=${idNo}`,
+        // `${baseUrl}/api/applicants/search?idNo=${idNo}`,
         {
           method: "GET",
           headers: {
@@ -163,7 +163,7 @@ const NewApplicant = () => {
   };
 
   return (
-    <div className="container mx-auto px-4 py-6">
+    <div className="container px-4 py-6 mx-auto">
       <div className="flex justify-center">
         <Applicant
           onFormSubmit={handleFormSubmit}

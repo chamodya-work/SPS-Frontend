@@ -19,8 +19,8 @@ export default function Applicant() {
             {/* Content Wrapper */}
             <HeaderStatsWithoutCards />
             <div className="flex-grow">
-              {/* <div className="bg-lightBlue-600 pt-32"></div> */}
-              <div className="relative px-4 md:px-10 mx-auto w-full  -m-24  ">
+              {/* <div className="pt-32 bg-lightBlue-600"></div> */}
+              <div className="relative w-full px-4 mx-auto -m-24 md:px-10 ">
                 <Switch>
                   <Route path="/applicant/newapplicant" exact component={NewApplicant} />
                   <Route path="/applicant/modifyapplicant" exact component={ModifyApplicant} />
