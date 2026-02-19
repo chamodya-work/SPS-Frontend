@@ -349,21 +349,39 @@ const TreeNode = ({ node, onNodeClick, parentName, grandParentName }) => {
 
   return (
     <li className={`tree-node ${expanded ? "expanded" : ""} ${hasChildren ? "folder" : "file"}`}>
-      <span
-        onClick={() => {
-          if (hasChildren) {
-            setExpanded(!expanded);
-          } else {
-            handleNodeClick();
-          }
-        }}
-        className={`cursor-pointer text-blueGray-submitted600 hover:text-lightBlue-500 ${hasChildren ? "font-bold" : ""}`}
-      >
-        {hasChildren && (
-          <i className={`fas fa-${expanded ? "minus" : "plus"}-square mr-2`}></i>
-        )}
-        {node.name}
-      </span>
+    <span
+      onClick={() => {
+        if (hasChildren) {
+          setExpanded(!expanded);
+        } else {
+          handleNodeClick();
+        }
+      }}
+      className={`cursor-pointer flex items-center text-blueGray-submitted600 hover:text-lightBlue-500 ${
+        hasChildren ? "font-bold" : ""
+      }`}
+    >
+      {hasChildren && (
+        <i
+          className={`fas ${
+            expanded ? "fa-minus-square" : "fa-plus-square"
+          } text-blue-600 mr-1`}
+        ></i>
+      )}
+
+      <i
+        className={`mr-2 fas ${
+          hasChildren
+            ? expanded
+              ? "fa-folder-open text-yellow-500"
+              : "fa-folder text-yellow-500"
+            : "fa-file text-gray-400"
+        }`}
+      ></i>
+
+      {node.name}
+    </span>
+
       {hasChildren && expanded && (
         <ul className="pl-6 mt-2">
           {node.children.map((child, index) => (
