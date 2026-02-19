@@ -381,6 +381,21 @@ export default function HeaderStats() {
                   default: "/admin/commission/default"
                 };
 
+                // NEW: Add your new menu mappings here (same as sidebar.js)
+                const menuPathMappings = [
+                  { name: 'applicant profile', path: '/applicant/newapplicant' },
+                  { name: 'application submission', path: '/application/new' },
+                  { name: 'approved rate schedule', path: '/estimation/standard-rates' },
+                  { name: 'contractor assignment', path: '/jobcontractor/new' },
+                  { name: 'detailed work estimate', path: '/estimate/estimateform' },
+                  { name: 'generate piv', path: '/piv/newPiv' },
+                  { name: 'job revision', path: '/jobrevision/new' },
+                  { name: 'official correspondence', path: '/allocation/allocationOCJ1' },
+                  { name: 'progress dashboard', path: '/modifyProgress/addProMile' },
+                  { name: 'revise allocation', path: '/reviseallocation' },
+                  { name: 'standard cost estimate', path: '/estimation/estimate' }
+                ];
+
                 // NEW: Find the matching path based on activity name
                 const getNavigatePath = (activityName) => {
                   const lowerName = activityName.toLowerCase();
@@ -389,6 +404,12 @@ export default function HeaderStats() {
                     if (lowerName.includes(key) && key !== 'default') {
                       return path;
                     }
+                  }
+
+                   // Then check new menu mappings
+                  const matchedMenu = menuPathMappings.find(m => lowerName.includes(m.name));
+                  if (matchedMenu) {
+                    return matchedMenu.path;
                   }
                   
                   return pathMappings.default;
