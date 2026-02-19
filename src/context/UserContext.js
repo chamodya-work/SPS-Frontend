@@ -111,6 +111,7 @@ export const UserProvider = ({ children }) => {
             const commissionMenu = data.find(menu => 
               menu.menuCode === 'CCM' || 'CCA'||
               menu.displayName?.toLowerCase().includes('commission')
+              
             );
             
             if (commissionMenu && user.userId) {
