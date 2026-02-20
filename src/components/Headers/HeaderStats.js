@@ -392,7 +392,7 @@ export default function HeaderStats() {
                   { name: 'job revision', path: '/jobrevision/new' },
                   { name: 'official correspondence', path: '/allocation/allocationOCJ1' },
                   { name: 'progress dashboard', path: '/modifyProgress/addProMile' },
-                  { name: 'revise allocation', path: '/reviseallocation' },
+                  { name: 'change allocation', path: '/reviseallocation' },
                   { name: 'standard cost estimate', path: '/estimation/estimate' }
                 ];
 
