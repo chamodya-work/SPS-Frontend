@@ -213,14 +213,41 @@ export default function Login() {
   
   
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e,loginType = 'regular') => {
     e.preventDefault();
     if (!userId || !password) {
       toast.error("User ID and password are required");
       return;
     }
     try {
-      const response = await fetch(`${baseUrl}/api/v1/auth/login`, {
+     
+      // const response = await fetch(`${baseUrl}/api/v1/auth/login`, {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({ userId, password }),
+      //   credentials: "include",
+      // });
+
+
+       // Choose endpoint based on loginType
+       const endpoint = loginType === 'ad' 
+       ? `${baseUrl}/api/v1/auth/loginWthAD`
+       : `${baseUrl}/api/v1/auth/login`;
+
+
+      // //i changed the endpoint for checking new Ad login
+      // const response = await fetch(`${baseUrl}/api/v1/auth/loginWthAD`, {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({ userId, password }),
+      //   credentials: "include",
+      // });
+
+      const response = await fetch(endpoint, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -228,6 +255,7 @@ export default function Login() {
         body: JSON.stringify({ userId, password }),
         credentials: "include",
       });
+
       const contentType = response.headers.get("content-type");
       let data;
       if (contentType && contentType.indexOf("application/json") !== -1) {
@@ -384,6 +412,18 @@ export default function Login() {
                       style={{ backgroundColor: "#7c0000" }}
                     >
                       Sign In
+                    </button>
+                  </div>
+
+                    {/* this is for testing Ad login */}
+                  <div className="text-center mt-6">
+                    <button
+                      className="text-white active:bg-red-200 text-sm px-6 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
+                      // type="submit"
+                      onClick={(e) => handleSubmit(e, 'ad')}
+                      style={{ backgroundColor: "#7c0000" }}
+                    >
+                      Sign In With Ad Login
                     </button>
                   </div>
                 </form>
