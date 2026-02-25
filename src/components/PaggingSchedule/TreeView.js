@@ -1001,7 +1001,7 @@ export const TreeNode = ({ node, level = 0, onSelect, getIconForItem, isHybridBa
   );
 };
 
-// TreeView Component
+// TreeView Component - ONLY CHANGED THE FETCH URL AND ADDED DEPT_ID FILTER
 export const TreeView = ({ baseUrl, onSelectNode, getIconForItem, isHybridBase = false }) => {
   const [treeData, setTreeData] = useState([]);
   const [loading, setLoading] = useState(false);
@@ -1013,82 +1013,101 @@ export const TreeView = ({ baseUrl, onSelectNode, getIconForItem, isHybridBase =
   const [openSuggest, setOpenSuggest] = useState(false);
   const [showSearch, setShowSearch] = useState(false);
 
-  useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true);
-      setError(null);
-      try {
-        const res = await fetch(baseUrl, {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-          },
-        });
-        if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
-        const data = await res.json();
-        const arr = Array.isArray(data) ? data : data?.data ?? [];
-        
-        const cleanedData = normalizeFlatNodes(arr);
-        const rawTree = buildTree(cleanedData);
-        
-        const materialKey = "material";
-        let materialNode = null;
-        const otherNodes = [];
-        
-        rawTree.forEach(node => {
-          const nodeName = (node.name || "").toString().trim().toLowerCase();
-          if (nodeName === materialKey) {
-            materialNode = node;
-          } else {
-            otherNodes.push(node);
-          }
-        });
-        
-        const finalTree = [];
-        
-        if (materialNode) {
-          if (materialNode.children && materialNode.children.length > 0) {
-            const uniqueChildren = [];
-            const seenChildNames = new Set();
-            
-            materialNode.children.forEach(child => {
-              const childName = (child.name || "").toString().trim().toLowerCase();
-              if (!seenChildNames.has(childName)) {
-                seenChildNames.add(childName);
-                uniqueChildren.push(child);
-              }
-            });
-            
-            materialNode.children = uniqueChildren;
-          }
-          finalTree.push(materialNode);
+useEffect(() => {
+  const fetchData = async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const res = await fetch(baseUrl, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+        },
+      });
+      if (!res.ok) throw new Error(`${res.status} ${res.statusText}`);
+      const data = await res.json();
+      const arr = Array.isArray(data) ? data : data?.data ?? [];
+      
+      // STEP 1: Filter by deptId=4
+      let filteredData = arr.filter(item => item.deptId === "4");
+      
+      // STEP 2: Exclude items with specific parent IDs
+      const excludedParentIds = ["C11512", "cc_l25", "cc_l26", "cc_l27"];
+      
+      filteredData = filteredData.filter(item => {
+        // Check if this item's parentId is in the excluded list
+        if (excludedParentIds.includes(item.parentId)) {
+          console.log(`Excluding item: ${item.name} (ID: ${item.id}) because parentId=${item.parentId}`);
+          return false; // Exclude this item
         }
-        
-        const materialChildNames = new Set();
-        if (materialNode && materialNode.children) {
+        return true; // Keep this item
+      });
+      
+      console.log('Original count:', arr.length);
+      console.log('After deptId=4 filter:', arr.filter(item => item.deptId === "4").length);
+      console.log('After parentId exclusion:', filteredData.length);
+      
+      const cleanedData = normalizeFlatNodes(filteredData);
+      const rawTree = buildTree(cleanedData);
+      
+      const materialKey = "material";
+      let materialNode = null;
+      const otherNodes = [];
+      
+      rawTree.forEach(node => {
+        const nodeName = (node.name || "").toString().trim().toLowerCase();
+        if (nodeName === materialKey) {
+          materialNode = node;
+        } else {
+          otherNodes.push(node);
+        }
+      });
+      
+      const finalTree = [];
+      
+      if (materialNode) {
+        if (materialNode.children && materialNode.children.length > 0) {
+          const uniqueChildren = [];
+          const seenChildNames = new Set();
+          
           materialNode.children.forEach(child => {
-            materialChildNames.add((child.name || "").toString().trim().toLowerCase());
+            const childName = (child.name || "").toString().trim().toLowerCase();
+            if (!seenChildNames.has(childName)) {
+              seenChildNames.add(childName);
+              uniqueChildren.push(child);
+            }
           });
+          
+          materialNode.children = uniqueChildren;
         }
-        
-        otherNodes.forEach(node => {
-          const nodeName = (node.name || "").toString().trim().toLowerCase();
-          if (!materialChildNames.has(nodeName)) {
-            finalTree.push(node);
-          }
-        });
-        
-        setTreeData(finalTree);
-        
-      } catch (err) {
-        setError(err?.message ?? String(err));
-      } finally {
-        setLoading(false);
+        finalTree.push(materialNode);
       }
-    };
+      
+      const materialChildNames = new Set();
+      if (materialNode && materialNode.children) {
+        materialNode.children.forEach(child => {
+          materialChildNames.add((child.name || "").toString().trim().toLowerCase());
+        });
+      }
+      
+      otherNodes.forEach(node => {
+        const nodeName = (node.name || "").toString().trim().toLowerCase();
+        if (!materialChildNames.has(nodeName)) {
+          finalTree.push(node);
+        }
+      });
+      
+      setTreeData(finalTree);
+      
+    } catch (err) {
+      setError(err?.message ?? String(err));
+    } finally {
+      setLoading(false);
+    }
+  };
 
-    fetchData();
-  }, [baseUrl]);
+  fetchData();
+}, [baseUrl]);
 
   const flatNodes = useMemo(() => {
     return flattenTree(treeData);
