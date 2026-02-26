@@ -233,7 +233,7 @@ export default function Login() {
 
        // Choose endpoint based on loginType
        const endpoint = loginType === 'ad' 
-       ? `${baseUrl}/api/v1/auth/loginWthAD`
+       ? `${baseUrl}/api/v1/auth/loginWithADNew`
        : `${baseUrl}/api/v1/auth/login`;
 
 
