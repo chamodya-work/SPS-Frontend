@@ -325,78 +325,567 @@
 
 // export default ApplicantInfo;
 
+// //this is previous working code but have validation issue 
+// import { useState } from "react";
+// import FileUpload from "./FileUpload";
 
-import { useState } from "react";
-import FileUpload from "./FileUpload";
+// const nicRegex = /^(\d{9}[Vv]|\d{12})$/; // Validates both old and new NIC formats
 
-const nicRegex = /^(\d{9}[Vv]|\d{12})$/; // Validates both old and new NIC formats
+// const ApplicantInfo = ({
+//   onInputChange,
+//   handleSearch,
+//   isModify,
+//   data = {},
+// }) => {
+
+// const [nicError, setNicError] = useState("");
+// const [loading, setLoading] = useState(false);
+
+//   // const idNo = applicant?.idNo || "";
+
+//   // const handleChange = (e) => {
+//   //   console.log("Handling change for:", e.target.name);
+//   //   const { name, value } = e.target;
+//   //   onInputChange({ [name]: value });
+
+//   //   if (name === "idNo") {
+//   //     if (!nicRegex.test(value)) {
+//   //       setNicError("Invalid NIC number. Use 9 digits with v or 12 digits.");
+//   //     } else {
+//   //       setNicError("");
+//   //     }
+//   //   }
+
+//   //   const newData = { ...(appData || {}), [name]: value };
+//   //   if (typeof setAppData === "function") {
+//   //     setAppData(newData);
+//   //   }
+//   //   if (typeof onInputChange === "function") {
+//   //     onInputChange({ [name]: value });
+//   //   }
+//   // };
+//   const handleChange = (e) => {
+//     const { name, value } = e.target;
+  
+//     onInputChange({ [name]: value });
+  
+//     if (name === "idNo") {
+//       if (!nicRegex.test(value)) {
+//         setNicError("Invalid NIC number. Use 9 digits with v or 12 digits.");
+//       } else {
+//         setNicError("");
+//       }
+//     }
+//   };
+  
+
+//   return (
+//     <div className="flex-auto px-4 lg:px-10 py-10 pt-2">
+//       <form>
+//         <div className="flex flex-wrap">
+//           {/* ID Type */}
+//           <div className="w-full lg:w-6/12 px-4">
+//             <div className="relative w-full mb-3">
+//               <label className="block text-gray-700 text-sm mb-2">
+//                 ID Type
+//               </label>
+//               <div className="flex gap-4 mt-2">
+//                 <label className="text-sm mr-4">
+//                   <input
+//                     type="radio"
+//                     name="idType"
+//                     value="NIC"
+//                     defaultChecked
+//                     className="mr-1"
+//                     onChange={handleChange}
+//                   />
+//                   NIC
+//                 </label>
+//                 <label className="text-sm">
+//                   <input
+//                     type="radio"
+//                     name="idType"
+//                     value="BRN"
+//                     className="mr-1"
+//                     onChange={handleChange}
+//                   />
+//                   Business Registration Number
+//                 </label>
+//               </div>
+//             </div>
+//           </div>
+
+//           {/* ID Number with Search */}
+//           <div className="w-full lg:w-6/12 px-4">
+//             <div className="relative w-full mb-3">
+//               <label className="block text-gray-700 text-sm mb-2">
+//                 ID Number
+//               </label>
+//               <div className="flex">
+//                 <input
+//                   type="text"
+//                   name="idNo"
+//                   value={data?.idNo || ""}
+//                   onChange={handleChange}
+//                   className={`p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150 ${
+//                     nicError ? "border-red-500" : ""
+//                   }`}
+//                   placeholder="NIC No"
+//                 />
+//                 <button
+//                   type="button"
+//                   onClick={handleSearch}
+//                   disabled={loading}
+//                   className="bg-[#7c0000] text-white text-sm px-4 rounded ml-2 hover:bg-[#a00000] focus:outline-none focus:ring-2 focus:ring-[#7c0000] focus:ring-opacity-50 disabled:opacity-50"
+//                 >
+//                   {loading ? "Searching..." : "Search"}
+//                 </button>
+//               </div>
+//               {nicError && (
+//                 <p className="text-red-500 text-xs mt-1">{nicError}</p>
+//               )}
+//             </div>
+//           </div>
+
+//           {/* First Name / Company Name */}
+//           <div className="w-full lg:w-6/12 px-4">
+//             <div className="relative w-full mb-3">
+//               <label className="block text-gray-700 text-sm mb-2">
+//                 First Name (Initials)/Company Name/Requested By
+//               </label>
+//               <input
+//                 type="text"
+//                 name="firstName"
+//                 value={data?.firstName || ""}
+//                 onChange={handleChange}
+//                 className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
+//                 placeholder="Enter First Name"
+//               />
+//             </div>
+//           </div>
+
+//           {/* Last Name / Company Type */}
+//           <div className="w-full lg:w-6/12 px-4">
+//             <div className="relative w-full mb-3">
+//               <label className="block text-gray-700 text-sm mb-2">
+//                 Last Name/Company Type
+//               </label>
+//               <input
+//                 type="text"
+//                 name="lastName"
+//                 value={data?.lastName || ""}
+//                 onChange={handleChange}
+//                 className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
+//                 placeholder="Enter Last Name"
+//               />
+//             </div>
+//           </div>
+
+//           {/* Full Name / Requested By / Cost Center */}
+//           <div className="w-full lg:w-12/12 px-4">
+//             <div className="relative w-full mb-3">
+//               <label className="block text-gray-700 text-sm mb-2">
+//                 Full Name/Requested By/Cost Center
+//               </label>
+//               <input
+//                 type="text"
+//                 name="fullName"
+//                 value={data?.fullName || ""}
+//                 onChange={handleChange}
+//                 className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
+//                 placeholder="Enter Full Name"
+//               />
+//             </div>
+//           </div>
+
+//           {/* Personal/Corporate */}
+//           <div className="w-full lg:w-12/12 px-4">
+//             <div className="relative w-full mb-3">
+//               <label className="block text-gray-700 text-sm mb-2">
+//                 Personal/Corporate
+//               </label>
+//               <select
+//                 name="personalCorporate"
+//                 onChange={handleChange}
+//                 className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
+//               >
+//                 <option value="Per">Personal</option>
+//                 <option value="Cop">Corporate</option>
+//               </select>
+//             </div>
+//           </div>
+
+//           {/* CEB Employee */}
+//           <div className="w-full lg:w-6/12 px-4">
+//             <div className="relative w-full mb-3">
+//               <label className="block text-gray-700 text-sm mb-2">
+//                 CEB Employee
+//               </label>
+//               <div className="flex space-x-4">
+//                 <label className="text-sm mr-4">
+//                   <input
+//                     type="radio"
+//                     name="cebEmployee"
+//                     value="y"
+//                     className="mr-1"
+//                     defaultChecked
+//                     onChange={handleChange}
+//                   />{" "}
+//                   Yes
+//                 </label>
+//                 <label className="text-sm">
+//                   <input
+//                     type="radio"
+//                     name="cebEmployee"
+//                     value="n"
+//                     className="mr-1"
+//                     onChange={handleChange}
+//                   />{" "}
+//                   No
+//                 </label>
+//               </div>
+//             </div>
+//           </div>
+
+//           {/* Preferred Language */}
+//           <div className="w-full lg:w-6/12 px-4">
+//             <div className="relative w-full mb-3">
+//               <label className="block text-gray-700 text-sm mb-2">
+//                 Preferred Language
+//               </label>
+//               <div className="flex space-x-4">
+//                 <label className="text-sm mr-4">
+//                   <input
+//                     type="radio"
+//                     name="preferredLanguage"
+//                     value="SN"
+//                     className="mr-1"
+//                     defaultChecked
+//                     onChange={handleChange}
+//                   />{" "}
+//                   Sinhala
+//                 </label>
+//                 <label className="text-sm">
+//                   <input
+//                     type="radio"
+//                     name="preferredLanguage"
+//                     value="EN"
+//                     className="mr-1"
+//                     onChange={handleChange}
+//                   />{" "}
+//                   English
+//                 </label>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//       </form>
+//     </div>
+//   );
+// };
+
+// export default ApplicantInfo;
+
+
+// //updated code with validations
+// import { useState, useEffect } from "react";
+
+// const nicRegex = /^(\d{9}[Vv]|\d{12})$/; // Validates both old and new NIC formats
+// const brnRegex = /^[A-Za-z0-9\-]+$/; // Example: allow alphanumeric and hyphens
+
+// const ApplicantInfo = ({
+//   onInputChange,
+//   handleSearch,
+//   isModify,
+//   data = {},
+//   searchLoading = false,
+//   onValidationChange,
+// }) => {
+//   const [nicError, setNicError] = useState("");
+
+//   const validateIdNo = (idNo, idType) => {
+//     if (!idNo) return "ID Number is required";
+//     if (idType === "NIC") {
+//       return nicRegex.test(idNo) ? "" : "Invalid NIC. Use 9 digits + V or 12 digits.";
+//     } else if (idType === "BRN") {
+//       return brnRegex.test(idNo) ? "" : "Invalid BRN format.";
+//     }
+//     return "";
+//   };
+
+//   useEffect(() => {
+//     const error = validateIdNo(data.idNo || "", data.idType || "NIC");
+//     setNicError(error);
+//     if (onValidationChange) {
+//       onValidationChange(error === "");
+//     }
+//   }, [data.idNo, data.idType]);
+
+//   const handleChange = (e) => {
+//     const { name, value } = e.target;
+//     onInputChange({ [name]: value });
+//   };
+
+//   const handleSearchClick = () => {
+//     handleSearch();
+//   };
+
+//   return (
+//     <div className="flex-auto px-4 lg:px-10 py-10 pt-2">
+//       <form onSubmit={(e) => e.preventDefault()}>
+//         <div className="flex flex-wrap">
+//           {/* ID Type */}
+//           <div className="w-full lg:w-6/12 px-4">
+//             <div className="relative w-full mb-3">
+//               <label className="block text-gray-700 text-sm mb-2">ID Type</label>
+//               <div className="flex gap-4 mt-2">
+//                 <label className="text-sm mr-4">
+//                   <input
+//                     type="radio"
+//                     name="idType"
+//                     value="NIC"
+//                     checked={data.idType === "NIC"}
+//                     onChange={handleChange}
+//                     className="mr-1"
+//                   />
+//                   NIC
+//                 </label>
+//                 <label className="text-sm">
+//                   <input
+//                     type="radio"
+//                     name="idType"
+//                     value="BRN"
+//                     checked={data.idType === "BRN"}
+//                     onChange={handleChange}
+//                     className="mr-1"
+//                   />
+//                   Business Registration Number
+//                 </label>
+//               </div>
+//             </div>
+//           </div>
+
+//           {/* ID Number with Search */}
+//           <div className="w-full lg:w-6/12 px-4">
+//             <div className="relative w-full mb-3">
+//               <label className="block text-gray-700 text-sm mb-2">ID Number</label>
+//               <div className="flex">
+//                 <input
+//                   type="text"
+//                   name="idNo"
+//                   value={data.idNo || ""}
+//                   onChange={handleChange}
+//                   className={`p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150 ${
+//                     nicError ? "border-red-500" : ""
+//                   }`}
+//                   placeholder={data.idType === "NIC" ? "NIC No" : "BRN No"}
+//                 />
+//                 <button
+//                   type="button"
+//                   onClick={handleSearchClick}
+//                   disabled={searchLoading || !!nicError}
+//                   className="bg-[#7c0000] text-white text-sm px-4 rounded ml-2 hover:bg-[#a00000] focus:outline-none focus:ring-2 focus:ring-[#7c0000] focus:ring-opacity-50 disabled:opacity-50"
+//                 >
+//                   {searchLoading ? "Searching..." : "Search"}
+//                 </button>
+//               </div>
+//               {nicError && <p className="text-red-500 text-xs mt-1">{nicError}</p>}
+//             </div>
+//           </div>
+
+//           {/* First Name / Company Name */}
+//           <div className="w-full lg:w-6/12 px-4">
+//             <div className="relative w-full mb-3">
+//               <label className="block text-gray-700 text-sm mb-2">
+//                 First Name (Initials)/Company Name/Requested By
+//               </label>
+//               <input
+//                 type="text"
+//                 name="firstName"
+//                 value={data.firstName || ""}
+//                 required
+//                 onChange={handleChange}
+//                 className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
+//                 placeholder="Enter First Name"
+//               />
+//             </div>
+//           </div>
+
+//           {/* Last Name / Company Type */}
+//           <div className="w-full lg:w-6/12 px-4">
+//             <div className="relative w-full mb-3">
+//               <label className="block text-gray-700 text-sm mb-2">
+//                 Last Name/Company Type
+//               </label>
+//               <input
+//                 type="text"
+//                 name="lastName"
+//                 value={data.lastName || ""}
+//                 onChange={handleChange}
+//                 className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
+//                 placeholder="Enter Last Name"
+//               />
+//             </div>
+//           </div>
+
+//           {/* Full Name / Requested By / Cost Center */}
+//           <div className="w-full lg:w-12/12 px-4">
+//             <div className="relative w-full mb-3">
+//               <label className="block text-gray-700 text-sm mb-2">
+//                 Full Name/Requested By/Cost Center
+//               </label>
+//               <input
+//                 type="text"
+//                 name="fullName"
+//                 value={data.fullName || ""}
+//                 onChange={handleChange}
+//                 className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
+//                 placeholder="Enter Full Name"
+//               />
+//             </div>
+//           </div>
+
+//           {/* Personal/Corporate */}
+//           <div className="w-full lg:w-12/12 px-4">
+//             <div className="relative w-full mb-3">
+//               <label className="block text-gray-700 text-sm mb-2">
+//                 Personal/Corporate
+//               </label>
+//               <select
+//                 name="personalCorporate"
+//                 value={data.personalCorporate || "Per"}
+//                 onChange={handleChange}
+//                 className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
+//               >
+//                 <option value="Per">Personal</option>
+//                 <option value="Cop">Corporate</option>
+//               </select>
+//             </div>
+//           </div>
+
+//           {/* CEB Employee */}
+//           <div className="w-full lg:w-6/12 px-4">
+//             <div className="relative w-full mb-3">
+//               <label className="block text-gray-700 text-sm mb-2">CEB Employee</label>
+//               <div className="flex space-x-4">
+//                 <label className="text-sm mr-4">
+//                   <input
+//                     type="radio"
+//                     name="cebEmployee"
+//                     value="y"
+//                     checked={data.cebEmployee === "y"}
+//                     onChange={handleChange}
+//                     className="mr-1"
+//                   />{" "}
+//                   Yes
+//                 </label>
+//                 <label className="text-sm">
+//                   <input
+//                     type="radio"
+//                     name="cebEmployee"
+//                     value="n"
+//                     checked={data.cebEmployee === "n"}
+//                     onChange={handleChange}
+//                     className="mr-1"
+//                   />{" "}
+//                   No
+//                 </label>
+//               </div>
+//             </div>
+//           </div>
+
+//           {/* Preferred Language */}
+//           <div className="w-full lg:w-6/12 px-4">
+//             <div className="relative w-full mb-3">
+//               <label className="block text-gray-700 text-sm mb-2">Preferred Language</label>
+//               <div className="flex space-x-4">
+//                 <label className="text-sm mr-4">
+//                   <input
+//                     type="radio"
+//                     name="preferredLanguage"
+//                     value="SN"
+//                     checked={data.preferredLanguage === "SN"}
+//                     onChange={handleChange}
+//                     className="mr-1"
+//                   />{" "}
+//                   Sinhala
+//                 </label>
+//                 <label className="text-sm">
+//                   <input
+//                     type="radio"
+//                     name="preferredLanguage"
+//                     value="EN"
+//                     checked={data.preferredLanguage === "EN"}
+//                     onChange={handleChange}
+//                     className="mr-1"
+//                   />{" "}
+//                   English
+//                 </label>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//       </form>
+//     </div>
+//   );
+// };
+
+// export default ApplicantInfo;
+
+
+//updated code 2 with validations
+import { useState, useEffect } from "react";
+
+const nicRegex = /^(\d{9}[Vv]|\d{12})$/;
+const brnRegex = /^[A-Za-z0-9\-]+$/;
 
 const ApplicantInfo = ({
   onInputChange,
   handleSearch,
   isModify,
   data = {},
+  searchLoading = false,
+  errors = {}, // new prop
 }) => {
   const [nicError, setNicError] = useState("");
-  const [loading, setLoading] = useState(false);
 
-  // const idNo = applicant?.idNo || "";
+  const validateIdNo = (idNo, idType) => {
+    if (!idNo) return "ID Number is required";
+    if (idType === "NIC") {
+      return nicRegex.test(idNo) ? "" : "Invalid NIC. Use 9 digits + V or 12 digits.";
+    } else if (idType === "BRN") {
+      return brnRegex.test(idNo) ? "" : "Invalid BRN format.";
+    }
+    return "";
+  };
 
-  // const handleChange = (e) => {
-  //   console.log("Handling change for:", e.target.name);
-  //   const { name, value } = e.target;
-  //   onInputChange({ [name]: value });
+  useEffect(() => {
+    const error = validateIdNo(data.idNo || "", data.idType || "NIC");
+    setNicError(error);
+  }, [data.idNo, data.idType]);
 
-  //   if (name === "idNo") {
-  //     if (!nicRegex.test(value)) {
-  //       setNicError("Invalid NIC number. Use 9 digits with v or 12 digits.");
-  //     } else {
-  //       setNicError("");
-  //     }
-  //   }
-
-  //   const newData = { ...(appData || {}), [name]: value };
-  //   if (typeof setAppData === "function") {
-  //     setAppData(newData);
-  //   }
-  //   if (typeof onInputChange === "function") {
-  //     onInputChange({ [name]: value });
-  //   }
-  // };
   const handleChange = (e) => {
     const { name, value } = e.target;
-  
     onInputChange({ [name]: value });
-  
-    if (name === "idNo") {
-      if (!nicRegex.test(value)) {
-        setNicError("Invalid NIC number. Use 9 digits with v or 12 digits.");
-      } else {
-        setNicError("");
-      }
-    }
   };
-  
 
   return (
     <div className="flex-auto px-4 lg:px-10 py-10 pt-2">
-      <form>
+      <form onSubmit={(e) => e.preventDefault()}>
         <div className="flex flex-wrap">
-          {/* ID Type */}
+          {/* ID Type (unchanged) */}
           <div className="w-full lg:w-6/12 px-4">
             <div className="relative w-full mb-3">
-              <label className="block text-gray-700 text-sm mb-2">
-                ID Type
-              </label>
+              <label className="block text-gray-700 text-sm mb-2">ID Type</label>
               <div className="flex gap-4 mt-2">
                 <label className="text-sm mr-4">
                   <input
                     type="radio"
                     name="idType"
                     value="NIC"
-                    defaultChecked
-                    className="mr-1"
+                    checked={data.idType === "NIC"}
                     onChange={handleChange}
+                    className="mr-1"
                   />
                   NIC
                 </label>
@@ -405,8 +894,9 @@ const ApplicantInfo = ({
                     type="radio"
                     name="idType"
                     value="BRN"
-                    className="mr-1"
+                    checked={data.idType === "BRN"}
                     onChange={handleChange}
+                    className="mr-1"
                   />
                   Business Registration Number
                 </label>
@@ -417,36 +907,34 @@ const ApplicantInfo = ({
           {/* ID Number with Search */}
           <div className="w-full lg:w-6/12 px-4">
             <div className="relative w-full mb-3">
-              <label className="block text-gray-700 text-sm mb-2">
-                ID Number
-              </label>
+              <label className="block text-gray-700 text-sm mb-2">ID Number</label>
               <div className="flex">
                 <input
                   type="text"
                   name="idNo"
-                  value={data?.idNo || ""}
+                  value={data.idNo || ""}
                   onChange={handleChange}
                   className={`p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150 ${
-                    nicError ? "border-red-500" : ""
+                    nicError || errors.idNo ? "border-red-500" : ""
                   }`}
-                  placeholder="NIC No"
+                  placeholder={data.idType === "NIC" ? "NIC No" : "BRN No"}
                 />
                 <button
                   type="button"
                   onClick={handleSearch}
-                  disabled={loading}
+                  disabled={searchLoading || !!nicError}
                   className="bg-[#7c0000] text-white text-sm px-4 rounded ml-2 hover:bg-[#a00000] focus:outline-none focus:ring-2 focus:ring-[#7c0000] focus:ring-opacity-50 disabled:opacity-50"
                 >
-                  {loading ? "Searching..." : "Search"}
+                  {searchLoading ? "Searching..." : "Search"}
                 </button>
               </div>
-              {nicError && (
-                <p className="text-red-500 text-xs mt-1">{nicError}</p>
+              {(nicError || errors.idNo) && (
+                <p className="text-red-500 text-xs mt-1">{nicError || errors.idNo}</p>
               )}
             </div>
           </div>
 
-          {/* First Name / Company Name */}
+          {/* First Name */}
           <div className="w-full lg:w-6/12 px-4">
             <div className="relative w-full mb-3">
               <label className="block text-gray-700 text-sm mb-2">
@@ -455,15 +943,20 @@ const ApplicantInfo = ({
               <input
                 type="text"
                 name="firstName"
-                value={data?.firstName || ""}
+                value={data.firstName || ""}
                 onChange={handleChange}
-                className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
+                className={`p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150 ${
+                  errors.firstName ? "border-red-500" : ""
+                }`}
                 placeholder="Enter First Name"
               />
+              {errors.firstName && (
+                <p className="text-red-500 text-xs mt-1">{errors.firstName}</p>
+              )}
             </div>
           </div>
 
-          {/* Last Name / Company Type */}
+          {/* Last Name */}
           <div className="w-full lg:w-6/12 px-4">
             <div className="relative w-full mb-3">
               <label className="block text-gray-700 text-sm mb-2">
@@ -472,15 +965,20 @@ const ApplicantInfo = ({
               <input
                 type="text"
                 name="lastName"
-                value={data?.lastName || ""}
+                value={data.lastName || ""}
                 onChange={handleChange}
-                className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
+                className={`p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150 ${
+                  errors.lastName ? "border-red-500" : ""
+                }`}
                 placeholder="Enter Last Name"
               />
+              {errors.lastName && (
+                <p className="text-red-500 text-xs mt-1">{errors.lastName}</p>
+              )}
             </div>
           </div>
 
-          {/* Full Name / Requested By / Cost Center */}
+          {/* Full Name */}
           <div className="w-full lg:w-12/12 px-4">
             <div className="relative w-full mb-3">
               <label className="block text-gray-700 text-sm mb-2">
@@ -489,11 +987,16 @@ const ApplicantInfo = ({
               <input
                 type="text"
                 name="fullName"
-                value={data?.fullName || ""}
+                value={data.fullName || ""}
                 onChange={handleChange}
-                className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
+                className={`p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150 ${
+                  errors.fullName ? "border-red-500" : ""
+                }`}
                 placeholder="Enter Full Name"
               />
+              {errors.fullName && (
+                <p className="text-red-500 text-xs mt-1">{errors.fullName}</p>
+              )}
             </div>
           </div>
 
@@ -505,6 +1008,7 @@ const ApplicantInfo = ({
               </label>
               <select
                 name="personalCorporate"
+                value={data.personalCorporate || "Per"}
                 onChange={handleChange}
                 className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
               >
@@ -517,18 +1021,16 @@ const ApplicantInfo = ({
           {/* CEB Employee */}
           <div className="w-full lg:w-6/12 px-4">
             <div className="relative w-full mb-3">
-              <label className="block text-gray-700 text-sm mb-2">
-                CEB Employee
-              </label>
+              <label className="block text-gray-700 text-sm mb-2">CEB Employee</label>
               <div className="flex space-x-4">
                 <label className="text-sm mr-4">
                   <input
                     type="radio"
                     name="cebEmployee"
                     value="y"
-                    className="mr-1"
-                    defaultChecked
+                    checked={data.cebEmployee === "y"}
                     onChange={handleChange}
+                    className="mr-1"
                   />{" "}
                   Yes
                 </label>
@@ -537,8 +1039,9 @@ const ApplicantInfo = ({
                     type="radio"
                     name="cebEmployee"
                     value="n"
-                    className="mr-1"
+                    checked={data.cebEmployee === "n"}
                     onChange={handleChange}
+                    className="mr-1"
                   />{" "}
                   No
                 </label>
@@ -549,18 +1052,16 @@ const ApplicantInfo = ({
           {/* Preferred Language */}
           <div className="w-full lg:w-6/12 px-4">
             <div className="relative w-full mb-3">
-              <label className="block text-gray-700 text-sm mb-2">
-                Preferred Language
-              </label>
+              <label className="block text-gray-700 text-sm mb-2">Preferred Language</label>
               <div className="flex space-x-4">
                 <label className="text-sm mr-4">
                   <input
                     type="radio"
                     name="preferredLanguage"
                     value="SN"
-                    className="mr-1"
-                    defaultChecked
+                    checked={data.preferredLanguage === "SN"}
                     onChange={handleChange}
+                    className="mr-1"
                   />{" "}
                   Sinhala
                 </label>
@@ -569,8 +1070,9 @@ const ApplicantInfo = ({
                     type="radio"
                     name="preferredLanguage"
                     value="EN"
-                    className="mr-1"
+                    checked={data.preferredLanguage === "EN"}
                     onChange={handleChange}
+                    className="mr-1"
                   />{" "}
                   English
                 </label>

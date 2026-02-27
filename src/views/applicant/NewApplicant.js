@@ -4,6 +4,9 @@ import React, { useState } from "react";
 const NewApplicant = () => {
   const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
+  // State to force remount of Applicant (clears form and resets to first tab)
+  const [formKey, setFormKey] = useState(0);
+
   // const [appData, setAppData] = useState({
   //   idNo: "",
   //   firstName: "",
@@ -94,20 +97,20 @@ const NewApplicant = () => {
 
   const handleFormSubmit = async (data) => {
     // Get current date and time in ISO format
-    const currentDateTime = new Date().toISOString();
+    // const currentDateTime = new Date().toISOString();
     
     // Get current date in YYYY-MM-DD format
     const currentDate = new Date().toISOString().split('T')[0];
 
-    const hardcodedData = {
-      //preferredLanguage: "EN",
-      // idNo: "12345678",
-      // idType: "NIC",
-      //firstName: "John",
-      // lastName: "Doe",
-      //fullName: "John Doe",
-      //streetAddress: "123 Main Street",
-    };
+    // const hardcodedData = {
+    //   //preferredLanguage: "EN",
+    //   // idNo: "12345678",
+    //   // idType: "NIC",
+    //   //firstName: "John",
+    //   // lastName: "Doe",
+    //   //fullName: "John Doe",
+    //   //streetAddress: "123 Main Street",
+    // };
     
     // Merge hardcoded data with form data
     const mergedData = { 
@@ -131,11 +134,11 @@ const NewApplicant = () => {
       // Replace the previous line with this to use current date
       addDate: currentDate,
       //  submitDateTime: currentDateTime,
-      ...hardcodedData 
+      // ...hardcodedData 
     };
 
     console.log("this is mergedData for checking : ",mergedData)
-    console.log(isModify);
+    console.log("check is status of sis modify: ",isModify);
 
     // Send the data to the backend via REST API
     try {
@@ -151,6 +154,8 @@ const NewApplicant = () => {
 
       if (response.ok) {
         alert("Form submitted successfully!");
+         // 2. Clear form and return to first tab by forcing remount
+         setFormKey(prev => prev + 1);
       } else {
         const errorData = await response.json();
         console.error("Error response from backend:", errorData);
@@ -166,12 +171,13 @@ const NewApplicant = () => {
     <div className="container px-4 py-6 mx-auto">
       <div className="flex justify-center">
         <Applicant
+          key={formKey} // Force remount on increment
           onFormSubmit={handleFormSubmit}
-          handleSearch={handleSearch}
+          // handleSearch={handleSearch}
           isModify={isModify}
           // appData={appData}
           // setAppData={setAppData}
-          loading={loading}
+          // loading={loading}
         />
       </div>
     </div>
