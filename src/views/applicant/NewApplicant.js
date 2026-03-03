@@ -102,6 +102,7 @@ const NewApplicant = () => {
     // Get current date in YYYY-MM-DD format
     const currentDate = new Date().toISOString().split('T')[0];
 
+   
     // const hardcodedData = {
     //   //preferredLanguage: "EN",
     //   // idNo: "12345678",

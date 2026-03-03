@@ -66,6 +66,7 @@ ReactDOM.render(
       <>
       {/* 🌨️ Global Snow Effect */}
       {/* <Snowfall /> */}
+   
 
           <SessionCheck />
           <Switch>
