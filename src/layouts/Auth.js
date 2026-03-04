@@ -19,7 +19,7 @@ export default function Auth() {
           <div
             className="absolute top-0 w-full h-full bg-white bg-no-repeat bg-full"
             style={{
-              backgroundImage: `url(${ceblogo})`,
+              // backgroundImage: `url(${ceblogo})`, //this is backgorund vave
               backgroundPosition: "bottom", 
               opacity:0.6,
               zIndex: -1,
