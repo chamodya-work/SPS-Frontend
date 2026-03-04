@@ -351,8 +351,10 @@ export default function Login() {
               <div className="flex justify-center items-center">
                 <img
                   alt="ceb logo"
-                  className="w-20 h-20 mt-8"
-                  src="/ceb.png"
+                  // className="w-20 h-20 mt-8"
+                  className="w-32 h-32 mt-8 mb-2 object-contain"
+                  // src="/ceb.png"
+                  src="/edl_new.jpeg"
                 />
               </div>
               <div className="flex-auto px-4 lg:px-10 py-10 pt-0 mt-2">
@@ -446,7 +448,8 @@ export default function Login() {
             {/* this is for adding SPS version number           */}
             <div className="text-center mt-0 mb-0">
               <span className="text-blueGray-400 text-[10px]">
-                CEB SPS_NEW v1.0.2
+                {/* CEB SPS_NEW v1.0.2 */}
+                EDL SPS_NEW v1.0.3
               </span>
             </div>
 
