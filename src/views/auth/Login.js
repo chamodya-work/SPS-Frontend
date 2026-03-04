@@ -460,7 +460,8 @@ export default function Login() {
                 </Link>
               </div>
               <div className="w-1/2 text-right">
-                <Link to="/auth/register" className="text-blueGray-400 text-sm">
+                {/* <Link to="/auth/register" className="text-blueGray-400 text-sm"> */}
+                <Link to="/auth/login" className="text-blueGray-400 text-sm">
                   Create new account
                 </Link>
               </div>
