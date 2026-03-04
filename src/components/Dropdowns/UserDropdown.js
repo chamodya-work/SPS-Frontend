@@ -92,7 +92,7 @@ const UserDropdown = () => {
           "bg-white text-base z-50 float-left py-2 list-none text-left rounded shadow-lg min-w-48"
         }
       >
-        <a
+        {/* <a
           href="#pablo"
           className={
             "text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
@@ -100,8 +100,8 @@ const UserDropdown = () => {
           onClick={(e) => e.preventDefault()}
         >
           Action
-        </a>
-        <a
+        </a> */}
+        {/* <a
           href="#pablo"
           className={
             "text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
@@ -109,8 +109,8 @@ const UserDropdown = () => {
           onClick={(e) => e.preventDefault()}
         >
           Another action
-        </a>
-        <a
+        </a> */}
+        {/* <a
           href="#pablo"
           className={
             "text-sm py-2 px-4 font-normal block w-full whitespace-nowrap bg-transparent text-blueGray-700"
@@ -118,7 +118,7 @@ const UserDropdown = () => {
           onClick={(e) => e.preventDefault()}
         >
           Something else here 
-        </a>
+        </a> */}
         <div className="h-0 my-2 border border-solid border-blueGray-100" />
         <a
           // href="#pablo"
