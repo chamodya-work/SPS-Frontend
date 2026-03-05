@@ -190,6 +190,14 @@ import { toast } from "react-toastify";
 
 // NEW: Import useUser hook
 import { useUser } from "context/UserContext";
+import FooterAdmin from "components/Footers/FooterAdmin";
+
+
+
+const cardStyle = {
+  boxShadow: '0 20px 30px -10px rgba(0, 0, 0, 0.2)',
+   backgroundColor: '#ffffff !important'
+};
 
 export default function Login() {
   const [userId, setUserId] = useState("");
@@ -347,7 +355,7 @@ export default function Login() {
       <div className="container mx-auto px-4 h-full">
         <div className="flex content-center items-center justify-center h-full">
           <div className="w-full lg:w-4/12 px-4">
-            <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-200 border-0">
+            <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-200 border-0" style={cardStyle}>
               <div className="flex justify-center items-center">
                 <img
                   alt="ceb logo"
@@ -445,13 +453,28 @@ export default function Login() {
               </div>
             </div>
 
+
+           
+
             {/* this is for adding SPS version number           */}
-            <div className="text-center mt-0 mb-0">
+            
+            {/* <div className="text-center mt-0 mb-0">
               <span className="text-blueGray-400 text-[10px]">
-                {/* CEB SPS_NEW v1.0.2 */}
                 EDL SPS_NEW v1.0.3
               </span>
-            </div>
+            </div> */}
+
+              <div className="text-sm text-blueGray-500 font-semibold py-1 text-center">
+                Copyright © {new Date().getFullYear()}{" "}
+                <a
+                  // href="https://www.creative-tim.com?ref=nr-footer-admin"
+                  className="text-blueGray-500 hover:text-blueGray-700 text-sm font-semibold py-1"
+                >
+                  {/* Information Technology Branch Ceylon Electricity Board */}
+                  Information Technology Branch Electricity Distribution Lanka (Pvt) Ltd  Version 1.0.3
+                </a>
+              </div>
+            
 
             <div className="flex flex-wrap mt-6 relative">
               <div className="w-1/2">
@@ -466,9 +489,15 @@ export default function Login() {
                 </Link>
               </div>
             </div>
+
+            
           </div>
+          
         </div>
+        
       </div>
+      
+      
     </>
   );
 }
