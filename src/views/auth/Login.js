@@ -358,7 +358,7 @@ export default function Login() {
                 />
               </div>
               <div className="flex-auto px-4 lg:px-10 py-10 pt-0 mt-2">
-                <div className="text-blueGray-400 text-center text-sm">
+                <div className="text-blueGray-400 text-center text-base mb-5">
                   {/* Sign In With Credentials */}
                   Service Provisioning System
                 </div>
@@ -418,7 +418,7 @@ export default function Login() {
                   </div>
 
                     {/* this is for testing Ad login */}
-                  <div className="text-center mt-6">
+                  {/* <div className="text-center mt-6">
                     <button
                       className="text-white active:bg-red-200 text-sm px-6 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
                       // type="submit"
@@ -427,7 +427,7 @@ export default function Login() {
                     >
                       Sign In With Ad Login
                     </button>
-                  </div>
+                  </div> */}
                 </form>
 
             {/* Need Help - User Manual */}
