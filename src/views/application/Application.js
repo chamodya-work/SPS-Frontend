@@ -620,6 +620,13 @@ const NewApp = () => {
       email: data.personal?.email || "",
       preferredLanguage: data.personal?.preferredLanguage || "",
       cebEmployee: data.personal?.cebEmployee || "",
+
+      //this is hardcorded we have fix that
+      deptId:"350.20", 
+
+      //in here we have to can use only deptId which is map as foreign key to 
+      // GLDEPTM table
+
       // Locational
       serviceStreetAddress: data.locational?.streetAddress || "",
       serviceSuburb: data.locational?.suburb || "",
@@ -645,6 +652,9 @@ const NewApp = () => {
       accountNumbers: data.technical?.accountNumbers || "",
       supplyType: data.technical?.supplyType || "",
     };
+
+    console.log("this is all submition data: ",mergedData);
+    
 
     try {
       const response = await fetch(`${baseUrl}/api/application/save`, {
