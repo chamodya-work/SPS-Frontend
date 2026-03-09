@@ -1009,12 +1009,12 @@ const LocationalDetails = ({ onInputChange, data = {}, errors = {} }) => {
                 className="p-2 flex-1 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#7c0000]"
                 placeholder="Postal Code"
               />
-              <button
+              {/* <button
                 type="button"
                 className="ml-2 bg-[#7c0000] text-white px-4 rounded hover:bg-[#a00000]"
               >
                 Search
-              </button>
+              </button> */}
             </div>
           </div>
 
