@@ -9,13 +9,13 @@ export default function FooterAdmin() {
           <div className="flex flex-wrap items-center md:justify-between justify-center">
             <div className="w-full md:w-6/12 px-4">
               <div className="text-sm text-blueGray-500 font-semibold py-1 text-center md:text-left">
-                Copyright © {new Date().getFullYear()}{" "}
+                © {new Date().getFullYear()}{" "}
                 <a
                   // href="https://www.creative-tim.com?ref=nr-footer-admin"
                   className="text-blueGray-500 hover:text-blueGray-700 text-sm font-semibold py-1"
                 >
                   {/* Information Technology Branch Ceylon Electricity Board */}
-                  Information Technology Branch Electricity Distribution Lanka (Pvt) Ltd
+                    Utility Solutions & Automation Branch, EDL. All Rights Reserved 
                 </a>
               </div>
             </div>
