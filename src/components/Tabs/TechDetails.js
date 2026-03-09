@@ -900,18 +900,29 @@ const TechDetails = ({ onInputChange, data = {}, errors = {} }) => {
   useEffect(() => {
     if (data) {
       setTechData((prev) => ({ ...prev, ...data }));
-      setFiles(data.documents || []);
+      // Check if documents exist and are valid
+      if (data.documents && Array.isArray(data.documents)) {
+        setFiles(data.documents);
+      }
     }
   }, [data]);
 
   const { getRootProps, getInputProps } = useDropzone({
-    accept: "image/*,application/pdf",
+    accept: {
+      'image/*': ['.jpeg', '.jpg', '.png', '.gif', '.bmp'],
+      'application/pdf': ['.pdf']
+    },
     maxSize: 1024 * 1024,
     onDrop: (acceptedFiles) => {
+      // Create new files array with proper File objects
       const newFiles = [...files, ...acceptedFiles];
       setFiles(newFiles);
+      // Store only file metadata or the files themselves
       onInputChange({ documents: newFiles });
     },
+    onDropRejected: (rejectedFiles) => {
+      console.log('Rejected files:', rejectedFiles);
+    }
   });
 
   const removeFile = (name) => {
@@ -923,6 +934,7 @@ const TechDetails = ({ onInputChange, data = {}, errors = {} }) => {
   const handleChange = (e) => {
     const { name, value, type } = e.target;
     const newValue = type === "radio" ? value : value;
+    setTechData(prev => ({ ...prev, [name]: newValue }));
     onInputChange({ [name]: newValue });
   };
 

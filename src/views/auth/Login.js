@@ -465,13 +465,13 @@ export default function Login() {
             </div> */}
 
               <div className="text-sm text-blueGray-500 font-semibold py-1 text-center">
-                Copyright © {new Date().getFullYear()}{" "}
+                © {new Date().getFullYear()}{" "}
                 <a
                   // href="https://www.creative-tim.com?ref=nr-footer-admin"
                   className="text-blueGray-500 hover:text-blueGray-700 text-sm font-semibold py-1"
                 >
                   {/* Information Technology Branch Ceylon Electricity Board */}
-                  Information Technology Branch Electricity Distribution Lanka (Pvt) Ltd  Version 1.0.3
+                  Utility Solutions & Automation Branch, EDL. All Rights Reserved  Version 1.0.3
                 </a>
               </div>
             
