@@ -1457,23 +1457,24 @@ const NewApplication = ({ onFormSubmit, isModify }) => {
   const validateApplication = (data) => {
     const newErrors = {};
     // Remove or comment out to allow Next without them
-    // if (!data.applicationId?.trim()) newErrors.applicationId = "Temporary ID is required";
+    if (!data.applicationId?.trim()) newErrors.applicationId = "Temporary ID is required";
     // if (!data.description?.trim()) newErrors.description = "Description is required";
+    if (!data.applicationType?.trim()) newErrors.applicationType = "ApplicationType is required";
     return newErrors;
   };
 
   const validatePersonal = (data) => {
     const newErrors = {};
     // Remove or comment out to allow Next without them
-    // if (!data.idNo?.trim()) newErrors.idNo = "ID number is required";
-    // if (data.idNo?.trim()) {
-    //   const idType = data.idType || "NIC";
-    //   if (idType === "NIC" && !nicRegex.test(data.idNo)) {
-    //     newErrors.idNo = "Invalid NIC format.";
-    //   } else if (idType === "BRN" && !brnRegex.test(data.idNo)) {
-    //     newErrors.idNo = "Invalid BRN format.";
-    //   }
-    // }
+    if (!data.idNo?.trim()) newErrors.idNo = "ID number is required";
+    if (data.idNo?.trim()) {
+      const idType = data.idType || "NIC";
+      if (idType === "NIC" && !nicRegex.test(data.idNo)) {
+        newErrors.idNo = "Invalid NIC format.";
+      } else if (idType === "BRN" && !brnRegex.test(data.idNo)) {
+        newErrors.idNo = "Invalid BRN format.";
+      }
+    }
     // if (!data.firstName?.trim()) newErrors.firstName = "First name is required";
     // if (!data.lastName?.trim()) newErrors.lastName = "Last name is required";
     // if (data.email?.trim() && !emailRegex.test(data.email)) {
