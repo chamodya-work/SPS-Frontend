@@ -934,14 +934,21 @@ const AppDetails = ({ onInputChange, isModify, data = {}, errors = {}, handleSea
             <label className="block text-gray-700 text-sm mb-2">Application Type</label>
             <select
               name="applicationType"
+              required
               value={appData.applicationType || ""}
               onChange={handleChange}
-              className="p-2 w-full border border-gray-300 rounded text-sm focus:outline-none focus:border-[#7c0000]"
+              // className="p-2 w-full border border-gray-300 rounded text-sm focus:outline-none focus:border-[#7c0000]"
+              className={`p-2 flex-1 border rounded text-sm focus:outline-none focus:border-[#7c0000] ${
+                errors.applicationType ? "border-red-500" : "border-gray-300"
+              }`}
             >
               <option value="">Select Type</option>
               <option value="BS">BS</option>
-              <option value="Other">OTHER</option>
+              {/* <option value="Other">OTHER</option> */}
             </select>
+              {errors.applicationType && (
+                  <p className="text-red-500 text-xs mt-1">{errors.applicationType}</p>
+              )}
           </div>
 
           {/* Fund Source */}
