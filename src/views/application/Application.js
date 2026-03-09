@@ -589,6 +589,15 @@ const NewApp = () => {
   const [isModify] = useState(false);
   const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
+  const [formKey, setFormKey] = useState(0);
+
+  const user = JSON.parse(localStorage.getItem("user") || sessionStorage.getItem("user") || "{}");
+  console.log("this is user : ",user);
+  const deptId = user.deptId;
+
+
+
+
   const handleFormSubmit = async (data) => {
     const mergedData = {
       applicationId: data.application?.applicationId || "",
@@ -606,7 +615,9 @@ const NewApp = () => {
       supplyValue: data.application?.supplyValue || "",
       isLoanApp: data.application?.isLoanApp || "No",
       submitDate: new Date().toISOString().split('T')[0],
-      status: "bn",
+      status: "bn", //have to fix this because some time fetch data dont haave status
+      //but saved table which is Application status is should not null
+
       idNo: data.personal?.idNo || "",
       idType: data.personal?.idType || "NIC",
       firstName: data.personal?.firstName || "",
@@ -622,10 +633,16 @@ const NewApp = () => {
       cebEmployee: data.personal?.cebEmployee || "",
 
       //this is hardcorded we have fix that
-      deptId:"350.20", 
+      // deptId:"350.30", 
 
       //in here we have to can use only deptId which is map as foreign key to 
       // GLDEPTM table
+
+      //solution is get the dept id form userlogin rptuser like below
+      //note: according to madm requrement
+
+      deptId:deptId, //from login rpt user
+
 
       // Locational
       serviceStreetAddress: data.locational?.streetAddress || "",
@@ -669,6 +686,7 @@ const NewApp = () => {
 
       if (response.ok) {
         toast.success("Form submitted successfully!");
+        setFormKey(prev => prev + 1);
       } else {
         toast.error("Form submission failed!");
       }
@@ -681,6 +699,7 @@ const NewApp = () => {
     <div className="container mx-auto px-4 py-6">
       <div className="flex justify-center">
         <NewApplication
+          key={formKey}
           onFormSubmit={handleFormSubmit}
           isModify={isModify}
         />
