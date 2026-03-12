@@ -5,6 +5,10 @@ import "./commission.css";
 import OrderCardPopup from "components/Tabs/OrderCardPopup";
 import OrderCardPopupTest from "components/Tabs/OrderCardPopupTest";
 
+
+import { Box, LinearProgress, Typography } from '@mui/material';
+
+
 // from grok
 import OrderCardPopupNew from "components/Tabs/OrderCardPopupNew";
 
@@ -200,19 +204,43 @@ export default function Commission({ color }) {
     });
   };
 
+  // if (loading) {
+  //   return (
+  //     <div className="commission-container">
+  //       <div className="commission-wrapper">
+  //         <div className="commission-card">
+  //           <div className="loading-container">
+  //             <div className="loading-text">Loading commission data...</div>
+  //           </div>
+  //         </div>
+  //       </div>
+  //     </div>
+  //   );
+  // }
+
+  //update  loading state for getting good UX experience  
   if (loading) {
     return (
       <div className="commission-container">
         <div className="commission-wrapper">
           <div className="commission-card">
-            <div className="loading-container">
-              <div className="loading-text">Loading commission data...</div>
-            </div>
+            <Box sx={{ width: '100%', p: 4 }}>
+              <Typography variant="h6" gutterBottom align="center" color="text.secondary">
+                Loading commission data
+              </Typography>
+              <Box sx={{ width: '100%', mt: 2 }}>
+                <LinearProgress />
+              </Box>
+              <Typography variant="body2" sx={{ mt: 2 }} align="center" color="text.secondary">
+                Please wait while we fetch your information...
+              </Typography>
+            </Box>
           </div>
         </div>
       </div>
     );
   }
+
 
   if (error) {
     return (
