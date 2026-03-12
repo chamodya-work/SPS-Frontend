@@ -449,6 +449,20 @@ export default function Login() {
                   Need Help?
                 </a>
               </div> */}
+
+
+              {/* Need Help - User Manual */}
+                <div className="text-center mt-4">
+                  <a
+                    href="/Service Provisioning System (SPS) User Guide.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-blueGray-500 underline hover:text-blueGray-700"
+                  >
+                    Need Help?
+                  </a>
+                </div>
+
                 
               </div>
             </div>
