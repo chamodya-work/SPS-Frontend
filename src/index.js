@@ -43,6 +43,7 @@ import CommissionDetailsValidate from "views/commission/CommissionDetailsValidat
 import CommissionDetailsVerify from "views/commission/CommissionDetailsVerify"
 
 import PeggingSheduleLayout from "layouts/PeggingShedule";
+import AddNodes from "views/admin/AddNodes";
 
 // import OrderCardPopup from "components/Tabs/OrderCardPopup";
 // import OrderPopupNew from "components/Tabs/OrderCardPopupNew";
@@ -89,6 +90,8 @@ ReactDOM.render(
             {/* this is for pagging path */}
             <Route path="/admin/activeappointments" component={ActiveAppointmentsLayout} />
             <Route path="/admin/peggingSchedule" component={PeggingSheduleLayout} />
+
+            <Route path="/admin/addnodes" exact component={AddNodes} />
 
             <Route path="/admin" component={Admin} />
             <Route path="/auth" component={Auth} />
