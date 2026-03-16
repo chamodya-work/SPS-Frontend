@@ -1008,8 +1008,22 @@ export default function Sidebar() {
       //   return '/admin/peggingShedule';
       // }
       if (menuName.includes('active appointments') ) {
-        return '/admin/activeappointments';
+        // Define path mappings for active appointments tasks
+        const activeAppointmentsPathMappings = {
+          active: "/admin/activeappointments",
+          "add new": "/admin/addnodes",
+        };
+        
+        for (const [key, path] of Object.entries(activeAppointmentsPathMappings)) {
+          if (taskName.includes(key)) {
+            return path;
+          }
+        }
+
+        // Default commission path if no match found
+        return "/admin/commission/default";
       }
+
     
       // NEW: Updated Commission Management Routes with structured mapping
       if (menuName.includes('new connection management')) {
