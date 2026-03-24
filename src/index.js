@@ -33,6 +33,7 @@ import PIV from "layouts/PIV";
 import Allocation from "layouts/Allocation";
 import ReviceJob from "layouts/ReviseJob";
 import ReviseAllocation from "views/ReviseAllocation/ReviseAllocation";
+import ReviseAllocationEdit from "views/ReviseAllocation/ReviseAllocationEdit";
 import Schedule2Layout from "layouts/Schedule2Layout";
 import CommissionLayout from "layouts/Commission";
 import CommissionEditLayout from "layouts/CommissionEdit";
@@ -121,7 +122,7 @@ ReactDOM.render(
             <Route path="/auth" exact component={Index} />
             <Route path="/jobtypeset" exact component={JobTypeSet} />
             <Route path="/reviseallocation" exact component={ReviseAllocation} />
-
+            <Route path="/revise-allocation-edit" component={ReviseAllocationEdit} />
             
 
             {/* add redirect for first page */}

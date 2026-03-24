@@ -53,20 +53,20 @@
 //     <>
 //       <Sidebar />
 //       <div className="relative md:ml-64 bg-blueGray-100">
-//         {/* <div className="bg-lightBlue-600 pt-24">
+//         {/* <div className="pt-24 bg-lightBlue-600">
 //             </div> */}
 //         <HeaderStatsWithoutCards />
-//         <div className="relative px-4 md:px-10 mx-auto w-full h-screen -m-24">
+//         <div className="relative w-full h-screen px-4 mx-auto -m-24 md:px-10">
 //           <div className="container mx-auto rounded-lg">
-//             <div className="flex justify-center px-4 mb-5 mx-48 mt-5 md:px-10 lg:px-20 rounded-lg">
-//               <div className="w-full max-w-2xl bg-white shadow-lg rounded-lg p-6">
+//             <div className="flex justify-center px-4 mx-48 mt-5 mb-5 rounded-lg md:px-10 lg:px-20">
+//               <div className="w-full max-w-2xl p-6 bg-white rounded-lg shadow-lg">
 //                 {/* Content */}
-//                 <div className="p-6 bg-blueGray-100 rounded-lg mt-4">
+//                 <div className="p-6 mt-4 rounded-lg bg-blueGray-100">
 //                   <div className="flex flex-wrap py-2">
-//                     <div className="w-full lg:w-6/12 px-4">
+//                     <div className="w-full px-4 lg:w-6/12">
 //                       <div className="relative w-full mb-3">
 //                         <label
-//                           className="block text-blueGray-600 text-sm mb-2"
+//                           className="block mb-2 text-sm text-blueGray-600"
 //                           htmlFor="grid-password"
 //                         >
 //                           Today
@@ -82,10 +82,10 @@
 //                         </div>
 //                       </div>
 //                     </div>
-//                     <div className="w-full lg:w-6/12 px-4">
+//                     <div className="w-full px-4 lg:w-6/12">
 //                       <div className="relative w-full mb-3">
 //                         <label
-//                           className="block text-blueGray-600 text-sm mb-2"
+//                           className="block mb-2 text-sm text-blueGray-600"
 //                           htmlFor="grid-password"
 //                         >
 //                           Selected Date
@@ -94,20 +94,20 @@
 //                           type="date"
 //                           name="selecteddate"
 //                           placeholder="DD/MM/YYYY"
-//                           className="border-0 px-3 py-2 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+//                           className="w-full px-3 py-2 text-sm transition-all duration-150 ease-linear bg-white border-0 rounded shadow placeholder-blueGray-300 text-blueGray-600 focus:outline-none focus:ring"
 //                         />
 //                       </div>
 //                     </div>
 //                   </div>
 //                 </div>
 
-//                 <div className="flex justify-center px-12 ml-2 mb-2 mt-4">
-//                   <h3 className="text-blueGray-700 text-sm font-bold">
+//                 <div className="flex justify-center px-12 mt-4 mb-2 ml-2">
+//                   <h3 className="text-sm font-bold text-blueGray-700">
 //                     Diary Schedules
 //                   </h3>
 //                 </div>
 
-//                 <div className="block w-full overflow-x-auto mt-2">
+//                 <div className="block w-full mt-2 overflow-x-auto">
 //                   <table className="items-center w-full bg-transparent border-collapse">
 //                     <thead>
 //                       <tr>
@@ -179,52 +179,52 @@
 //                     <tbody>
 //                       {rows.map((item, index) => (
 //                         <tr key={index} className="hover:bg-gray-50">
-//                           <td className="border px-4 py-2 text-blueGray-600 rounded text-sm">
+//                           <td className="px-4 py-2 text-sm border rounded text-blueGray-600">
 //                             <input type="checkbox" />
 //                           </td>
-//                           <td className="border px-4 py-2 text-blueGray-600 rounded text-sm">
+//                           <td className="px-4 py-2 text-sm border rounded text-blueGray-600">
 //                             {item.id?.appointmentId}
 //                           </td>
-//                           <td className="border px-4 py-2 text-blueGray-600 rounded text-sm">
+//                           <td className="px-4 py-2 text-sm border rounded text-blueGray-600">
 //                             {item.referenceNo}
 //                           </td>
-//                           <td className="border px-4 py-2 text-blueGray-600 rounded text-sm">
+//                           <td className="px-4 py-2 text-sm border rounded text-blueGray-600">
 //                             {item.allocatedBy}
 //                           </td>
-//                           <td className="border px-4 py-2 text-blueGray-600 rounded text-sm">
+//                           <td className="px-4 py-2 text-sm border rounded text-blueGray-600">
 //                             {item.allocatedTo}
 //                           </td>
-//                           <td className="border px-4 py-2 text-blueGray-600 rounded text-sm">
+//                           <td className="px-4 py-2 text-sm border rounded text-blueGray-600">
 //                             {item.description || "-"}
 //                           </td>
-//                           <td className="border px-4 py-2 text-blueGray-600 rounded text-sm">
+//                           <td className="px-4 py-2 text-sm border rounded text-blueGray-600">
 //                             {item.id?.deptId}
 //                           </td>
-//                           <td className="border px-4 py-2 text-blueGray-600 rounded text-sm">
+//                           <td className="px-4 py-2 text-sm border rounded text-blueGray-600">
 //                             {item.appoinmentType}
 //                           </td>
-//                           <td className="border px-4 py-2 text-blueGray-600 rounded text-sm">{item.status}</td>
+//                           <td className="px-4 py-2 text-sm border rounded text-blueGray-600">{item.status}</td>
 //                         </tr>
 //                       ))}
 //                     </tbody>
 //                   </table>
 //                 </div>
-//                 <div className="flex justify-center px-12 ml-2 mb-2 mt-4">
+//                 <div className="flex justify-center px-12 mt-4 mb-2 ml-2">
 //                   <Schedule isModify={false} />
 //                 </div>
 
 //                 {/* Navigation Buttons */}
-//                 <div className="px-12 flex justify-between items-center mt-2 mb-4">
+//                 <div className="flex items-center justify-between px-12 mt-2 mb-4">
 //                   <div>
 //                     <button
 //                       style={{ backgroundColor: "#7c0000" }}
-//                       className="text-white active:bg-emerald-600 text-sm px-6 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-2 ease-linear transition-all duration-150 ml-2"
+//                       className="px-6 py-2 ml-2 mr-2 text-sm text-white transition-all duration-150 ease-linear rounded shadow outline-none active:bg-emerald-600 hover:shadow-md focus:outline-none"
 //                     >
 //                       Edit
 //                     </button>
 //                   </div>
 //                   <div>
-//                     <button className="bg-emerald-400 text-white active:bg-emerald-600 text-sm px-6 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150">
+//                     <button className="px-6 py-2 mr-1 text-sm text-white transition-all duration-150 ease-linear rounded shadow outline-none bg-emerald-400 active:bg-emerald-600 hover:shadow-md focus:outline-none">
 //                       Add New
 //                     </button>
 //                   </div>
@@ -244,8 +244,10 @@ import HeaderStatsWithoutCards from "components/Headers/HeaderStatsWithoutCards"
 import Sidebar from "components/Sidebar/Sidebar";
 import Schedule from "components/Tabs/Schedule";
 import React, { useEffect, useState } from "react";
+import { useHistory } from "react-router-dom";  // Import useHistory for navigation 
 
 function ReviseAllocation() {
+ const history = useHistory();
   const [isModify, setIsModify] = useState(false);
   const today = new Date().toLocaleDateString("en-GB");
   const [rows, setRows] = useState([]);
@@ -294,19 +296,19 @@ function ReviseAllocation() {
   return (
     <>
       <Sidebar />
-      <div className="relative md:ml-64 bg-blueGray-100 min-h-screen flex flex-col">
+      <div className="relative flex flex-col min-h-screen md:ml-64 bg-blueGray-100">
         <HeaderStatsWithoutCards />
         <div className="flex-grow">
-          <div className="relative px-4 md:px-10 mx-auto w-full -mt-24">
-            <div className="container mx-auto px-4 py-6">
+          <div className="relative w-full px-4 mx-auto -mt-24 md:px-10">
+            <div className="container px-4 py-6 mx-auto">
               <div className="flex justify-center">
-                <div className="w-full bg-white rounded-lg shadow-lg p-6">
+                <div className="w-full p-6 bg-white rounded-lg shadow-lg">
                   {/* Today and Selected Date */}
-                  <div className="bg-gray-50 rounded-lg border p-6 mb-6">
+                  <div className="p-6 mb-6 border rounded-lg bg-gray-50">
                     <div className="flex flex-wrap">
-                      <div className="w-full lg:w-6/12 px-4">
+                      <div className="w-full px-4 lg:w-6/12">
                         <div className="relative w-full mb-3">
-                          <label className="block text-gray-700 text-sm mb-2">
+                          <label className="block mb-2 text-sm text-gray-700">
                             Today
                           </label>
                           <input
@@ -314,13 +316,13 @@ function ReviseAllocation() {
                             type="text"
                             disabled
                             name="today"
-                            className="p-2 w-full border border-gray-300 rounded text-sm bg-gray-100 focus:outline-none cursor-not-allowed"
+                            className="w-full p-2 text-sm bg-gray-100 border border-gray-300 rounded cursor-not-allowed focus:outline-none"
                           />
                         </div>
                       </div>
-                      <div className="w-full lg:w-6/12 px-4">
+                      <div className="w-full px-4 lg:w-6/12">
                         <div className="relative w-full mb-3">
-                          <label className="block text-gray-700 text-sm mb-2">
+                          <label className="block mb-2 text-sm text-gray-700">
                             Selected Date
                           </label>
                           <input
@@ -335,30 +337,30 @@ function ReviseAllocation() {
                   </div>
 
                   {/* Diary Schedules Title */}
-                  <div className="text-center mb-4">
+                  <div className="mb-4 text-center">
                     <h2 className="text-lg font-bold text-gray-800">Diary Schedules</h2>
                   </div>
 
                   {/* Table */}
-                  <div className="overflow-x-auto mb-6 border rounded-lg">
+                  <div className="mb-6 overflow-x-auto border rounded-lg">
                     <table className="min-w-full bg-white border-collapse">
                       <thead>
-                        <tr className="bg-gray-100">
-                          <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase border-b">Check</th>
-                          <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase border-b">ID</th>
-                          <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase border-b">Application No</th>
-                          <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase border-b">Allocated By</th>
-                          <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase border-b">Allocated To</th>
-                          <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase border-b">Description</th>
-                          <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase border-b">Cost Center</th>
-                          <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase border-b">Appt Type</th>
-                          <th className="px-4 py-3 text-left text-xs font-semibold text-gray-700 uppercase border-b">Status</th>
+                        <tr className="bg-red-800">
+                          <th className="px-4 py-3 text-xs font-semibold text-left text-white uppercase border-b">Check</th>
+                          <th className="px-4 py-3 text-xs font-semibold text-left text-white uppercase border-b">ID</th>
+                          <th className="px-4 py-3 text-xs font-semibold text-left text-white uppercase border-b">Application No</th>
+                          <th className="px-4 py-3 text-xs font-semibold text-left text-white uppercase border-b">Allocated By</th>
+                          <th className="px-4 py-3 text-xs font-semibold text-left text-white uppercase border-b">Allocated To</th>
+                          <th className="px-4 py-3 text-xs font-semibold text-left text-white uppercase border-b">Description</th>
+                          <th className="px-4 py-3 text-xs font-semibold text-left text-white uppercase border-b">Cost Center</th>
+                          <th className="px-4 py-3 text-xs font-semibold text-left text-white uppercase border-b">Appt Type</th>
+                          <th className="px-4 py-3 text-xs font-semibold text-left text-white uppercase border-b">Status</th>
                         </tr>
                       </thead>
                       <tbody>
                         {rows.length > 0 ? (
                           rows.map((item, index) => (
-                            <tr key={index} className="hover:bg-gray-50 border-b">
+                            <tr key={index} className="border-b hover:bg-gray-50">
                               <td className="px-4 py-3 text-sm text-gray-700">
                                 <input 
                                   type="checkbox" 
@@ -377,7 +379,7 @@ function ReviseAllocation() {
                           ))
                         ) : (
                           <tr>
-                            <td colSpan="9" className="text-center py-6 text-gray-500">
+                            <td colSpan="9" className="py-6 text-center text-gray-500">
                               No data available
                             </td>
                           </tr>
@@ -392,9 +394,11 @@ function ReviseAllocation() {
                   </div>
 
                   {/* Navigation Buttons */}
-                  <div className="flex justify-between items-center border-t pt-4">
+                  <div className="flex items-center justify-between pt-4 border-t">
+                    {/* change for navigate the edit page */}
                     <div>
                       <button
+                        onClick={() => history.push("/revise-allocation-edit")}
                         className="bg-[#7c0000] text-white text-sm px-4 py-2 rounded shadow hover:bg-[#a00000] focus:outline-none focus:ring-2 focus:ring-[#7c0000] focus:ring-opacity-50"
                       >
                         Edit

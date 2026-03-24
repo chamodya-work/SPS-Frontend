@@ -28,16 +28,16 @@
 //   return (
 //     <>
 //       <div className="flex flex-col justify-center bg-gray-100">
-//         <div className="bg-white shadow-md rounded-lg p-6 w-full max-w-md">
-//           <h2 className="text-blueGray-700 text-sm font-bold text-center">
+//         <div className="w-full max-w-md p-6 bg-white rounded-lg shadow-md">
+//           <h2 className="text-sm font-bold text-center text-blueGray-700">
 //             Schedule
 //           </h2>
 //           <form onSubmit={handleSubmit}>
 //             <div className="flex flex-wrap mt-2">
-//               <div className="w-full lg:w-6/12 px-4">
+//               <div className="w-full px-4 lg:w-6/12">
 //                 <div className="relative w-full mb-3">
 //                   <label
-//                     className="block text-blueGray-600 text-sm mb-2"
+//                     className="block mb-2 text-sm text-blueGray-600"
 //                     htmlFor="grid-password"
 //                   >
 //                     Cost Center
@@ -52,10 +52,10 @@
 //                   />
 //                 </div>
 //               </div>
-//               <div className="w-full lg:w-6/12 px-4">
+//               <div className="w-full px-4 lg:w-6/12">
 //                 <div className="relative w-full mb-3">
 //                   <label
-//                     className="block text-blueGray-600 text-sm mb-2"
+//                     className="block mb-2 text-sm text-blueGray-600"
 //                     htmlFor="grid-password"
 //                   >
 //                     Application Number
@@ -72,10 +72,10 @@
 //               </div>
 //             </div>
 //             <div className="flex flex-wrap">
-//               <div className="w-full lg:w-6/12 px-4">
+//               <div className="w-full px-4 lg:w-6/12">
 //                 <div className="relative w-full mb-3">
 //                   <label
-//                     className="block text-blueGray-600 text-sm mb-2"
+//                     className="block mb-2 text-sm text-blueGray-600"
 //                     htmlFor="grid-password"
 //                   >
 //                     Application Type
@@ -86,10 +86,10 @@
 //                   />
 //                 </div>
 //               </div>
-//               <div className="w-full lg:w-6/12 px-4">
+//               <div className="w-full px-4 lg:w-6/12">
 //                 <div className="relative w-full mb-3">
 //                   <label
-//                     className="block text-blueGray-600 text-sm mb-2"
+//                     className="block mb-2 text-sm text-blueGray-600"
 //                     htmlFor="grid-password"
 //                   >
 //                     Allocated To
@@ -103,10 +103,10 @@
 //               </div>
 //             </div>
 //             <div className="flex flex-wrap">
-//               <div className="w-full lg:w-6/12 px-4">
+//               <div className="w-full px-4 lg:w-6/12">
 //                 <div className="relative w-full mb-3">
 //                   <label
-//                     className="block text-blueGray-600 text-sm mb-2"
+//                     className="block mb-2 text-sm text-blueGray-600"
 //                     htmlFor="grid-password"
 //                   >
 //                     Date
@@ -115,14 +115,14 @@
 //                     type="date"
 //                     name="selecteddate"
 //                     placeholder="DD/MM/YYYY"
-//                     className="border-0 px-3 py-2 placeholder-blueGray-300 text-blueGray-600 bg-white rounded text-sm shadow focus:outline-none focus:ring w-full ease-linear transition-all duration-150"
+//                     className="w-full px-3 py-2 text-sm transition-all duration-150 ease-linear bg-white border-0 rounded shadow placeholder-blueGray-300 text-blueGray-600 focus:outline-none focus:ring"
 //                   />
 //                 </div>
 //               </div>
-//               <div className="w-full lg:w-6/12 px-4">
+//               <div className="w-full px-4 lg:w-6/12">
 //                 <div className="relative w-full mb-3">
 //                   <label
-//                     className="block text-blueGray-600 text-sm mb-2"
+//                     className="block mb-2 text-sm text-blueGray-600"
 //                     htmlFor="grid-password"
 //                   >
 //                     Description
@@ -136,16 +136,16 @@
 //                 </div>
 //               </div>
 //             </div>
-//             <div className="px-12 flex justify-center items-center mt-2 mb-4">
+//             <div className="flex items-center justify-center px-12 mt-2 mb-4">
 //               <div>
-//                 <button className="bg-emerald-400 text-white active:bg-emerald-600 text-sm px-6 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none mr-1 ease-linear transition-all duration-150">
+//                 <button className="px-6 py-2 mr-1 text-sm text-white transition-all duration-150 ease-linear rounded shadow outline-none bg-emerald-400 active:bg-emerald-600 hover:shadow-md focus:outline-none">
 //                   {isModify ? "Update" : "Add"}
 //                 </button>
 //                 {onCancel && (
 //                   <button
 //                     type="button"
 //                     onClick={onCancel}
-//                     className="bg-gray-400 text-white active:bg-gray-600 text-sm px-6 py-2 rounded shadow hover:shadow-md outline-none focus:outline-none ease-linear transition-all duration-150"
+//                     className="px-6 py-2 text-sm text-white transition-all duration-150 ease-linear bg-gray-400 rounded shadow outline-none active:bg-gray-600 hover:shadow-md focus:outline-none"
 //                   >
 //                     Cancel
 //                   </button>
@@ -189,17 +189,17 @@ function Schedule({ isModify = false, initialData = {}, onSubmit, onCancel }) {
   };
 
   return (
-    <div className="w-full bg-white rounded-lg border p-4">
-      <div className="text-center mb-3">
-        <h3 className="text-md font-bold text-gray-800">Schedule</h3>
+    <div className="w-full p-4 bg-white border rounded-lg">
+      <div className="mb-3 text-center">
+        <h3 className="font-bold text-gray-800 text-md">Schedule</h3>
       </div>
       
       <form onSubmit={handleSubmit}>
         <div className="flex flex-wrap">
           {/* Cost Center */}
-          <div className="w-full lg:w-6/12 px-2">
+          <div className="w-full px-2 lg:w-6/12">
             <div className="relative w-full mb-3">
-              <label className="block text-gray-700 text-sm mb-1">
+              <label className="block mb-1 text-sm text-gray-700">
                 Cost Center
               </label>
               <input
@@ -214,9 +214,9 @@ function Schedule({ isModify = false, initialData = {}, onSubmit, onCancel }) {
           </div>
 
           {/* Application Number */}
-          <div className="w-full lg:w-6/12 px-2">
+          <div className="w-full px-2 lg:w-6/12">
             <div className="relative w-full mb-3">
-              <label className="block text-gray-700 text-sm mb-1">
+              <label className="block mb-1 text-sm text-gray-700">
                 Application Number
               </label>
               <input
@@ -231,9 +231,9 @@ function Schedule({ isModify = false, initialData = {}, onSubmit, onCancel }) {
           </div>
 
           {/* Application Type */}
-          <div className="w-full lg:w-6/12 px-2">
+          <div className="w-full px-2 lg:w-6/12">
             <div className="relative w-full mb-3">
-              <label className="block text-gray-700 text-sm mb-1">
+              <label className="block mb-1 text-sm text-gray-700">
                 Application Type
               </label>
               <select
@@ -251,9 +251,9 @@ function Schedule({ isModify = false, initialData = {}, onSubmit, onCancel }) {
           </div>
 
           {/* Allocated To */}
-          <div className="w-full lg:w-6/12 px-2">
+          <div className="w-full px-2 lg:w-6/12">
             <div className="relative w-full mb-3">
-              <label className="block text-gray-700 text-sm mb-1">
+              <label className="block mb-1 text-sm text-gray-700">
                 Allocated To
               </label>
               <input
@@ -268,9 +268,9 @@ function Schedule({ isModify = false, initialData = {}, onSubmit, onCancel }) {
           </div>
 
           {/* Date */}
-          <div className="w-full lg:w-6/12 px-2">
+          <div className="w-full px-2 lg:w-6/12">
             <div className="relative w-full mb-3">
-              <label className="block text-gray-700 text-sm mb-1">
+              <label className="block mb-1 text-sm text-gray-700">
                 Date
               </label>
               <input
@@ -284,9 +284,9 @@ function Schedule({ isModify = false, initialData = {}, onSubmit, onCancel }) {
           </div>
 
           {/* Description */}
-          <div className="w-full lg:w-6/12 px-2">
+          <div className="w-full px-2 lg:w-6/12">
             <div className="relative w-full mb-3">
-              <label className="block text-gray-700 text-sm mb-1">
+              <label className="block mb-1 text-sm text-gray-700">
                 Description
               </label>
               <textarea
@@ -302,7 +302,7 @@ function Schedule({ isModify = false, initialData = {}, onSubmit, onCancel }) {
         </div>
 
         {/* Buttons */}
-        <div className="flex justify-center space-x-3 mt-4">
+        <div className="flex justify-center mt-4 space-x-3">
           <button
             type="submit"
             className="bg-[#7c0000] text-white text-sm px-4 py-2 rounded shadow hover:bg-[#a00000] focus:outline-none focus:ring-2 focus:ring-[#7c0000] focus:ring-opacity-50"
@@ -314,7 +314,7 @@ function Schedule({ isModify = false, initialData = {}, onSubmit, onCancel }) {
             <button
               type="button"
               onClick={onCancel}
-              className="bg-gray-500 text-white text-sm px-4 py-2 rounded shadow hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
+              className="px-4 py-2 text-sm text-white bg-gray-500 rounded shadow hover:bg-gray-600 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50"
             >
               Cancel
             </button>
