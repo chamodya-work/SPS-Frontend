@@ -1008,8 +1008,22 @@ export default function Sidebar() {
       //   return '/admin/peggingShedule';
       // }
       if (menuName.includes('active appointments') ) {
-        return '/admin/activeappointments';
+        // Define path mappings for active appointments tasks
+        const activeAppointmentsPathMappings = {
+          active: "/admin/activeappointments",
+          "add new": "/admin/addnodes",
+        };
+        
+        for (const [key, path] of Object.entries(activeAppointmentsPathMappings)) {
+          if (taskName.includes(key)) {
+            return path;
+          }
+        }
+
+        // Default commission path if no match found
+        return "/admin/commission/default";
       }
+
     
       // NEW: Updated Commission Management Routes with structured mapping
       if (menuName.includes('new connection management')) {
@@ -1154,7 +1168,8 @@ export default function Sidebar() {
             onClick={handleLogoClick}
           >
             <div className="flex justify-center items-center sticky">
-              <img alt="ceb logo" className="w-20 h-20" src="/ceb.png" />
+              {/* <img alt="ceb logo" className="w-20 h-20" src="/ceb.png" /> */}
+              <img alt="ceb logo" className="w-32 h-32 mt-6 mb-2 object-contain" src="/edl_new.jpeg" />
             </div>
           </div>
 
@@ -1186,7 +1201,7 @@ export default function Sidebar() {
                     to="/"
                   >
                     <div className="flex justify-center items-center">
-                      <img alt="ceb logo" className="w-20 h-20" src="/ceb.png" />
+                      <img alt="ceb logo" className="w-32 h-32 mt-6 mb-2 object-contain" src="/edl_new.jpeg" />
                     </div>
                   </Link>
                 </div>

@@ -378,6 +378,7 @@ export default function HeaderStats() {
                   validate:"/admin/commission/validate",
                   verify:"/admin/commission/verify",
                   active:"/admin/activeappointments",
+                  "add new": "/admin/addnodes",
                   default: "/admin/commission/default"
                 };
 

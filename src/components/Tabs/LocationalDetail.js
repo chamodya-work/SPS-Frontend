@@ -293,9 +293,631 @@
 // export default LocationalDetails;
 
 
+// import { useState, useEffect } from "react";
+
+// const LocationalDetails = ({ onInputChange, data }) => {
+//   const [locationalData, setLocationalData] = useState({
+//     streetAddress: "",
+//     suburb: "",
+//     city: "",
+//     postalCode: "",
+//     district: "",
+//     districtCode: "",
+//     divisionalSecretariat: "",
+//     gsDivision: "",
+//     electorate: "",
+//     electorateCode: "",
+//     agaDivision: "",
+//     csc: "",
+//     cscCode: "",
+//     ownership: "owner",
+//     ownerCertified: "Yes",
+//     isGovernmentPlace: "No",
+//   });
+
+//   useEffect(() => {
+//     if (data) {
+//       setLocationalData((prev) => ({ ...prev, ...data }));
+//     }
+//   }, [data]);
+
+//   const handleChange = (e) => {
+//     const { name, value, type } = e.target;
+//     const newValue = type === "radio" ? value : value;
+//     const newData = { ...locationalData, [name]: newValue };
+//     setLocationalData(newData);
+//     onInputChange(newData);
+//   };
+
+//   const handleSearchPostalCode = () => {
+//     // Implement postal code search logic here
+//     console.log("Searching for postal code:", locationalData.postalCode);
+//   };
+
+//   return (
+//     <div className="flex-auto">
+//       <form>
+//         <div className="flex flex-wrap">
+//           {/* Street Address */}
+//           <div className="w-full lg:w-3/12 px-4">
+//             <div className="relative w-full mb-3">
+//               <label className="block text-gray-700 text-sm mb-2">
+//                 Street Address
+//               </label>
+//               <input
+//                 type="text"
+//                 name="streetAddress"
+//                 value={locationalData.streetAddress || ""}
+//                 onChange={handleChange}
+//                 placeholder="Street Address"
+//                 className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
+//               />
+//             </div>
+//           </div>
+
+//           {/* Suburb */}
+//           <div className="w-full lg:w-3/12 px-4">
+//             <div className="relative w-full mb-3">
+//               <label className="block text-gray-700 text-sm mb-2">
+//                 Suburb
+//               </label>
+//               <input
+//                 type="text"
+//                 name="suburb"
+//                 value={locationalData.suburb || ""}
+//                 onChange={handleChange}
+//                 placeholder="Suburb"
+//                 className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
+//               />
+//             </div>
+//           </div>
+
+//           {/* City */}
+//           <div className="w-full lg:w-3/12 px-4">
+//             <div className="relative w-full mb-3">
+//               <label className="block text-gray-700 text-sm mb-2">
+//                 City
+//               </label>
+//               <input
+//                 type="text"
+//                 name="city"
+//                 value={locationalData.city || ""}
+//                 onChange={handleChange}
+//                 placeholder="City"
+//                 className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
+//               />
+//             </div>
+//           </div>
+
+//           {/* Postal Code with Search */}
+//           <div className="w-full lg:w-3/12 px-4">
+//             <div className="relative w-full mb-3">
+//               <label className="block text-gray-700 text-sm mb-2">
+//                 Postal Code
+//               </label>
+//               <div className="flex">
+//                 <input
+//                   type="text"
+//                   name="postalCode"
+//                   value={locationalData.postalCode || ""}
+//                   onChange={handleChange}
+//                   placeholder="Postal Code"
+//                   className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
+//                 />
+//                 <button
+//                   type="button"
+//                   onClick={handleSearchPostalCode}
+//                   className="ml-2 bg-[#7c0000] text-white text-sm px-4 py-2 rounded shadow hover:bg-[#a00000] focus:outline-none focus:ring-2 focus:ring-[#7c0000] focus:ring-opacity-50"
+//                 >
+//                   Search
+//                 </button>
+//               </div>
+//             </div>
+//           </div>
+
+//           {/* District with Code */}
+//           <div className="w-full lg:w-4/12 px-4">
+//             <div className="relative w-full mb-3">
+//               <label className="block text-gray-700 text-sm mb-2">
+//                 District
+//               </label>
+//               <div className="flex">
+//                 <input
+//                   type="text"
+//                   name="district"
+//                   value={locationalData.district || ""}
+//                   onChange={handleChange}
+//                   placeholder="District"
+//                   className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
+//                 />
+//                 <select
+//                   name="districtCode"
+//                   value={locationalData.districtCode || ""}
+//                   onChange={handleChange}
+//                   className="p-2 ml-2 border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
+//                 >
+//                   <option value="">Code</option>
+//                   <option value="G">G</option>
+//                   <option value="K">K</option>
+//                   <option value="M">M</option>
+//                 </select>
+//               </div>
+//             </div>
+//           </div>
+
+//           {/* Divisional Secretariat */}
+//           <div className="w-full lg:w-4/12 px-4">
+//             <div className="relative w-full mb-3">
+//               <label className="block text-gray-700 text-sm mb-2">
+//                 Divisional Secretariat
+//               </label>
+//               <input
+//                 type="text"
+//                 name="divisionalSecretariat"
+//                 value={locationalData.divisionalSecretariat || ""}
+//                 onChange={handleChange}
+//                 placeholder="Divisional Secretariat"
+//                 className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
+//               />
+//             </div>
+//           </div>
+
+//           {/* GS Division */}
+//           <div className="w-full lg:w-4/12 px-4">
+//             <div className="relative w-full mb-3">
+//               <label className="block text-gray-700 text-sm mb-2">
+//                 GS Division
+//               </label>
+//               <input
+//                 type="text"
+//                 name="gsDivision"
+//                 value={locationalData.gsDivision || ""}
+//                 onChange={handleChange}
+//                 placeholder="GS Division"
+//                 className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
+//               />
+//             </div>
+//           </div>
+
+//           {/* Electorate with Code */}
+//           <div className="w-full lg:w-4/12 px-4">
+//             <div className="relative w-full mb-3">
+//               <label className="block text-gray-700 text-sm mb-2">
+//                 Electorate
+//               </label>
+//               <div className="flex">
+//                 <input
+//                   type="text"
+//                   name="electorate"
+//                   value={locationalData.electorate || ""}
+//                   onChange={handleChange}
+//                   placeholder="Electorate"
+//                   className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
+//                 />
+//                 <select
+//                   name="electorateCode"
+//                   value={locationalData.electorateCode || ""}
+//                   onChange={handleChange}
+//                   className="p-2 ml-2 border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
+//                 >
+//                   <option value="">Code</option>
+//                   <option value="AN">AN</option>
+//                   <option value="BN">BN</option>
+//                 </select>
+//               </div>
+//             </div>
+//           </div>
+
+//           {/* AGA Division */}
+//           <div className="w-full lg:w-4/12 px-4">
+//             <div className="relative w-full mb-3">
+//               <label className="block text-gray-700 text-sm mb-2">
+//                 AGA Division
+//               </label>
+//               <input
+//                 type="text"
+//                 name="agaDivision"
+//                 value={locationalData.agaDivision || ""}
+//                 onChange={handleChange}
+//                 placeholder="AGA Division"
+//                 className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
+//               />
+//             </div>
+//           </div>
+
+//           {/* CSC with Code */}
+//           <div className="w-full lg:w-4/12 px-4">
+//             <div className="relative w-full mb-3">
+//               <label className="block text-gray-700 text-sm mb-2">
+//                 CSC
+//               </label>
+//               <div className="flex">
+//                 <input
+//                   type="text"
+//                   name="csc"
+//                   value={locationalData.csc || ""}
+//                   onChange={handleChange}
+//                   placeholder="CSC"
+//                   className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
+//                 />
+//                 <select
+//                   name="cscCode"
+//                   value={locationalData.cscCode || ""}
+//                   onChange={handleChange}
+//                   className="p-2 ml-2 border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
+//                 >
+//                   <option value="">Code</option>
+//                   <option value="AB">AB</option>
+//                   <option value="CD">CD</option>
+//                 </select>
+//               </div>
+//             </div>
+//           </div>
+
+//           {/* Ownership */}
+//           <div className="w-full lg:w-4/12 px-4">
+//             <div className="relative w-full mb-3">
+//               <label className="block text-gray-700 text-sm mb-2">
+//                 Ownership
+//               </label>
+//               <div className="flex gap-4 mt-2">
+//                 <label className="flex items-center text-sm">
+//                   <input
+//                     type="radio"
+//                     name="ownership"
+//                     value="owner"
+//                     checked={locationalData.ownership === "owner"}
+//                     onChange={handleChange}
+//                     className="mr-2 text-[#7c0000] focus:ring-[#7c0000]"
+//                   />
+//                   Owner
+//                 </label>
+//                 <label className="flex items-center text-sm">
+//                   <input
+//                     type="radio"
+//                     name="ownership"
+//                     value="rent"
+//                     checked={locationalData.ownership === "rent"}
+//                     onChange={handleChange}
+//                     className="mr-2 text-[#7c0000] focus:ring-[#7c0000]"
+//                   />
+//                   Rent
+//                 </label>
+//                 <label className="flex items-center text-sm">
+//                   <input
+//                     type="radio"
+//                     name="ownership"
+//                     value="tenant"
+//                     checked={locationalData.ownership === "tenant"}
+//                     onChange={handleChange}
+//                     className="mr-2 text-[#7c0000] focus:ring-[#7c0000]"
+//                   />
+//                   Tenant
+//                 </label>
+//               </div>
+//             </div>
+//           </div>
+
+//           {/* Owner Certified */}
+//           <div className="w-full lg:w-4/12 px-4">
+//             <div className="relative w-full mb-3">
+//               <label className="block text-gray-700 text-sm mb-2">
+//                 Owner Certified
+//               </label>
+//               <div className="flex gap-4 mt-2">
+//                 <label className="flex items-center text-sm">
+//                   <input
+//                     type="radio"
+//                     name="ownerCertified"
+//                     value="Yes"
+//                     checked={locationalData.ownerCertified === "Yes"}
+//                     onChange={handleChange}
+//                     className="mr-2 text-[#7c0000] focus:ring-[#7c0000]"
+//                   />
+//                   Yes
+//                 </label>
+//                 <label className="flex items-center text-sm">
+//                   <input
+//                     type="radio"
+//                     name="ownerCertified"
+//                     value="No"
+//                     checked={locationalData.ownerCertified === "No"}
+//                     onChange={handleChange}
+//                     className="mr-2 text-[#7c0000] focus:ring-[#7c0000]"
+//                   />
+//                   No
+//                 </label>
+//               </div>
+//             </div>
+//           </div>
+
+//           {/* Is Government Place */}
+//           <div className="w-full lg:w-4/12 px-4">
+//             <div className="relative w-full mb-3">
+//               <label className="block text-gray-700 text-sm mb-2">
+//                 Is Government Place
+//               </label>
+//               <div className="flex gap-4 mt-2">
+//                 <label className="flex items-center text-sm">
+//                   <input
+//                     type="radio"
+//                     name="isGovernmentPlace"
+//                     value="Yes"
+//                     checked={locationalData.isGovernmentPlace === "Yes"}
+//                     onChange={handleChange}
+//                     className="mr-2 text-[#7c0000] focus:ring-[#7c0000]"
+//                   />
+//                   Yes
+//                 </label>
+//                 <label className="flex items-center text-sm">
+//                   <input
+//                     type="radio"
+//                     name="isGovernmentPlace"
+//                     value="No"
+//                     checked={locationalData.isGovernmentPlace === "No"}
+//                     onChange={handleChange}
+//                     className="mr-2 text-[#7c0000] focus:ring-[#7c0000]"
+//                   />
+//                   No
+//                 </label>
+//               </div>
+//             </div>
+//           </div>
+//         </div>
+//       </form>
+//     </div>
+//   );
+// };
+
+// export default LocationalDetails;
+
+
+// // src\components\Tabs\LocationalDetails.js
+// import React from "react";
+
+// const LocationalDetails = ({ onInputChange, data = {}, errors = {} }) => {
+//   const handleChange = (e) => {
+//     const { name, value } = e.target;
+//     onInputChange({ [name]: value });
+//   };
+
+//   return (
+//     <div className="flex-auto px-4 lg:px-10 py-10 pt-2">
+//       <form onSubmit={(e) => e.preventDefault()}>
+//         <div className="flex flex-wrap -mx-4">
+//           {/* Street Address */}
+//           <div className="w-full lg:w-6/12 px-4 mb-6">
+//             <label className="block text-gray-700 text-sm mb-2">Street Address</label>
+//             <input
+//               type="text"
+//               name="streetAddress"
+//               value={data.streetAddress || ""}
+//               onChange={handleChange}
+//               className={`p-2 w-full border rounded text-sm focus:outline-none focus:border-[#7c0000] ${
+//                 errors.streetAddress ? "border-red-500" : "border-gray-300"
+//               }`}
+//               placeholder="Enter Street Address"
+//             />
+//             {errors.streetAddress && (
+//               <p className="text-red-500 text-xs mt-1">{errors.streetAddress}</p>
+//             )}
+//           </div>
+
+//           {/* Suburb */}
+//           <div className="w-full lg:w-6/12 px-4 mb-6">
+//             <label className="block text-gray-700 text-sm mb-2">Suburb</label>
+//             <input
+//               type="text"
+//               name="suburb"
+//               value={data.suburb || ""}
+//               onChange={handleChange}
+//               className="p-2 w-full border border-gray-300 rounded text-sm focus:outline-none focus:border-[#7c0000]"
+//               placeholder="Enter Suburb"
+//             />
+//           </div>
+
+//           {/* City */}
+//           <div className="w-full lg:w-6/12 px-4 mb-6">
+//             <label className="block text-gray-700 text-sm mb-2">City</label>
+//             <input
+//               type="text"
+//               name="city"
+//               value={data.city || ""}
+//               onChange={handleChange}
+//               className="p-2 w-full border border-gray-300 rounded text-sm focus:outline-none focus:border-[#7c0000]"
+//               placeholder="Enter City"
+//             />
+//           </div>
+
+//           {/* Postal Code */}
+//           <div className="w-full lg:w-6/12 px-4 mb-6">
+//             <label className="block text-gray-700 text-sm mb-2">Postal Code</label>
+//             <input
+//               type="text"
+//               name="postalCode"
+//               value={data.postalCode || ""}
+//               onChange={handleChange}
+//               className="p-2 w-full border border-gray-300 rounded text-sm focus:outline-none focus:border-[#7c0000]"
+//               placeholder="Enter Postal Code"
+//             />
+//           </div>
+
+//           {/* District */}
+//           <div className="w-full lg:w-6/12 px-4 mb-6">
+//             <label className="block text-gray-700 text-sm mb-2">District</label>
+//             <input
+//               type="text"
+//               name="district"
+//               value={data.district || ""}
+//               onChange={handleChange}
+//               className="p-2 w-full border border-gray-300 rounded text-sm focus:outline-none focus:border-[#7c0000]"
+//               placeholder="Enter District"
+//             />
+//           </div>
+
+//           {/* Divisional Secretariat */}
+//           <div className="w-full lg:w-6/12 px-4 mb-6">
+//             <label className="block text-gray-700 text-sm mb-2">Divisional Secretariat</label>
+//             <input
+//               type="text"
+//               name="divisionalSecretariat"
+//               value={data.divisionalSecretariat || ""}
+//               onChange={handleChange}
+//               className="p-2 w-full border border-gray-300 rounded text-sm focus:outline-none focus:border-[#7c0000]"
+//               placeholder="Enter Divisional Secretariat"
+//             />
+//           </div>
+
+//           {/* GS Division */}
+//           <div className="w-full lg:w-6/12 px-4 mb-6">
+//             <label className="block text-gray-700 text-sm mb-2">GS Division</label>
+//             <input
+//               type="text"
+//               name="gsDivision"
+//               value={data.gsDivision || ""}
+//               onChange={handleChange}
+//               className="p-2 w-full border border-gray-300 rounded text-sm focus:outline-none focus:border-[#7c0000]"
+//               placeholder="Enter GS Division"
+//             />
+//           </div>
+
+//           {/* Electorate */}
+//           <div className="w-full lg:w-6/12 px-4 mb-6">
+//             <label className="block text-gray-700 text-sm mb-2">Electorate</label>
+//             <input
+//               type="text"
+//               name="electorate"
+//               value={data.electorate || ""}
+//               onChange={handleChange}
+//               className="p-2 w-full border border-gray-300 rounded text-sm focus:outline-none focus:border-[#7c0000]"
+//               placeholder="Enter Electorate"
+//             />
+//           </div>
+
+//           {/* AGA Division */}
+//           <div className="w-full lg:w-6/12 px-4 mb-6">
+//             <label className="block text-gray-700 text-sm mb-2">AGA Division</label>
+//             <input
+//               type="text"
+//               name="agaDivision"
+//               value={data.agaDivision || ""}
+//               onChange={handleChange}
+//               className="p-2 w-full border border-gray-300 rounded text-sm focus:outline-none focus:border-[#7c0000]"
+//               placeholder="Enter AGA Division"
+//             />
+//           </div>
+
+//           {/* CSC */}
+//           <div className="w-full lg:w-6/12 px-4 mb-6">
+//             <label className="block text-gray-700 text-sm mb-2">CSC</label>
+//             <input
+//               type="text"
+//               name="csc"
+//               value={data.csc || ""}
+//               onChange={handleChange}
+//               className="p-2 w-full border border-gray-300 rounded text-sm focus:outline-none focus:border-[#7c0000]"
+//               placeholder="Enter CSC"
+//             />
+//           </div>
+
+//           {/* Ownership */}
+//           <div className="w-full px-4 mb-6">
+//             <label className="block text-gray-700 text-sm mb-2">Ownership</label>
+//             <div className="flex gap-6">
+//               <label className="flex items-center">
+//                 <input
+//                   type="radio"
+//                   name="ownership"
+//                   value="Per"
+//                   checked={data.ownership === "Per"}
+//                   onChange={handleChange}
+//                   className="mr-2"
+//                 />
+//                 Personal
+//               </label>
+//               <label className="flex items-center">
+//                 <input
+//                   type="radio"
+//                   name="ownership"
+//                   value="Cop"
+//                   checked={data.ownership === "Cop"}
+//                   onChange={handleChange}
+//                   className="mr-2"
+//                 />
+//                 Corporate
+//               </label>
+//             </div>
+//           </div>
+
+//           {/* Owner Certified */}
+//           <div className="w-full px-4 mb-6">
+//             <label className="block text-gray-700 text-sm mb-2">Owner Certified</label>
+//             <div className="flex gap-6">
+//               <label className="flex items-center">
+//                 <input
+//                   type="radio"
+//                   name="ownerCertified"
+//                   value="y"
+//                   checked={data.ownerCertified === "y"}
+//                   onChange={handleChange}
+//                   className="mr-2"
+//                 />
+//                 Yes
+//               </label>
+//               <label className="flex items-center">
+//                 <input
+//                   type="radio"
+//                   name="ownerCertified"
+//                   value="n"
+//                   checked={data.ownerCertified === "n"}
+//                   onChange={handleChange}
+//                   className="mr-2"
+//                 />
+//                 No
+//               </label>
+//             </div>
+//           </div>
+
+//           {/* Is Government Place */}
+//           <div className="w-full px-4 mb-6">
+//             <label className="block text-gray-700 text-sm mb-2">Is Government Place</label>
+//             <div className="flex gap-6">
+//               <label className="flex items-center">
+//                 <input
+//                   type="radio"
+//                   name="isGovernmentPlace"
+//                   value="y"
+//                   checked={data.isGovernmentPlace === "y"}
+//                   onChange={handleChange}
+//                   className="mr-2"
+//                 />
+//                 Yes
+//               </label>
+//               <label className="flex items-center">
+//                 <input
+//                   type="radio"
+//                   name="isGovernmentPlace"
+//                   value="n"
+//                   checked={data.isGovernmentPlace === "n"}
+//                   onChange={handleChange}
+//                   className="mr-2"
+//                 />
+//                 No
+//               </label>
+//             </div>
+//           </div>
+//         </div>
+//       </form>
+//     </div>
+//   );
+// };
+
+// export default LocationalDetails;
+
+
 import { useState, useEffect } from "react";
 
-const LocationalDetails = ({ onInputChange, data }) => {
+const LocationalDetails = ({ onInputChange, data = {}, errors = {} }) => {
   const [locationalData, setLocationalData] = useState({
     streetAddress: "",
     suburb: "",
@@ -324,343 +946,288 @@ const LocationalDetails = ({ onInputChange, data }) => {
   const handleChange = (e) => {
     const { name, value, type } = e.target;
     const newValue = type === "radio" ? value : value;
-    const newData = { ...locationalData, [name]: newValue };
-    setLocationalData(newData);
-    onInputChange(newData);
-  };
-
-  const handleSearchPostalCode = () => {
-    // Implement postal code search logic here
-    console.log("Searching for postal code:", locationalData.postalCode);
+    onInputChange({ [name]: newValue });
   };
 
   return (
-    <div className="flex-auto">
-      <form>
-        <div className="flex flex-wrap">
+    <div className="flex-auto px-4 lg:px-10 py-10 pt-2">
+      <form onSubmit={(e) => e.preventDefault()}>
+        <div className="flex flex-wrap -mx-4">
           {/* Street Address */}
-          <div className="w-full lg:w-3/12 px-4">
-            <div className="relative w-full mb-3">
-              <label className="block text-gray-700 text-sm mb-2">
-                Street Address
-              </label>
-              <input
-                type="text"
-                name="streetAddress"
-                value={locationalData.streetAddress || ""}
-                onChange={handleChange}
-                placeholder="Street Address"
-                className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
-              />
-            </div>
+          <div className="w-full lg:w-3/12 px-4 mb-6">
+            <label className="block text-gray-700 text-sm mb-2">Street Address</label>
+            <input
+              type="text"
+              name="streetAddress"
+              value={locationalData.streetAddress || ""}
+              onChange={handleChange}
+              className={`p-2 w-full border rounded text-sm focus:outline-none focus:border-[#7c0000] ${
+                errors.streetAddress ? "border-red-500" : "border-gray-300"
+              }`}
+              placeholder="Street Address"
+            />
+            {errors.streetAddress && (
+              <p className="text-red-500 text-xs mt-1">{errors.streetAddress}</p>
+            )}
           </div>
 
           {/* Suburb */}
-          <div className="w-full lg:w-3/12 px-4">
-            <div className="relative w-full mb-3">
-              <label className="block text-gray-700 text-sm mb-2">
-                Suburb
-              </label>
-              <input
-                type="text"
-                name="suburb"
-                value={locationalData.suburb || ""}
-                onChange={handleChange}
-                placeholder="Suburb"
-                className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
-              />
-            </div>
+          <div className="w-full lg:w-3/12 px-4 mb-6">
+            <label className="block text-gray-700 text-sm mb-2">Suburb</label>
+            <input
+              type="text"
+              name="suburb"
+              value={locationalData.suburb || ""}
+              onChange={handleChange}
+              className="p-2 w-full border border-gray-300 rounded text-sm focus:outline-none focus:border-[#7c0000]"
+              placeholder="Suburb"
+            />
           </div>
 
           {/* City */}
-          <div className="w-full lg:w-3/12 px-4">
-            <div className="relative w-full mb-3">
-              <label className="block text-gray-700 text-sm mb-2">
-                City
-              </label>
-              <input
-                type="text"
-                name="city"
-                value={locationalData.city || ""}
-                onChange={handleChange}
-                placeholder="City"
-                className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
-              />
-            </div>
+          <div className="w-full lg:w-3/12 px-4 mb-6">
+            <label className="block text-gray-700 text-sm mb-2">City</label>
+            <input
+              type="text"
+              name="city"
+              value={locationalData.city || ""}
+              onChange={handleChange}
+              className="p-2 w-full border border-gray-300 rounded text-sm focus:outline-none focus:border-[#7c0000]"
+              placeholder="City"
+            />
           </div>
 
-          {/* Postal Code with Search */}
-          <div className="w-full lg:w-3/12 px-4">
-            <div className="relative w-full mb-3">
-              <label className="block text-gray-700 text-sm mb-2">
-                Postal Code
-              </label>
-              <div className="flex">
-                <input
-                  type="text"
-                  name="postalCode"
-                  value={locationalData.postalCode || ""}
-                  onChange={handleChange}
-                  placeholder="Postal Code"
-                  className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
-                />
-                <button
-                  type="button"
-                  onClick={handleSearchPostalCode}
-                  className="ml-2 bg-[#7c0000] text-white text-sm px-4 py-2 rounded shadow hover:bg-[#a00000] focus:outline-none focus:ring-2 focus:ring-[#7c0000] focus:ring-opacity-50"
-                >
-                  Search
-                </button>
-              </div>
+          {/* Postal Code */}
+          <div className="w-full lg:w-3/12 px-4 mb-6">
+            <label className="block text-gray-700 text-sm mb-2">Postal Code</label>
+            <div className="flex">
+              <input
+                type="text"
+                name="postalCode"
+                value={locationalData.postalCode || ""}
+                onChange={handleChange}
+                className="p-2 flex-1 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#7c0000]"
+                placeholder="Postal Code"
+              />
+              {/* <button
+                type="button"
+                className="ml-2 bg-[#7c0000] text-white px-4 rounded hover:bg-[#a00000]"
+              >
+                Search
+              </button> */}
             </div>
           </div>
 
           {/* District with Code */}
-          <div className="w-full lg:w-4/12 px-4">
-            <div className="relative w-full mb-3">
-              <label className="block text-gray-700 text-sm mb-2">
-                District
-              </label>
-              <div className="flex">
-                <input
-                  type="text"
-                  name="district"
-                  value={locationalData.district || ""}
-                  onChange={handleChange}
-                  placeholder="District"
-                  className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
-                />
-                <select
-                  name="districtCode"
-                  value={locationalData.districtCode || ""}
-                  onChange={handleChange}
-                  className="p-2 ml-2 border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
-                >
-                  <option value="">Code</option>
-                  <option value="G">G</option>
-                  <option value="K">K</option>
-                  <option value="M">M</option>
-                </select>
-              </div>
+          <div className="w-full lg:w-4/12 px-4 mb-6">
+            <label className="block text-gray-700 text-sm mb-2">District</label>
+            <div className="flex">
+              <input
+                type="text"
+                name="district"
+                value={locationalData.district || ""}
+                onChange={handleChange}
+                className="p-2 flex-1 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#7c0000]"
+                placeholder="District"
+              />
+              <select
+                name="districtCode"
+                value={locationalData.districtCode || ""}
+                onChange={handleChange}
+                className="p-2 ml-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#7c0000]"
+              >
+                <option value="">Code</option>
+                <option value="G">G</option>
+                <option value="K">K</option>
+                <option value="M">M</option>
+              </select>
             </div>
           </div>
 
           {/* Divisional Secretariat */}
-          <div className="w-full lg:w-4/12 px-4">
-            <div className="relative w-full mb-3">
-              <label className="block text-gray-700 text-sm mb-2">
-                Divisional Secretariat
-              </label>
-              <input
-                type="text"
-                name="divisionalSecretariat"
-                value={locationalData.divisionalSecretariat || ""}
-                onChange={handleChange}
-                placeholder="Divisional Secretariat"
-                className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
-              />
-            </div>
+          <div className="w-full lg:w-4/12 px-4 mb-6">
+            <label className="block text-gray-700 text-sm mb-2">Divisional Secretariat</label>
+            <input
+              type="text"
+              name="divisionalSecretariat"
+              value={locationalData.divisionalSecretariat || ""}
+              onChange={handleChange}
+              className="p-2 w-full border border-gray-300 rounded text-sm focus:outline-none focus:border-[#7c0000]"
+              placeholder="Divisional Secretariat"
+            />
           </div>
 
           {/* GS Division */}
-          <div className="w-full lg:w-4/12 px-4">
-            <div className="relative w-full mb-3">
-              <label className="block text-gray-700 text-sm mb-2">
-                GS Division
-              </label>
-              <input
-                type="text"
-                name="gsDivision"
-                value={locationalData.gsDivision || ""}
-                onChange={handleChange}
-                placeholder="GS Division"
-                className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
-              />
-            </div>
+          <div className="w-full lg:w-4/12 px-4 mb-6">
+            <label className="block text-gray-700 text-sm mb-2">GS Division</label>
+            <input
+              type="text"
+              name="gsDivision"
+              value={locationalData.gsDivision || ""}
+              onChange={handleChange}
+              className="p-2 w-full border border-gray-300 rounded text-sm focus:outline-none focus:border-[#7c0000]"
+              placeholder="GS Division"
+            />
           </div>
 
           {/* Electorate with Code */}
-          <div className="w-full lg:w-4/12 px-4">
-            <div className="relative w-full mb-3">
-              <label className="block text-gray-700 text-sm mb-2">
-                Electorate
-              </label>
-              <div className="flex">
-                <input
-                  type="text"
-                  name="electorate"
-                  value={locationalData.electorate || ""}
-                  onChange={handleChange}
-                  placeholder="Electorate"
-                  className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
-                />
-                <select
-                  name="electorateCode"
-                  value={locationalData.electorateCode || ""}
-                  onChange={handleChange}
-                  className="p-2 ml-2 border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
-                >
-                  <option value="">Code</option>
-                  <option value="AN">AN</option>
-                  <option value="BN">BN</option>
-                </select>
-              </div>
+          <div className="w-full lg:w-4/12 px-4 mb-6">
+            <label className="block text-gray-700 text-sm mb-2">Electorate</label>
+            <div className="flex">
+              <input
+                type="text"
+                name="electorate"
+                value={locationalData.electorate || ""}
+                onChange={handleChange}
+                className="p-2 flex-1 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#7c0000]"
+                placeholder="Electorate"
+              />
+              <select
+                name="electorateCode"
+                value={locationalData.electorateCode || ""}
+                onChange={handleChange}
+                className="p-2 ml-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#7c0000]"
+              >
+                <option value="">Code</option>
+                <option value="AN">AN</option>
+                <option value="BN">BN</option>
+              </select>
             </div>
           </div>
 
           {/* AGA Division */}
-          <div className="w-full lg:w-4/12 px-4">
-            <div className="relative w-full mb-3">
-              <label className="block text-gray-700 text-sm mb-2">
-                AGA Division
-              </label>
-              <input
-                type="text"
-                name="agaDivision"
-                value={locationalData.agaDivision || ""}
-                onChange={handleChange}
-                placeholder="AGA Division"
-                className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
-              />
-            </div>
+          <div className="w-full lg:w-4/12 px-4 mb-6">
+            <label className="block text-gray-700 text-sm mb-2">AGA Division</label>
+            <input
+              type="text"
+              name="agaDivision"
+              value={locationalData.agaDivision || ""}
+              onChange={handleChange}
+              className="p-2 w-full border border-gray-300 rounded text-sm focus:outline-none focus:border-[#7c0000]"
+              placeholder="AGA Division"
+            />
           </div>
 
           {/* CSC with Code */}
-          <div className="w-full lg:w-4/12 px-4">
-            <div className="relative w-full mb-3">
-              <label className="block text-gray-700 text-sm mb-2">
-                CSC
-              </label>
-              <div className="flex">
-                <input
-                  type="text"
-                  name="csc"
-                  value={locationalData.csc || ""}
-                  onChange={handleChange}
-                  placeholder="CSC"
-                  className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
-                />
-                <select
-                  name="cscCode"
-                  value={locationalData.cscCode || ""}
-                  onChange={handleChange}
-                  className="p-2 ml-2 border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
-                >
-                  <option value="">Code</option>
-                  <option value="AB">AB</option>
-                  <option value="CD">CD</option>
-                </select>
-              </div>
+          <div className="w-full lg:w-4/12 px-4 mb-6">
+            <label className="block text-gray-700 text-sm mb-2">CSC</label>
+            <div className="flex">
+              <input
+                type="text"
+                name="csc"
+                value={locationalData.csc || ""}
+                onChange={handleChange}
+                className="p-2 flex-1 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#7c0000]"
+                placeholder="CSC"
+              />
+              <select
+                name="cscCode"
+                value={locationalData.cscCode || ""}
+                onChange={handleChange}
+                className="p-2 ml-2 border border-gray-300 rounded text-sm focus:outline-none focus:border-[#7c0000]"
+              >
+                <option value="">Code</option>
+                <option value="AB">AB</option>
+                <option value="CD">CD</option>
+              </select>
             </div>
           </div>
 
           {/* Ownership */}
-          <div className="w-full lg:w-4/12 px-4">
-            <div className="relative w-full mb-3">
-              <label className="block text-gray-700 text-sm mb-2">
-                Ownership
+          <div className="w-full px-4 mb-6">
+            <label className="block text-gray-700 text-sm mb-2">Ownership</label>
+            <div className="flex" style={{ gap: '3rem' }}>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="ownership"
+                  value="owner"
+                  checked={locationalData.ownership === "owner"}
+                  onChange={handleChange}
+                  className="mr-2"
+                />
+                Owner
               </label>
-              <div className="flex gap-4 mt-2">
-                <label className="flex items-center text-sm">
-                  <input
-                    type="radio"
-                    name="ownership"
-                    value="owner"
-                    checked={locationalData.ownership === "owner"}
-                    onChange={handleChange}
-                    className="mr-2 text-[#7c0000] focus:ring-[#7c0000]"
-                  />
-                  Owner
-                </label>
-                <label className="flex items-center text-sm">
-                  <input
-                    type="radio"
-                    name="ownership"
-                    value="rent"
-                    checked={locationalData.ownership === "rent"}
-                    onChange={handleChange}
-                    className="mr-2 text-[#7c0000] focus:ring-[#7c0000]"
-                  />
-                  Rent
-                </label>
-                <label className="flex items-center text-sm">
-                  <input
-                    type="radio"
-                    name="ownership"
-                    value="tenant"
-                    checked={locationalData.ownership === "tenant"}
-                    onChange={handleChange}
-                    className="mr-2 text-[#7c0000] focus:ring-[#7c0000]"
-                  />
-                  Tenant
-                </label>
-              </div>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="ownership"
+                  value="rent"
+                  checked={locationalData.ownership === "rent"}
+                  onChange={handleChange}
+                  className="mr-2"
+                />
+                Rent
+              </label>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="ownership"
+                  value="tenant"
+                  checked={locationalData.ownership === "tenant"}
+                  onChange={handleChange}
+                  className="mr-2"
+                />
+                Tenant
+              </label>
             </div>
           </div>
 
           {/* Owner Certified */}
-          <div className="w-full lg:w-4/12 px-4">
-            <div className="relative w-full mb-3">
-              <label className="block text-gray-700 text-sm mb-2">
-                Owner Certified
+          <div className="w-full px-4 mb-6">
+            <label className="block text-gray-700 text-sm mb-2">Owner Certified</label>
+            <div className="flex" style={{ gap: '3rem' }}>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="ownerCertified"
+                  value="Yes"
+                  checked={locationalData.ownerCertified === "Yes"}
+                  onChange={handleChange}
+                  className="mr-2"
+                />
+                Yes
               </label>
-              <div className="flex gap-4 mt-2">
-                <label className="flex items-center text-sm">
-                  <input
-                    type="radio"
-                    name="ownerCertified"
-                    value="Yes"
-                    checked={locationalData.ownerCertified === "Yes"}
-                    onChange={handleChange}
-                    className="mr-2 text-[#7c0000] focus:ring-[#7c0000]"
-                  />
-                  Yes
-                </label>
-                <label className="flex items-center text-sm">
-                  <input
-                    type="radio"
-                    name="ownerCertified"
-                    value="No"
-                    checked={locationalData.ownerCertified === "No"}
-                    onChange={handleChange}
-                    className="mr-2 text-[#7c0000] focus:ring-[#7c0000]"
-                  />
-                  No
-                </label>
-              </div>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="ownerCertified"
+                  value="No"
+                  checked={locationalData.ownerCertified === "No"}
+                  onChange={handleChange}
+                  className="mr-2"
+                />
+                No
+              </label>
             </div>
           </div>
 
           {/* Is Government Place */}
-          <div className="w-full lg:w-4/12 px-4">
-            <div className="relative w-full mb-3">
-              <label className="block text-gray-700 text-sm mb-2">
-                Is Government Place
+          <div className="w-full px-4 mb-6">
+            <label className="block text-gray-700 text-sm mb-2">Is Government Place</label>
+            <div className="flex" style={{ gap: '3rem' }}>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="isGovernmentPlace"
+                  value="Yes"
+                  checked={locationalData.isGovernmentPlace === "Yes"}
+                  onChange={handleChange}
+                  className="mr-2"
+                />
+                Yes
               </label>
-              <div className="flex gap-4 mt-2">
-                <label className="flex items-center text-sm">
-                  <input
-                    type="radio"
-                    name="isGovernmentPlace"
-                    value="Yes"
-                    checked={locationalData.isGovernmentPlace === "Yes"}
-                    onChange={handleChange}
-                    className="mr-2 text-[#7c0000] focus:ring-[#7c0000]"
-                  />
-                  Yes
-                </label>
-                <label className="flex items-center text-sm">
-                  <input
-                    type="radio"
-                    name="isGovernmentPlace"
-                    value="No"
-                    checked={locationalData.isGovernmentPlace === "No"}
-                    onChange={handleChange}
-                    className="mr-2 text-[#7c0000] focus:ring-[#7c0000]"
-                  />
-                  No
-                </label>
-              </div>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="isGovernmentPlace"
+                  value="No"
+                  checked={locationalData.isGovernmentPlace === "No"}
+                  onChange={handleChange}
+                  className="mr-2"
+                />
+                No
+              </label>
             </div>
           </div>
         </div>

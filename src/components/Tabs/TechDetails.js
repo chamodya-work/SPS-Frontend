@@ -219,11 +219,671 @@
 // export default TechDetails;
 
 
-import React, { useState } from "react";
+// import React, { useState } from "react";
+// import { useDropzone } from "react-dropzone";
+// import { FaCloudUploadAlt, FaTrash } from "react-icons/fa";
+
+// const TechDetails = ({ onInputChange, data }) => {
+//   const [techData, setTechData] = useState({
+//     meteringType: "HT",
+//     hasExistingSupply: "Yes",
+//     capacity: "",
+//     meteringPoints: "",
+//     accountNumbers: "",
+//     supplyType: "",
+//     documents: [],
+//   });
+
+//   const [files, setFiles] = useState([]);
+//   const [selectedDoc, setSelectedDoc] = useState("");
+
+//   const { getRootProps, getInputProps } = useDropzone({
+//     accept: "image/*,application/pdf",
+//     maxSize: 1024 * 1024,
+//     onDrop: (acceptedFiles) => {
+//       const newFiles = [...files, ...acceptedFiles];
+//       setFiles(newFiles);
+//       setTechData((prev) => ({ ...prev, documents: newFiles }));
+//       if (onInputChange) {
+//         onInputChange({ ...techData, documents: newFiles });
+//       }
+//     },
+//   });
+
+//   const removeFile = (name) => {
+//     const newFiles = files.filter((file) => file.name !== name);
+//     setFiles(newFiles);
+//     setTechData((prev) => ({ ...prev, documents: newFiles }));
+//     if (onInputChange) {
+//       onInputChange({ ...techData, documents: newFiles });
+//     }
+//   };
+
+//   const handleChange = (e) => {
+//     const { name, value, type } = e.target;
+//     const newValue = type === "radio" ? value : value;
+//     const newData = { ...techData, [name]: newValue };
+//     setTechData(newData);
+//     if (onInputChange) {
+//       onInputChange(newData);
+//     }
+//   };
+
+//   return (
+//     <div className="flex-auto">
+//       <form>
+//         <div className="flex flex-wrap">
+//           {/* HT/LT Metering */}
+//           <div className="w-full lg:w-3/12 px-4">
+//             <div className="relative w-full mb-3">
+//               <label className="block text-gray-700 text-sm mb-2">
+//                 HT/LT Metering
+//               </label>
+//               <div className="flex gap-4 mt-2">
+//                 <label className="flex items-center text-sm">
+//                   <input
+//                     type="radio"
+//                     name="meteringType"
+//                     value="HT"
+//                     checked={techData.meteringType === "HT"}
+//                     onChange={handleChange}
+//                     className="mr-2 text-[#7c0000] focus:ring-[#7c0000]"
+//                   />
+//                   HT
+//                 </label>
+//                 <label className="flex items-center text-sm">
+//                   <input
+//                     type="radio"
+//                     name="meteringType"
+//                     value="LT"
+//                     checked={techData.meteringType === "LT"}
+//                     onChange={handleChange}
+//                     className="mr-2 text-[#7c0000] focus:ring-[#7c0000]"
+//                   />
+//                   LT
+//                 </label>
+//               </div>
+//             </div>
+//           </div>
+
+//           {/* Does Premises already have electricity supply */}
+//           <div className="w-full lg:w-6/12 px-4">
+//             <div className="relative w-full mb-3">
+//               <label className="block text-gray-700 text-sm mb-2">
+//                 Does Premises already have electricity supply
+//               </label>
+//               <div className="flex gap-4 mt-2">
+//                 <label className="flex items-center text-sm">
+//                   <input
+//                     type="radio"
+//                     name="hasExistingSupply"
+//                     value="Yes"
+//                     checked={techData.hasExistingSupply === "Yes"}
+//                     onChange={handleChange}
+//                     className="mr-2 text-[#7c0000] focus:ring-[#7c0000]"
+//                   />
+//                   Yes
+//                 </label>
+//                 <label className="flex items-center text-sm">
+//                   <input
+//                     type="radio"
+//                     name="hasExistingSupply"
+//                     value="No"
+//                     checked={techData.hasExistingSupply === "No"}
+//                     onChange={handleChange}
+//                     className="mr-2 text-[#7c0000] focus:ring-[#7c0000]"
+//                   />
+//                   No
+//                 </label>
+//               </div>
+//             </div>
+//           </div>
+
+//           {/* Capacity of Service */}
+//           <div className="w-full lg:w-3/12 px-4">
+//             <div className="relative w-full mb-3">
+//               <label className="block text-gray-700 text-sm mb-2">
+//                 Capacity of Service
+//               </label>
+//               <input
+//                 type="text"
+//                 name="capacity"
+//                 value={techData.capacity || ""}
+//                 onChange={handleChange}
+//                 placeholder="Enter Capacity"
+//                 className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
+//               />
+//             </div>
+//           </div>
+
+//           {/* No of metering points */}
+//           <div className="w-full lg:w-4/12 px-4">
+//             <div className="relative w-full mb-3">
+//               <label className="block text-gray-700 text-sm mb-2">
+//                 No of metering points
+//               </label>
+//               <input
+//                 type="text"
+//                 name="meteringPoints"
+//                 value={techData.meteringPoints || ""}
+//                 onChange={handleChange}
+//                 placeholder="Enter Number"
+//                 className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
+//               />
+//             </div>
+//           </div>
+
+//           {/* Account Numbers */}
+//           <div className="w-full lg:w-4/12 px-4">
+//             <div className="relative w-full mb-3">
+//               <label className="block text-gray-700 text-sm mb-2">
+//                 Account Numbers
+//               </label>
+//               <input
+//                 type="text"
+//                 name="accountNumbers"
+//                 value={techData.accountNumbers || ""}
+//                 onChange={handleChange}
+//                 placeholder="Enter Account Numbers"
+//                 className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
+//               />
+//             </div>
+//           </div>
+
+//           {/* Type of Supply */}
+//           <div className="w-full lg:w-4/12 px-4">
+//             <div className="relative w-full mb-3">
+//               <label className="block text-gray-700 text-sm mb-2">
+//                 Type of Supply
+//               </label>
+//               <select
+//                 name="supplyType"
+//                 value={techData.supplyType || ""}
+//                 onChange={handleChange}
+//                 className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
+//               >
+//                 <option value="">Select Type</option>
+//                 <option value="Industry">Industry</option>
+//                 <option value="Commercial">Commercial</option>
+//                 <option value="Residential">Residential</option>
+//               </select>
+//             </div>
+//           </div>
+
+//           {/* Document Upload Section 1 */}
+//           <div className="w-full lg:w-6/12 px-4">
+//             <div className="relative w-full mb-3">
+//               <label className="block text-gray-700 text-sm mb-2">
+//                 Document to Be Submitted
+//               </label>
+//               <select
+//                 className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150 mb-3"
+//                 onChange={(e) => setSelectedDoc(e.target.value)}
+//                 value={selectedDoc}
+//               >
+//                 <option value="">Select Document</option>
+//                 <option value="id_proof">ID Proof</option>
+//                 <option value="address_proof">Address Proof</option>
+//               </select>
+
+//               <div
+//                 {...getRootProps()}
+//                 className="p-6 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 cursor-pointer hover:border-[#7c0000] transition-colors duration-150"
+//               >
+//                 <input {...getInputProps()} />
+//                 <FaCloudUploadAlt size={35} className="mx-auto text-gray-400 mb-2" />
+//                 <p className="text-gray-600 text-sm text-center">
+//                   Drag & Drop files here or click to upload
+//                 </p>
+//               </div>
+//             </div>
+//           </div>
+
+//           {/* Document Upload Section 2 */}
+//           <div className="w-full lg:w-6/12 px-4">
+//             <div className="relative w-full mb-3">
+//               <label className="block text-gray-700 text-sm mb-2">
+//                 Additional Document
+//               </label>
+//               <select
+//                 className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150 mb-3"
+//                 onChange={(e) => setSelectedDoc(e.target.value)}
+//                 value={selectedDoc}
+//               >
+//                 <option value="">Select Document</option>
+//                 <option value="agreement">Agreement</option>
+//                 <option value="certificate">Certificate</option>
+//               </select>
+
+//               <div
+//                 {...getRootProps()}
+//                 className="p-6 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 cursor-pointer hover:border-[#7c0000] transition-colors duration-150"
+//               >
+//                 <input {...getInputProps()} />
+//                 <FaCloudUploadAlt size={35} className="mx-auto text-gray-400 mb-2" />
+//                 <p className="text-gray-600 text-sm text-center">
+//                   Drag & Drop files here or click to upload
+//                 </p>
+//               </div>
+//             </div>
+//           </div>
+
+//           {/* File List */}
+//           {files.length > 0 && (
+//             <div className="w-full lg:w-12/12 px-4">
+//               <div className="mt-2 space-y-2">
+//                 <h4 className="text-sm font-medium text-gray-700">Uploaded Files</h4>
+//                 {files.map((file) => (
+//                   <div
+//                     key={file.name}
+//                     className="flex items-center justify-between p-2 bg-white border border-gray-200 rounded-lg"
+//                   >
+//                     <span className="text-sm text-gray-700 truncate max-w-[300px]">
+//                       {file.name}
+//                     </span>
+//                     <button
+//                       type="button"
+//                       onClick={() => removeFile(file.name)}
+//                       className="text-red-500 hover:text-red-700 focus:outline-none"
+//                     >
+//                       <FaTrash size={16} />
+//                     </button>
+//                   </div>
+//                 ))}
+//               </div>
+//             </div>
+//           )}
+//         </div>
+//       </form>
+//     </div>
+//   );
+// };
+
+// export default TechDetails;
+
+
+
+// // src\components\Tabs\TechDetails.js
+// import React from "react";
+
+// const TechDetails = ({ onInputChange, data = {}, errors = {} }) => {
+//   const handleChange = (e) => {
+//     const { name, value } = e.target;
+//     onInputChange({ [name]: value });
+//   };
+
+//   return (
+//     <div className="flex-auto px-4 lg:px-10 py-10 pt-2">
+//       <form onSubmit={(e) => e.preventDefault()}>
+//         <div className="flex flex-wrap -mx-4">
+//           {/* Metering Type */}
+//           <div className="w-full px-4 mb-6">
+//             <label className="block text-gray-700 text-sm mb-2">Metering Type</label>
+//             <div className="flex gap-6">
+//               <label className="flex items-center">
+//                 <input
+//                   type="radio"
+//                   name="meteringType"
+//                   value="HT"
+//                   checked={data.meteringType === "HT"}
+//                   onChange={handleChange}
+//                   className="mr-2"
+//                 />
+//                 HT
+//               </label>
+//               <label className="flex items-center">
+//                 <input
+//                   type="radio"
+//                   name="meteringType"
+//                   value="LT"
+//                   checked={data.meteringType === "LT"}
+//                   onChange={handleChange}
+//                   className="mr-2"
+//                 />
+//                 LT
+//               </label>
+//             </div>
+//           </div>
+
+//           {/* Existing Supply */}
+//           <div className="w-full px-4 mb-6">
+//             <label className="block text-gray-700 text-sm mb-2">Does Premises Already Have Electricity Supply?</label>
+//             <div className="flex gap-6">
+//               <label className="flex items-center">
+//                 <input
+//                   type="radio"
+//                   name="hasExistingSupply"
+//                   value="y"
+//                   checked={data.hasExistingSupply === "y"}
+//                   onChange={handleChange}
+//                   className="mr-2"
+//                 />
+//                 Yes
+//               </label>
+//               <label className="flex items-center">
+//                 <input
+//                   type="radio"
+//                   name="hasExistingSupply"
+//                   value="n"
+//                   checked={data.hasExistingSupply === "n"}
+//                   onChange={handleChange}
+//                   className="mr-2"
+//                 />
+//                 No
+//               </label>
+//             </div>
+//           </div>
+
+//           {/* Capacity */}
+//           <div className="w-full lg:w-6/12 px-4 mb-6">
+//             <label className="block text-gray-700 text-sm mb-2">Capacity of Service</label>
+//             <input
+//               type="text"
+//               name="capacity"
+//               value={data.capacity || ""}
+//               onChange={handleChange}
+//               className={`p-2 w-full border rounded text-sm focus:outline-none focus:border-[#7c0000] ${
+//                 errors.capacity ? "border-red-500" : "border-gray-300"
+//               }`}
+//               placeholder="Enter Capacity"
+//             />
+//             {errors.capacity && (
+//               <p className="text-red-500 text-xs mt-1">{errors.capacity}</p>
+//             )}
+//           </div>
+
+//           {/* Metering Points */}
+//           <div className="w-full lg:w-6/12 px-4 mb-6">
+//             <label className="block text-gray-700 text-sm mb-2">No. of Metering Points</label>
+//             <input
+//               type="number"
+//               name="meteringPoints"
+//               value={data.meteringPoints || ""}
+//               onChange={handleChange}
+//               className="p-2 w-full border border-gray-300 rounded text-sm focus:outline-none focus:border-[#7c0000]"
+//               placeholder="Enter Number"
+//             />
+//           </div>
+
+//           {/* Account Numbers */}
+//           <div className="w-full lg:w-6/12 px-4 mb-6">
+//             <label className="block text-gray-700 text-sm mb-2">Account Numbers</label>
+//             <input
+//               type="text"
+//               name="accountNumbers"
+//               value={data.accountNumbers || ""}
+//               onChange={handleChange}
+//               className="p-2 w-full border border-gray-300 rounded text-sm focus:outline-none focus:border-[#7c0000]"
+//               placeholder="Enter Account Numbers"
+//             />
+//           </div>
+
+//           {/* Supply Type */}
+//           <div className="w-full lg:w-6/12 px-4 mb-6">
+//             <label className="block text-gray-700 text-sm mb-2">Type of Supply</label>
+//             <select
+//               name="supplyType"
+//               value={data.supplyType || ""}
+//               onChange={handleChange}
+//               className="p-2 w-full border border-gray-300 rounded text-sm focus:outline-none focus:border-[#7c0000]"
+//             >
+//               <option value="">Select Type</option>
+//               <option value="Industry">Industry</option>
+//               <option value="Commercial">Commercial</option>
+//               <option value="Residential">Residential</option>
+//             </select>
+//           </div>
+
+//           {/* Note: Removed file upload for simplicity; add back if needed with base64 or separate API */}
+//         </div>
+//       </form>
+//     </div>
+//   );
+// };
+
+// export default TechDetails;
+
+
+// import React, { useState,useEffect } from "react";
+// import { useDropzone } from "react-dropzone";
+// import { FaCloudUploadAlt, FaTrash } from "react-icons/fa";
+
+// const TechDetails = ({ onInputChange, data = {}, errors = {} }) => {
+//   const [techData, setTechData] = useState({
+//     meteringType: "HT",
+//     hasExistingSupply: "Yes",
+//     capacity: "",
+//     meteringPoints: "",
+//     accountNumbers: "",
+//     supplyType: "",
+//     documents: [],
+//   });
+
+//   const [files, setFiles] = useState([]);
+//   const [selectedDoc, setSelectedDoc] = useState("");
+
+//   useEffect(() => {
+//     if (data) {
+//       setTechData((prev) => ({ ...prev, ...data }));
+//       setFiles(data.documents || []);
+//     }
+//   }, [data]);
+
+//   const { getRootProps, getInputProps } = useDropzone({
+//     accept: "image/*,application/pdf",
+//     maxSize: 1024 * 1024,
+//     onDrop: (acceptedFiles) => {
+//       const newFiles = [...files, ...acceptedFiles];
+//       setFiles(newFiles);
+//       onInputChange({ documents: newFiles });
+//     },
+//   });
+
+//   const removeFile = (name) => {
+//     const newFiles = files.filter((file) => file.name !== name);
+//     setFiles(newFiles);
+//     onInputChange({ documents: newFiles });
+//   };
+
+//   const handleChange = (e) => {
+//     const { name, value, type } = e.target;
+//     const newValue = type === "radio" ? value : value;
+//     onInputChange({ [name]: newValue });
+//   };
+
+//   return (
+//     <div className="flex-auto px-4 lg:px-10 py-10 pt-2">
+//       <form onSubmit={(e) => e.preventDefault()}>
+//         <div className="flex flex-wrap -mx-4">
+//           {/* HT/LT Metering */}
+//           <div className="w-full px-4 mb-6">
+//             <label className="block text-gray-700 text-sm mb-2">HT/LT Metering</label>
+//             <div className="flex gap-6">
+//               <label className="flex items-center">
+//                 <input
+//                   type="radio"
+//                   name="meteringType"
+//                   value="HT"
+//                   checked={techData.meteringType === "HT"}
+//                   onChange={handleChange}
+//                   className="mr-2"
+//                 />
+//                 HT
+//               </label>
+//               <label className="flex items-center">
+//                 <input
+//                   type="radio"
+//                   name="meteringType"
+//                   value="LT"
+//                   checked={techData.meteringType === "LT"}
+//                   onChange={handleChange}
+//                   className="mr-2"
+//                 />
+//                 LT
+//               </label>
+//             </div>
+//           </div>
+
+//           {/* Has Existing Supply */}
+//           <div className="w-full px-4 mb-6">
+//             <label className="block text-gray-700 text-sm mb-2">Does Premises already have electricity supply</label>
+//             <div className="flex gap-6">
+//               <label className="flex items-center">
+//                 <input
+//                   type="radio"
+//                   name="hasExistingSupply"
+//                   value="Yes"
+//                   checked={techData.hasExistingSupply === "Yes"}
+//                   onChange={handleChange}
+//                   className="mr-2"
+//                 />
+//                 Yes
+//               </label>
+//               <label className="flex items-center">
+//                 <input
+//                   type="radio"
+//                   name="hasExistingSupply"
+//                   value="No"
+//                   checked={techData.hasExistingSupply === "No"}
+//                   onChange={handleChange}
+//                   className="mr-2"
+//                 />
+//                 No
+//               </label>
+//             </div>
+//           </div>
+
+//           {/* Capacity */}
+//           <div className="w-full lg:w-3/12 px-4 mb-6">
+//             <label className="block text-gray-700 text-sm mb-2">Capacity of Service</label>
+//             <input
+//               type="text"
+//               name="capacity"
+//               value={techData.capacity || ""}
+//               onChange={handleChange}
+//               className="p-2 w-full border border-gray-300 rounded text-sm focus:outline-none focus:border-[#7c0000]"
+//               placeholder="Enter Capacity"
+//             />
+//           </div>
+
+//           {/* Metering Points */}
+//           <div className="w-full lg:w-4/12 px-4 mb-6">
+//             <label className="block text-gray-700 text-sm mb-2">No of metering points</label>
+//             <input
+//               type="text"
+//               name="meteringPoints"
+//               value={techData.meteringPoints || ""}
+//               onChange={handleChange}
+//               className="p-2 w-full border border-gray-300 rounded text-sm focus:outline-none focus:border-[#7c0000]"
+//               placeholder="Enter Number"
+//             />
+//           </div>
+
+//           {/* Account Numbers */}
+//           <div className="w-full lg:w-4/12 px-4 mb-6">
+//             <label className="block text-gray-700 text-sm mb-2">Account Numbers</label>
+//             <input
+//               type="text"
+//               name="accountNumbers"
+//               value={techData.accountNumbers || ""}
+//               onChange={handleChange}
+//               className="p-2 w-full border border-gray-300 rounded text-sm focus:outline-none focus:border-[#7c0000]"
+//               placeholder="Enter Account Numbers"
+//             />
+//           </div>
+
+//           {/* Supply Type */}
+//           <div className="w-full lg:w-4/12 px-4 mb-6">
+//             <label className="block text-gray-700 text-sm mb-2">Type of Supply</label>
+//             <select
+//               name="supplyType"
+//               value={techData.supplyType || ""}
+//               onChange={handleChange}
+//               className="p-2 w-full border border-gray-300 rounded text-sm focus:outline-none focus:border-[#7c0000]"
+//             >
+//               <option value="">Select Type</option>
+//               <option value="Industry">Industry</option>
+//               <option value="Commercial">Commercial</option>
+//               <option value="Residential">Residential</option>
+//             </select>
+//           </div>
+
+//           {/* Document to Be Submitted */}
+//           <div className="w-full lg:w-6/12 px-4 mb-6">
+//             <label className="block text-gray-700 text-sm mb-2">Document to Be Submitted</label>
+//             <select
+//               name="selectedDoc"
+//               value={selectedDoc}
+//               onChange={(e) => setSelectedDoc(e.target.value)}
+//               className="p-2 w-full border border-gray-300 rounded text-sm focus:outline-none focus:border-[#7c0000] mb-2"
+//             >
+//               <option value="">Select Document</option>
+//               <option value="id_proof">ID Proof</option>
+//               <option value="address_proof">Address Proof</option>
+//             </select>
+//             <div
+//               {...getRootProps()}
+//               className="p-6 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 cursor-pointer hover:border-[#7c0000]"
+//             >
+//               <input {...getInputProps()} />
+//               <FaCloudUploadAlt size={35} className="mx-auto text-gray-400 mb-2" />
+//               <p className="text-gray-600 text-sm text-center">Drag & Drop files here or click to upload</p>
+//             </div>
+//           </div>
+
+//           {/* Additional Document */}
+//           <div className="w-full lg:w-6/12 px-4 mb-6">
+//             <label className="block text-gray-700 text-sm mb-2">Additional Document</label>
+//             <select
+//               name="additionalDoc"
+//               value={selectedDoc}
+//               onChange={(e) => setSelectedDoc(e.target.value)}
+//               className="p-2 w-full border border-gray-300 rounded text-sm focus:outline-none focus:border-[#7c0000] mb-2"
+//             >
+//               <option value="">Select Document</option>
+//               <option value="agreement">Agreement</option>
+//               <option value="certificate">Certificate</option>
+//             </select>
+//             <div
+//               {...getRootProps()}
+//               className="p-6 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 cursor-pointer hover:border-[#7c0000]"
+//             >
+//               <input {...getInputProps()} />
+//               <FaCloudUploadAlt size={35} className="mx-auto text-gray-400 mb-2" />
+//               <p className="text-gray-600 text-sm text-center">Drag & Drop files here or click to upload</p>
+//             </div>
+//           </div>
+
+//           {/* Uploaded Files */}
+//           {files.length > 0 && (
+//             <div className="w-full px-4">
+//               <h4 className="text-sm font-medium text-gray-700 mb-2">Uploaded Files</h4>
+//               {files.map((file) => (
+//                 <div key={file.name} className="flex items-center justify-between p-2 bg-white border rounded-lg mb-2">
+//                   <span className="text-sm text-gray-700 truncate">{file.name}</span>
+//                   <button onClick={() => removeFile(file.name)} className="text-red-500 hover:text-red-700">
+//                     <FaTrash size={16} />
+//                   </button>
+//                 </div>
+//               ))}
+//             </div>
+//           )}
+//         </div>
+//       </form>
+//     </div>
+//   );
+// };
+
+// export default TechDetails;
+
+
+
+// src\components\Tabs\TechDetails.js
+import React, { useState, useEffect } from "react";
 import { useDropzone } from "react-dropzone";
 import { FaCloudUploadAlt, FaTrash } from "react-icons/fa";
 
-const TechDetails = ({ onInputChange, data }) => {
+const TechDetails = ({ onInputChange, data = {}, errors = {} }) => {
   const [techData, setTechData] = useState({
     meteringType: "HT",
     hasExistingSupply: "Yes",
@@ -237,260 +897,220 @@ const TechDetails = ({ onInputChange, data }) => {
   const [files, setFiles] = useState([]);
   const [selectedDoc, setSelectedDoc] = useState("");
 
+  useEffect(() => {
+    if (data) {
+      setTechData((prev) => ({ ...prev, ...data }));
+      // Check if documents exist and are valid
+      if (data.documents && Array.isArray(data.documents)) {
+        setFiles(data.documents);
+      }
+    }
+  }, [data]);
+
   const { getRootProps, getInputProps } = useDropzone({
-    accept: "image/*,application/pdf",
+    accept: {
+      'image/*': ['.jpeg', '.jpg', '.png', '.gif', '.bmp'],
+      'application/pdf': ['.pdf']
+    },
     maxSize: 1024 * 1024,
     onDrop: (acceptedFiles) => {
+      // Create new files array with proper File objects
       const newFiles = [...files, ...acceptedFiles];
       setFiles(newFiles);
-      setTechData((prev) => ({ ...prev, documents: newFiles }));
-      if (onInputChange) {
-        onInputChange({ ...techData, documents: newFiles });
-      }
+      // Store only file metadata or the files themselves
+      onInputChange({ documents: newFiles });
     },
+    onDropRejected: (rejectedFiles) => {
+      console.log('Rejected files:', rejectedFiles);
+    }
   });
 
   const removeFile = (name) => {
     const newFiles = files.filter((file) => file.name !== name);
     setFiles(newFiles);
-    setTechData((prev) => ({ ...prev, documents: newFiles }));
-    if (onInputChange) {
-      onInputChange({ ...techData, documents: newFiles });
-    }
+    onInputChange({ documents: newFiles });
   };
 
   const handleChange = (e) => {
     const { name, value, type } = e.target;
     const newValue = type === "radio" ? value : value;
-    const newData = { ...techData, [name]: newValue };
-    setTechData(newData);
-    if (onInputChange) {
-      onInputChange(newData);
-    }
+    setTechData(prev => ({ ...prev, [name]: newValue }));
+    onInputChange({ [name]: newValue });
   };
 
   return (
-    <div className="flex-auto">
-      <form>
-        <div className="flex flex-wrap">
+    <div className="flex-auto px-4 lg:px-10 py-10 pt-2">
+      <form onSubmit={(e) => e.preventDefault()}>
+        <div className="flex flex-wrap -mx-4">
           {/* HT/LT Metering */}
-          <div className="w-full lg:w-3/12 px-4">
-            <div className="relative w-full mb-3">
-              <label className="block text-gray-700 text-sm mb-2">
-                HT/LT Metering
+          <div className="w-full px-4 mb-6">
+            <label className="block text-gray-700 text-sm mb-2">HT/LT Metering</label>
+            <div className="flex" style={{ gap: '3rem' }}>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="meteringType"
+                  value="HT"
+                  checked={techData.meteringType === "HT"}
+                  onChange={handleChange}
+                  className="mr-2"
+                />
+                HT
               </label>
-              <div className="flex gap-4 mt-2">
-                <label className="flex items-center text-sm">
-                  <input
-                    type="radio"
-                    name="meteringType"
-                    value="HT"
-                    checked={techData.meteringType === "HT"}
-                    onChange={handleChange}
-                    className="mr-2 text-[#7c0000] focus:ring-[#7c0000]"
-                  />
-                  HT
-                </label>
-                <label className="flex items-center text-sm">
-                  <input
-                    type="radio"
-                    name="meteringType"
-                    value="LT"
-                    checked={techData.meteringType === "LT"}
-                    onChange={handleChange}
-                    className="mr-2 text-[#7c0000] focus:ring-[#7c0000]"
-                  />
-                  LT
-                </label>
-              </div>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="meteringType"
+                  value="LT"
+                  checked={techData.meteringType === "LT"}
+                  onChange={handleChange}
+                  className="mr-2"
+                />
+                LT
+              </label>
             </div>
           </div>
 
-          {/* Does Premises already have electricity supply */}
-          <div className="w-full lg:w-6/12 px-4">
-            <div className="relative w-full mb-3">
-              <label className="block text-gray-700 text-sm mb-2">
-                Does Premises already have electricity supply
+          {/* Has Existing Supply */}
+          <div className="w-full px-4 mb-6">
+            <label className="block text-gray-700 text-sm mb-2">Does Premises already have electricity supply</label>
+            <div className="flex" style={{ gap: '3rem' }}>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="hasExistingSupply"
+                  value="Yes"
+                  checked={techData.hasExistingSupply === "Yes"}
+                  onChange={handleChange}
+                  className="mr-2"
+                />
+                Yes
               </label>
-              <div className="flex gap-4 mt-2">
-                <label className="flex items-center text-sm">
-                  <input
-                    type="radio"
-                    name="hasExistingSupply"
-                    value="Yes"
-                    checked={techData.hasExistingSupply === "Yes"}
-                    onChange={handleChange}
-                    className="mr-2 text-[#7c0000] focus:ring-[#7c0000]"
-                  />
-                  Yes
-                </label>
-                <label className="flex items-center text-sm">
-                  <input
-                    type="radio"
-                    name="hasExistingSupply"
-                    value="No"
-                    checked={techData.hasExistingSupply === "No"}
-                    onChange={handleChange}
-                    className="mr-2 text-[#7c0000] focus:ring-[#7c0000]"
-                  />
-                  No
-                </label>
-              </div>
+              <label className="flex items-center">
+                <input
+                  type="radio"
+                  name="hasExistingSupply"
+                  value="No"
+                  checked={techData.hasExistingSupply === "No"}
+                  onChange={handleChange}
+                  className="mr-2"
+                />
+                No
+              </label>
             </div>
           </div>
 
-          {/* Capacity of Service */}
-          <div className="w-full lg:w-3/12 px-4">
-            <div className="relative w-full mb-3">
-              <label className="block text-gray-700 text-sm mb-2">
-                Capacity of Service
-              </label>
-              <input
-                type="text"
-                name="capacity"
-                value={techData.capacity || ""}
-                onChange={handleChange}
-                placeholder="Enter Capacity"
-                className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
-              />
-            </div>
+          {/* Capacity */}
+          <div className="w-full lg:w-3/12 px-4 mb-6">
+            <label className="block text-gray-700 text-sm mb-2">Capacity of Service</label>
+            <input
+              type="text"
+              name="capacity"
+              value={techData.capacity || ""}
+              onChange={handleChange}
+              className="p-2 w-full border border-gray-300 rounded text-sm focus:outline-none focus:border-[#7c0000]"
+              placeholder="Enter Capacity"
+            />
           </div>
 
-          {/* No of metering points */}
-          <div className="w-full lg:w-4/12 px-4">
-            <div className="relative w-full mb-3">
-              <label className="block text-gray-700 text-sm mb-2">
-                No of metering points
-              </label>
-              <input
-                type="text"
-                name="meteringPoints"
-                value={techData.meteringPoints || ""}
-                onChange={handleChange}
-                placeholder="Enter Number"
-                className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
-              />
-            </div>
+          {/* Metering Points */}
+          <div className="w-full lg:w-4/12 px-4 mb-6">
+            <label className="block text-gray-700 text-sm mb-2">No of metering points</label>
+            <input
+              type="text"
+              name="meteringPoints"
+              value={techData.meteringPoints || ""}
+              onChange={handleChange}
+              className="p-2 w-full border border-gray-300 rounded text-sm focus:outline-none focus:border-[#7c0000]"
+              placeholder="Enter Number"
+            />
           </div>
 
           {/* Account Numbers */}
-          <div className="w-full lg:w-4/12 px-4">
-            <div className="relative w-full mb-3">
-              <label className="block text-gray-700 text-sm mb-2">
-                Account Numbers
-              </label>
-              <input
-                type="text"
-                name="accountNumbers"
-                value={techData.accountNumbers || ""}
-                onChange={handleChange}
-                placeholder="Enter Account Numbers"
-                className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
-              />
+          <div className="w-full lg:w-4/12 px-4 mb-6">
+            <label className="block text-gray-700 text-sm mb-2">Account Numbers</label>
+            <input
+              type="text"
+              name="accountNumbers"
+              value={techData.accountNumbers || ""}
+              onChange={handleChange}
+              className="p-2 w-full border border-gray-300 rounded text-sm focus:outline-none focus:border-[#7c0000]"
+              placeholder="Enter Account Numbers"
+            />
+          </div>
+
+          {/* Supply Type */}
+          <div className="w-full lg:w-4/12 px-4 mb-6">
+            <label className="block text-gray-700 text-sm mb-2">Type of Supply</label>
+            <select
+              name="supplyType"
+              value={techData.supplyType || ""}
+              onChange={handleChange}
+              className="p-2 w-full border border-gray-300 rounded text-sm focus:outline-none focus:border-[#7c0000]"
+            >
+              <option value="">Select Type</option>
+              <option value="Industry">Industry</option>
+              <option value="Commercial">Commercial</option>
+              <option value="Residential">Residential</option>
+            </select>
+          </div>
+
+          {/* Document to Be Submitted */}
+          <div className="w-full lg:w-6/12 px-4 mb-6">
+            <label className="block text-gray-700 text-sm mb-2">Document to Be Submitted</label>
+            <select
+              value={selectedDoc}
+              onChange={(e) => setSelectedDoc(e.target.value)}
+              className="p-2 w-full border border-gray-300 rounded text-sm focus:outline-none focus:border-[#7c0000] mb-2"
+            >
+              <option value="">Select Document</option>
+              <option value="id_proof">ID Proof</option>
+              <option value="address_proof">Address Proof</option>
+            </select>
+            <div
+              {...getRootProps()}
+              className="p-6 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 cursor-pointer hover:border-[#7c0000]"
+            >
+              <input {...getInputProps()} />
+              <FaCloudUploadAlt size={35} className="mx-auto text-gray-400 mb-2" />
+              <p className="text-gray-600 text-sm text-center">Drag & Drop files here or click to upload</p>
             </div>
           </div>
 
-          {/* Type of Supply */}
-          <div className="w-full lg:w-4/12 px-4">
-            <div className="relative w-full mb-3">
-              <label className="block text-gray-700 text-sm mb-2">
-                Type of Supply
-              </label>
-              <select
-                name="supplyType"
-                value={techData.supplyType || ""}
-                onChange={handleChange}
-                className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150"
-              >
-                <option value="">Select Type</option>
-                <option value="Industry">Industry</option>
-                <option value="Commercial">Commercial</option>
-                <option value="Residential">Residential</option>
-              </select>
+          {/* Additional Document */}
+          <div className="w-full lg:w-6/12 px-4 mb-6">
+            <label className="block text-gray-700 text-sm mb-2">Additional Document</label>
+            <select
+              value={selectedDoc}
+              onChange={(e) => setSelectedDoc(e.target.value)}
+              className="p-2 w-full border border-gray-300 rounded text-sm focus:outline-none focus:border-[#7c0000] mb-2"
+            >
+              <option value="">Select Document</option>
+              <option value="agreement">Agreement</option>
+              <option value="certificate">Certificate</option>
+            </select>
+            <div
+              {...getRootProps()}
+              className="p-6 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 cursor-pointer hover:border-[#7c0000]"
+            >
+              <input {...getInputProps()} />
+              <FaCloudUploadAlt size={35} className="mx-auto text-gray-400 mb-2" />
+              <p className="text-gray-600 text-sm text-center">Drag & Drop files here or click to upload</p>
             </div>
           </div>
 
-          {/* Document Upload Section 1 */}
-          <div className="w-full lg:w-6/12 px-4">
-            <div className="relative w-full mb-3">
-              <label className="block text-gray-700 text-sm mb-2">
-                Document to Be Submitted
-              </label>
-              <select
-                className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150 mb-3"
-                onChange={(e) => setSelectedDoc(e.target.value)}
-                value={selectedDoc}
-              >
-                <option value="">Select Document</option>
-                <option value="id_proof">ID Proof</option>
-                <option value="address_proof">Address Proof</option>
-              </select>
-
-              <div
-                {...getRootProps()}
-                className="p-6 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 cursor-pointer hover:border-[#7c0000] transition-colors duration-150"
-              >
-                <input {...getInputProps()} />
-                <FaCloudUploadAlt size={35} className="mx-auto text-gray-400 mb-2" />
-                <p className="text-gray-600 text-sm text-center">
-                  Drag & Drop files here or click to upload
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* Document Upload Section 2 */}
-          <div className="w-full lg:w-6/12 px-4">
-            <div className="relative w-full mb-3">
-              <label className="block text-gray-700 text-sm mb-2">
-                Additional Document
-              </label>
-              <select
-                className="p-2 w-full border border-gray-300 rounded text-sm bg-white focus:outline-none focus:border-[#7c0000] focus:shadow-[0_0_0_2px_rgba(124,0,0,0.1)] transition-all duration-150 mb-3"
-                onChange={(e) => setSelectedDoc(e.target.value)}
-                value={selectedDoc}
-              >
-                <option value="">Select Document</option>
-                <option value="agreement">Agreement</option>
-                <option value="certificate">Certificate</option>
-              </select>
-
-              <div
-                {...getRootProps()}
-                className="p-6 border-2 border-dashed border-gray-300 rounded-lg bg-gray-50 cursor-pointer hover:border-[#7c0000] transition-colors duration-150"
-              >
-                <input {...getInputProps()} />
-                <FaCloudUploadAlt size={35} className="mx-auto text-gray-400 mb-2" />
-                <p className="text-gray-600 text-sm text-center">
-                  Drag & Drop files here or click to upload
-                </p>
-              </div>
-            </div>
-          </div>
-
-          {/* File List */}
+          {/* Uploaded Files */}
           {files.length > 0 && (
-            <div className="w-full lg:w-12/12 px-4">
-              <div className="mt-2 space-y-2">
-                <h4 className="text-sm font-medium text-gray-700">Uploaded Files</h4>
-                {files.map((file) => (
-                  <div
-                    key={file.name}
-                    className="flex items-center justify-between p-2 bg-white border border-gray-200 rounded-lg"
-                  >
-                    <span className="text-sm text-gray-700 truncate max-w-[300px]">
-                      {file.name}
-                    </span>
-                    <button
-                      type="button"
-                      onClick={() => removeFile(file.name)}
-                      className="text-red-500 hover:text-red-700 focus:outline-none"
-                    >
-                      <FaTrash size={16} />
-                    </button>
-                  </div>
-                ))}
-              </div>
+            <div className="w-full px-4">
+              <h4 className="text-sm font-medium text-gray-700 mb-2">Uploaded Files</h4>
+              {files.map((file) => (
+                <div key={file.name} className="flex items-center justify-between p-2 bg-white border rounded-lg mb-2">
+                  <span className="text-sm text-gray-700 truncate">{file.name}</span>
+                  <button onClick={() => removeFile(file.name)} className="text-red-500 hover:text-red-700">
+                    <FaTrash size={16} />
+                  </button>
+                </div>
+              ))}
             </div>
           )}
         </div>

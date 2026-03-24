@@ -190,6 +190,14 @@ import { toast } from "react-toastify";
 
 // NEW: Import useUser hook
 import { useUser } from "context/UserContext";
+import FooterAdmin from "components/Footers/FooterAdmin";
+
+
+
+const cardStyle = {
+  boxShadow: '0 20px 30px -10px rgba(0, 0, 0, 0.2)',
+   backgroundColor: '#ffffff !important'
+};
 
 export default function Login() {
   const [userId, setUserId] = useState("");
@@ -213,14 +221,41 @@ export default function Login() {
   
   
 
-  const handleSubmit = async (e) => {
+  const handleSubmit = async (e,loginType = 'regular') => {
     e.preventDefault();
     if (!userId || !password) {
       toast.error("User ID and password are required");
       return;
     }
     try {
-      const response = await fetch(`${baseUrl}/api/v1/auth/login`, {
+     
+      // const response = await fetch(`${baseUrl}/api/v1/auth/login`, {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({ userId, password }),
+      //   credentials: "include",
+      // });
+
+
+       // Choose endpoint based on loginType
+       const endpoint = loginType === 'ad' 
+       ? `${baseUrl}/api/v1/auth/loginWithADNew`
+       : `${baseUrl}/api/v1/auth/login`;
+
+
+      // //i changed the endpoint for checking new Ad login
+      // const response = await fetch(`${baseUrl}/api/v1/auth/loginWthAD`, {
+      //   method: "POST",
+      //   headers: {
+      //     "Content-Type": "application/json",
+      //   },
+      //   body: JSON.stringify({ userId, password }),
+      //   credentials: "include",
+      // });
+
+      const response = await fetch(endpoint, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -228,6 +263,7 @@ export default function Login() {
         body: JSON.stringify({ userId, password }),
         credentials: "include",
       });
+
       const contentType = response.headers.get("content-type");
       let data;
       if (contentType && contentType.indexOf("application/json") !== -1) {
@@ -319,16 +355,18 @@ export default function Login() {
       <div className="container mx-auto px-4 h-full">
         <div className="flex content-center items-center justify-center h-full">
           <div className="w-full lg:w-4/12 px-4">
-            <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-200 border-0">
+            <div className="relative flex flex-col min-w-0 break-words w-full mb-6 shadow-lg rounded-lg bg-blueGray-200 border-0" style={cardStyle}>
               <div className="flex justify-center items-center">
                 <img
                   alt="ceb logo"
-                  className="w-20 h-20 mt-8"
-                  src="/ceb.png"
+                  // className="w-20 h-20 mt-8"
+                  className="w-32 h-32 mt-8 mb-2 object-contain"
+                  // src="/ceb.png"
+                  src="/edl_new.jpeg"
                 />
               </div>
               <div className="flex-auto px-4 lg:px-10 py-10 pt-0 mt-2">
-                <div className="text-blueGray-400 text-center text-sm">
+                <div className="text-blueGray-400 text-center text-base mb-5">
                   {/* Sign In With Credentials */}
                   Service Provisioning System
                 </div>
@@ -386,6 +424,18 @@ export default function Login() {
                       Sign In
                     </button>
                   </div>
+
+                    {/* this is for testing Ad login */}
+                  {/* <div className="text-center mt-6">
+                    <button
+                      className="text-white active:bg-red-200 text-sm px-6 py-2 rounded shadow hover:shadow-lg outline-none focus:outline-none mr-1 mb-1 w-full ease-linear transition-all duration-150"
+                      // type="submit"
+                      onClick={(e) => handleSubmit(e, 'ad')}
+                      style={{ backgroundColor: "#7c0000" }}
+                    >
+                      Sign In With Ad Login
+                    </button>
+                  </div> */}
                 </form>
 
             {/* Need Help - User Manual */}
@@ -399,16 +449,46 @@ export default function Login() {
                   Need Help?
                 </a>
               </div> */}
+
+
+              {/* Need Help - User Manual */}
+                <div className="text-center mt-4">
+                  <a
+                    href="/Service Provisioning System (SPS) User Guide.pdf"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="text-sm text-blueGray-500 underline hover:text-blueGray-700"
+                  >
+                    Need Help?
+                  </a>
+                </div>
+
                 
               </div>
             </div>
 
+
+           
+
             {/* this is for adding SPS version number           */}
-            <div className="text-center mt-0 mb-0">
+            
+            {/* <div className="text-center mt-0 mb-0">
               <span className="text-blueGray-400 text-[10px]">
-                CEB SPS_NEW v1.0.2
+                EDL SPS_NEW v1.0.3
               </span>
-            </div>
+            </div> */}
+
+              <div className="text-sm text-blueGray-500 font-semibold py-1 text-center">
+                © {new Date().getFullYear()}{" "}
+                <a
+                  // href="https://www.creative-tim.com?ref=nr-footer-admin"
+                  className="text-blueGray-500 hover:text-blueGray-700 text-sm font-semibold py-1"
+                >
+                  {/* Information Technology Branch Ceylon Electricity Board */}
+                  Utility Solutions & Automation Branch, EDL. All Rights Reserved  Version 1.0.3
+                </a>
+              </div>
+            
 
             <div className="flex flex-wrap mt-6 relative">
               <div className="w-1/2">
@@ -417,14 +497,21 @@ export default function Login() {
                 </Link>
               </div>
               <div className="w-1/2 text-right">
-                <Link to="/auth/register" className="text-blueGray-400 text-sm">
+                {/* <Link to="/auth/register" className="text-blueGray-400 text-sm"> */}
+                <Link to="/auth/login" className="text-blueGray-400 text-sm">
                   Create new account
                 </Link>
               </div>
             </div>
+
+            
           </div>
+          
         </div>
+        
       </div>
+      
+      
     </>
   );
 }
