@@ -5,7 +5,7 @@ const MANAGER_FIELD_STYLE = "bg-red-100";
 
 
 
-const OrderCardPopupNew = ({ isOpen, onClose, estimateNo,projectNumber,deptId,status }) => {
+const OrderCardPopupNew = ({ isOpen, onClose, onOrderCardSaved, estimateNo,projectNumber,deptId,status }) => {
 
 
 const [userLevel, setUserLevel] = useState(null); // Add this line to store user level
@@ -171,14 +171,7 @@ const [userLevel, setUserLevel] = useState(null); // Add this line to store user
   //   }
   // };
 
-    // Fetch all data when estimateNo changes
-    useEffect(() => {
-      if (estimateNo && isOpen) {
-        fetchAllData();
-      }
-    }, [estimateNo, isOpen]);
-
-    // Fetch all data when estimateNo changes
+  // Fetch all data when estimateNo changes
   useEffect(() => {
     if (estimateNo && isOpen) {
       fetchAllData();
@@ -213,11 +206,7 @@ const [userLevel, setUserLevel] = useState(null); // Add this line to store user
       } catch (error) {
         console.error("Error generating order card number:", error);
         toast.error("Failed to generate order card number!");
-        // Fallback: Set empty if API fails
-        setFormData(prev => ({
-          ...prev,
-          orderCardNo: ""
-        }));
+        // Keep existing value to avoid blanking the field on transient failures.
       }
     };
 
@@ -1186,6 +1175,9 @@ const handleSubmit = async (e) => {
 
     // console.log("connected date: " ,orderCardData.connectedDate);
     toast.success("Order card and meter details created successfully!");
+    if (typeof onOrderCardSaved === "function") {
+      await onOrderCardSaved();
+    }
     onClose();
   } catch (error) {
     console.error("Error submitting form:", error);

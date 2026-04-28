@@ -190,7 +190,6 @@ import { toast } from "react-toastify";
 
 // NEW: Import useUser hook
 import { useUser } from "context/UserContext";
-import FooterAdmin from "components/Footers/FooterAdmin";
 
 
 
@@ -203,7 +202,6 @@ export default function Login() {
   const [userId, setUserId] = useState("");
   const [password, setPassword] = useState("");
   const history = useHistory();
-  const [showGuide, setShowGuide] = useState(false);
 
   const baseUrl = process.env.REACT_APP_API_BASE_URL;
   
@@ -211,11 +209,7 @@ export default function Login() {
 
   console.log("this is previous baseurl: ", baseUrl);
 
-// this is for testing to get details of useUser
-  const { mainMenus, menusLoading, menuTasks, fetchTasksForMenu, logout } = useUser();
-  
-
-  // NEW: Get refreshMenus from UserContext
+  // Get refreshMenus from UserContext
   const { refreshMenus } = useUser();
 
   
@@ -324,7 +318,7 @@ export default function Login() {
         //IN HERE I CHANGED USER LEVEL CE TO DEO
         // DEO (DATA ENTRY OPERATOR)
         
-        if (userlevel === "DEO" || "EE" || "ES" || "DGM") {
+        if (["DEO", "EE", "ES", "DGM"].includes(userlevel)) {
           history.push("/admin/dashboardCE");
         } 
         // else if (userlevel === "EE") {
@@ -480,13 +474,10 @@ export default function Login() {
 
               <div className="text-sm text-blueGray-500 font-semibold py-1 text-center">
                 © {new Date().getFullYear()}{" "}
-                <a
-                  // href="https://www.creative-tim.com?ref=nr-footer-admin"
-                  className="text-blueGray-500 hover:text-blueGray-700 text-sm font-semibold py-1"
-                >
+                <span className="text-blueGray-500 hover:text-blueGray-700 text-sm font-semibold py-1">
                   {/* Information Technology Branch Ceylon Electricity Board */}
                   Utility Solutions & Automation Branch, EDL. All Rights Reserved  Version 1.0.3
-                </a>
+                </span>
               </div>
             
 

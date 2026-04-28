@@ -1,16 +1,57 @@
 import React, { useState, useEffect } from "react";
 
+const resolveApiBaseUrl = () => {
+  const envBaseUrl = (process.env.REACT_APP_API_BASE_URL || "").trim();
+
+  if (typeof window !== "undefined") {
+    const isCraDevServer =
+      (window.location.hostname === "localhost" ||
+        window.location.hostname === "127.0.0.1") &&
+      window.location.port === "3000";
+
+    if (!isCraDevServer) {
+      return "/SPSNEW";
+    }
+  }
+
+  return envBaseUrl || "/SPSNEW";
+};
+
+const normalizeEstimateNo = (value) => {
+  const trimmedValue = (value || "").trim();
+
+  if (!trimmedValue) {
+    return "";
+  }
+
+  try {
+    return decodeURIComponent(trimmedValue);
+  } catch {
+    return trimmedValue;
+  }
+};
+
 const CommentHistoryApproval = ({ estimateNo = "EST003" }) => {
+  const API_BASE_URL = resolveApiBaseUrl().replace(/\/$/, "");
   const [commentHistoryData, setCommentHistoryData] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
   useEffect(() => {
     const fetchCommentHistory = async () => {
+      const sanitizedEstimateNo = encodeURIComponent(
+        normalizeEstimateNo(estimateNo)
+      );
+      if (!sanitizedEstimateNo) {
+        setError("Estimate number is required");
+        setLoading(false);
+        return;
+      }
+
       try {
         setLoading(true);
         const response = await fetch(
-          `http://127.0.0.1:8081/SPSNEW/api/approval-history/${estimateNo}`,
+          `${API_BASE_URL}/api/approval-history?estimateNo=${sanitizedEstimateNo}`,
           {
             method: "GET",
             headers: {

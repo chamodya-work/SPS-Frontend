@@ -44,6 +44,56 @@ export default function Commission({ color }) {
 
   const baseUrl = process.env.REACT_APP_API_BASE_URL;
 
+  const resolveOrderCardNo = (item) => {
+    const candidates = [
+      item?.orderCardNo,
+      item?.orderCardNO,
+      item?.ordercardNo,
+      item?.ordercardno,
+      item?.orderCardNumber,
+      item?.order_card_no,
+      item?.order_cardNo,
+      item?.ORDER_CARD_NO,
+      item?.ORDERCARDNO,
+      item?.orderCardNum,
+      item?.ordCardNo,
+      item?.orderNo,
+    ];
+
+    const found = candidates.find(
+      (value) => value !== null && value !== undefined && String(value).trim() !== ""
+    );
+
+    return found ? String(found).trim() : "";
+  };
+
+  const fetchOrderCardNoByProjectAndDept = async (projectNo, deptId) => {
+    if (!projectNo || !deptId) return "";
+
+    try {
+      const response = await fetch(
+        `${baseUrl}/api/order-cards/by-project-dept?projectNo=${encodeURIComponent(
+          String(projectNo).trim()
+        )}&deptId=${encodeURIComponent(String(deptId).trim())}`,
+        {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: "Basic " + btoa("user:admin123"),
+          },
+        }
+      );
+
+      if (!response.ok) return "";
+
+      const orderCard = await response.json();
+      return resolveOrderCardNo(orderCard);
+    } catch (error) {
+      console.error("Fallback order card fetch failed:", error);
+      return "";
+    }
+  };
+
   // Fetch commission details from API
   const fetchCommissionDetails = async () => {
     try {
@@ -81,11 +131,12 @@ export default function Commission({ color }) {
       if (response.ok) {
         const data = await response.json(); // Converts response body from JSON to JavaScript object
 
-        // Transform the API data to match our component structure
+        // Transform API data first.
         const transformedData = data.map((item, index) => ({
           id: index + 1,
           estimateNo: item.estimateNo, // Ensure this is the full estimateNo (e.g., "501.20/BS/13/0001/1")
           projectNo:item.projectNo,
+          orderCardNo: resolveOrderCardNo(item),
           totalCost: item.totalCost,
           deptId: item.deptId,
           description: item.description,
@@ -93,8 +144,25 @@ export default function Commission({ color }) {
           statusCode: item.status,
         }));
 
-        setCommissions(transformedData);
-        setFilteredCommissions(transformedData);
+        // If commission query didn't provide order card no, fallback to direct order-card lookup.
+        const transformedDataWithOrderCard = await Promise.all(
+          transformedData.map(async (item) => {
+            if (item.orderCardNo) return item;
+
+            const fallbackOrderCardNo = await fetchOrderCardNoByProjectAndDept(
+              item.projectNo,
+              item.deptId
+            );
+
+            return {
+              ...item,
+              orderCardNo: fallbackOrderCardNo,
+            };
+          })
+        );
+
+        setCommissions(transformedDataWithOrderCard);
+        setFilteredCommissions(transformedDataWithOrderCard);
         toast.success("Commission data loaded successfully!");
       } else {
         throw new Error(`Failed to fetch data: ${response.status}`);
@@ -152,7 +220,7 @@ export default function Commission({ color }) {
     }
     if (searchTerm) {
       result = result.filter((c) =>
-        [c.estimateNo, c.deptId, c.description].some(
+        [c.estimateNo, c.orderCardNo, c.deptId, c.description].some(
           (val) =>
             val &&
             val.toString().toLowerCase().includes(searchTerm.toLowerCase())
@@ -322,7 +390,7 @@ export default function Commission({ color }) {
 
             <input
               type="text"
-              placeholder="Search Estimate No, Dept ID, or Description..."
+              placeholder="Search Estimate No, Order Card No, Dept ID, or Description..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
               className="search-input"
@@ -336,6 +404,7 @@ export default function Commission({ color }) {
                 <tr className="table-header">
                   <th>Estimate Number</th>
                   <th>Project Number</th>
+                  <th>Order Card No</th>
                   <th>Dept ID</th>
                   <th>Total Cost ( LKR)</th>
                   <th>Description</th>
@@ -352,6 +421,7 @@ export default function Commission({ color }) {
                       <tr key={`${c.estimateNo}-${c.id}`} className="table-row">
                         <td className="table-cell">{c.estimateNo}</td>
                         <td className="table-cell">{c.projectNo}</td>
+                        <td className="table-cell">{c.orderCardNo || "-"}</td>
                         <td className="table-cell">{c.deptId}</td>
                         <td className="table-cell text-right" >
                           {/* Rs. {c.totalCost?.toLocaleString() || 0} */}
@@ -405,6 +475,7 @@ export default function Commission({ color }) {
                             <OrderCardPopupNew
                               isOpen={true}
                               onClose={() => toggleRow(c.estimateNo)}
+                              onOrderCardSaved={fetchCommissionDetails}
                               estimateNo={c.estimateNo} //parsing estimate number as prop to ordercard
                               projectNumber={c.projectNo} //parsing project number as prop to ordercard 
                               deptId={c.deptId} // parsing deptId as a prop to orderCard

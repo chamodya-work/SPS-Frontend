@@ -6,6 +6,8 @@ import axios from "axios";
 //NEW: Import useUser hook to get dynamic menu data
 import { useUser } from "context/UserContext";
 
+const API_BASE_URL = process.env.REACT_APP_API_BASE_URL || "/SPSNEW";
+
 export default function HeaderStats() {
   // State for storing data from backend
   const [pendingAllocationData, setPendingAllocationData] = useState([]);
@@ -69,7 +71,7 @@ export default function HeaderStats() {
         console.log("Starting API call to fetch estimates data...");
 
         const response = await fetch(
-          "http://127.0.0.1:8081/SPSNEW/api/application/all",
+          `${API_BASE_URL}/api/application/all`,
           {
             method: "GET",
             headers: {
@@ -127,7 +129,7 @@ export default function HeaderStats() {
         console.log("Starting API call to fetch application data...");
 
         const response = await fetch(
-          "http://127.0.0.1:8081/SPSNEW/api/application/all",
+          `${API_BASE_URL}/api/application/all`,
           {
             method: "GET",
             headers: {

@@ -1,7 +1,39 @@
 // src/views/commission/EstimateDetails.js
 import React, { useState, useEffect } from "react";
 
+const resolveApiBaseUrl = () => {
+  const envBaseUrl = (process.env.REACT_APP_API_BASE_URL || "").trim();
+
+  if (typeof window !== "undefined") {
+    const isCraDevServer =
+      (window.location.hostname === "localhost" ||
+        window.location.hostname === "127.0.0.1") &&
+      window.location.port === "3000";
+
+    if (!isCraDevServer) {
+      return "/SPSNEW";
+    }
+  }
+
+  return envBaseUrl || "/SPSNEW";
+};
+
+const normalizeEstimateNo = (value) => {
+  const trimmedValue = (value || "").trim();
+
+  if (!trimmedValue) {
+    return "";
+  }
+
+  try {
+    return decodeURIComponent(trimmedValue);
+  } catch {
+    return trimmedValue;
+  }
+};
+
 const EstimateDetails = ({ estimateNo }) => {
+  const API_BASE_URL = resolveApiBaseUrl().replace(/\/$/, "");
   const [formData, setFormData] = useState({
     securityDeposite: "",
     cebCost: "",
@@ -20,10 +52,19 @@ const EstimateDetails = ({ estimateNo }) => {
   // Fetch estimate details data
   useEffect(() => {
     const fetchEstimateDetails = async () => {
+      const sanitizedEstimateNo = encodeURIComponent(
+        normalizeEstimateNo(estimateNo)
+      );
+      if (!sanitizedEstimateNo) {
+        setError("Estimate number is required");
+        setLoading(false);
+        return;
+      }
+
       try {
         setLoading(true);
         const response = await fetch(
-          `http://127.0.0.1:8081/SPSNEW/api/estimate-details/${estimateNo}`,
+          `${API_BASE_URL}/api/estimate-details?estimateNo=${sanitizedEstimateNo}`,
           {
             method: "GET",
             headers: {
@@ -65,10 +106,19 @@ const EstimateDetails = ({ estimateNo }) => {
   // Fetch estimate items
   useEffect(() => {
     const fetchEstimateItems = async () => {
+      const sanitizedEstimateNo = encodeURIComponent(
+        normalizeEstimateNo(estimateNo)
+      );
+      if (!sanitizedEstimateNo) {
+        setError("Estimate number is required");
+        setLoading(false);
+        return;
+      }
+
       try {
         setLoading(true);
         const response = await fetch(
-          `http://127.0.0.1:8081/SPSNEW/api/estimate-details/${estimateNo}/items`,
+          `${API_BASE_URL}/api/estimate-details?estimateNo=${sanitizedEstimateNo}&action=items`,
           {
             method: "GET",
             headers: {
